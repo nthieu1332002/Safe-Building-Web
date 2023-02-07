@@ -1,0 +1,35 @@
+@use "./variables" as *;
+
+* , ::after, ::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+  font-family: "Josefin Sans", sans-serif;
+  color: var(--primary-color-1);
+  background-color: var(--primary-color-2);
+}
+
+input,
+button,
+select,
+option {
+  font-family: "Josefin Sans", sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+#error-message {
+  color: $error;
+}

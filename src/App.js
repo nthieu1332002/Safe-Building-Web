@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ProtectedRoutes from './config/ProtectedRoutes'
+import PrivateRoutes from "./config/PrivateRoutes"
+import Login from "./pages/Login/Login.jsx"
+import Home from "./pages/Home/Home.jsx"
+import Building from "./pages/Building/Building.jsx"
+import Account from "./pages/Account/Account.jsx"
+import Resident from "./pages/Resident/Resident.jsx"
+import Flat from "./pages/Flat/Flat.jsx"
+import Service from "./pages/Service/Service.jsx"
+import Contract from "./pages/Contract/Contract.jsx"
 
-function App() {
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx"
+import ValidateAccount from "./pages/ValidateAccount/ValidateAccount.jsx"
+import ConfirmPassword from "./pages/ConfirmPassword/ConfirmPassword.jsx"
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <Routes>
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+          <Route path="/validate-account" element={<ValidateAccount />}></Route>
+          <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
+        </Route>
+        <Route element={<PrivateRoutes />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/building" element={<Building />}></Route>
+          <Route path="/account" element={<Account />}></Route>
+          <Route path="/resident" element={<Resident />}></Route>
+          <Route path="/flat" element={<Flat />}></Route>
+          <Route path="/service" element={<Service />}></Route>
+          <Route path="/contract" element={<Contract />}></Route>
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
