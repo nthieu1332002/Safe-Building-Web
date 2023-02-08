@@ -1,1 +1,17 @@
 @use "../../assets/scss/" as *;
+
+
+.welcome {
+    margin-bottom: 2rem;
+    h1 {
+        font-size: 3.5rem;
+    }
+    p {
+        font-size: 1.5rem;
+        color: var(--third-color);
+    }
+}
+.row {
+    display: flex;
+    gap: 2rem;
+}

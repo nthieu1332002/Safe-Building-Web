@@ -9,11 +9,11 @@
         display: flex;
         color: var(--third-color);
         background-color: var(--primary-color);
-        // background-color: skyblue;
         padding: 12px 14px;
         font-size: 1.65rem;
         border-radius: 5px;
         overflow: hidden;
+        transition: 0.3s;
         &__icon {
             font-size: 1.9rem;
             margin-right: 1rem;
