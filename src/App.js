@@ -14,19 +14,22 @@ import Contract from "./pages/Contract/Contract.jsx"
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx"
 import ValidateAccount from "./pages/ValidateAccount/ValidateAccount.jsx"
 import ConfirmPassword from "./pages/ConfirmPassword/ConfirmPassword.jsx"
+import Layout from './pages/Layout/Layout.jsx'
 
 const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<ProtectedRoutes />}>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-          <Route path="/validate-account" element={<ValidateAccount />}></Route>
-          <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
-        </Route>
-        <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Home />} />
+        {/* <Route element={<ProtectedRoutes />}> */}
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+        <Route path="/validate-account" element={<ValidateAccount />}></Route>
+        <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
+        {/* </Route>
+        <Route element={<PrivateRoutes />}> */}
+
+        <Route path="/" element={<Layout />} >
+          <Route index element={<Home />}></Route>
           <Route path="/building" element={<Building />}></Route>
           <Route path="/account" element={<Account />}></Route>
           <Route path="/resident" element={<Resident />}></Route>
@@ -34,6 +37,9 @@ const App = () => {
           <Route path="/service" element={<Service />}></Route>
           <Route path="/contract" element={<Contract />}></Route>
         </Route>
+        {/* </Route> */}
+        {/* <Route path="*" element={<> not found</>} /> */}
+
       </Routes>
     </BrowserRouter>
   )
