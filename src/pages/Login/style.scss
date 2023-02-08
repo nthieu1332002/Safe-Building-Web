@@ -1,0 +1,67 @@
+@use "../../assets/scss/" as *;
+
+.main-container {
+    display: flex;
+    background-color: var(--background-color);
+    height: 100vh;
+    width: 100vw;
+    font-size: 20px;
+}
+.login-img{
+   width:60%;
+   height:100%;
+    img{
+       width:100%;
+       object-fit: cover;
+       height:100%;
+
+    }
+}
+.login-field{
+    width:40%;
+    height:100%;   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img{
+        margin-bottom: 40px;;
+        
+    }
+    label{
+        font-size:40px;
+        margin-bottom: 40px;
+        
+    }
+    #txt-email, #txt-password{
+        margin-bottom: 40px;;
+        width:60%;
+        height:60px;
+        font-size: 20px;;
+        background-color: var(--fifth-color);;
+    }
+    #login-button{
+        width:60%;
+        height:60px;
+        font-size: 20px;
+        background-color: var(--fourth-color);;
+        margin-bottom: 40px;;
+    }
+    a{
+      
+        float:right;
+        margin-bottom: 40px;
+        color:black;
+        text-decoration: underline ;
+
+    }
+    #google-button{
+        width:60%;
+        height:60px;
+        font-size: 20px;
+        margin-top: 40px;;
+    }
+    #alternative-signin{
+        color:#686868;
+    }
+}
