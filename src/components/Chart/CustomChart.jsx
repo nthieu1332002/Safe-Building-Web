@@ -8,7 +8,6 @@ const CustomChart = ({ type }) => {
     labels: ["Jan", "Feb", "Mar", "Apr", "May"],
     datasets: [
       {
-        label: "Nhà tuyển dụng",
         data: [130, 170, 50, 266, 204],
         tension: 0.5,
         fill: true,
@@ -27,17 +26,13 @@ const CustomChart = ({ type }) => {
       {
         label: "My First Dataset",
         data: [300, 50],
-        backgroundColor: [
-          "rgb(255, 99, 132)",
-          "rgb(54, 162, 235)",
-        ],
+        backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
         hoverOffset: 4,
       },
     ],
   };
 
   var option = {
-    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -51,22 +46,24 @@ const CustomChart = ({ type }) => {
       },
       y: {
         grid: {
-          display: false,
+          display: true,
         },
         beginAtZero: true,
       },
+      xAxes: [{ gridLines: { zeroLineColor: "red" } }],
+      yAxes: [{ gridLines: { zeroLineColor: "red" } }],
     },
   };
   var optionPie = {
     plugins: {
       legend: {
         display: false,
-        },
+      },
     },
   };
   // return (<Line data={data} options={options} />);
   return (
-    < >
+    <>
       {(() => {
         switch (type) {
           case "line":

@@ -13,6 +13,7 @@
     background-color: var(--primary-color);
     padding: 2rem;
     .brand-container {
+      cursor: pointer;
       height: auto;
       width: 100%;
       margin-bottom: 2rem;
@@ -43,6 +44,7 @@
     }
   }
   .main-content {
+    width: 82%;
     padding: 3rem;
     background-color: var(--background-color);
   }

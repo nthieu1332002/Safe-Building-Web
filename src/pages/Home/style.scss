@@ -3,15 +3,48 @@
 
 .welcome {
     margin-bottom: 2rem;
-    h1 {
-        font-size: 3.5rem;
-    }
     p {
         font-size: 1.5rem;
         color: var(--third-color);
     }
 }
-.row {
+.statistic-wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    .custom-card-mini {
+        background-color: var(--primary-color);
+        border-radius: 1rem;
+        padding: 2rem 3rem;
+        height: 10rem;
+        width: 24%;
+        .card-title {
+            margin-bottom: 0.5rem;
+        }
+        .card-content {
+            @include flex(space-between, null);
+            
+            .value {
+                font-size: 3rem;
+                font-weight: bold;
+            }
+            .value-change {
+                .up {
+                    color: green;
+                }
+                .down {
+                    color: red;
+                }
+                span {
+                    color: var(--third-color);
+                    font-size: 1.3rem;
+                }
+            }
+        }
+    }
+}
+.chart-wrapper {
     display: flex;
     gap: 2rem;
 }

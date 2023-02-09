@@ -16,7 +16,8 @@
     }
   }
   .login-field {
-    @include flex(center, center);
+    padding: 4rem 6rem;
+    @include flex(null, center);
     flex-direction: column;
     width: 40%;
     height: 100%;
@@ -33,30 +34,35 @@
       font-size: 3rem;
       padding: 2rem 0;
     }
-    #txt-email,
-    #txt-password {
-      width: 60%;
-      height: 60px;
-      font-size: 2rem;
+    .email,
+    .password {
+      padding: 1rem;
+      font-size: 1.5rem;
       background-color: var(--fifth-color);
     }
-    #login-button {
-      width: 60%;
-      height: 60px;
-      font-size: 2rem;
+    .forgot-password {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      a {
+        text-decoration: underline;
+        font-size: 1.5rem;
+      }
+    }
+
+    .login-button {
+      height: 4rem;
       background-color: var(--fourth-color);
+      font-size: 1.5rem;
     }
-    a {
-      float: right;
-      color: black;
-      text-decoration: underline;
-    }
-    #google-button {
-      width: 60%;
-      height: 60px;
-      font-size: 2rem;
+    .google-button {
+      font-size: 1.5rem;
+      height: 4rem;
+      @include flex(center, center);
+      gap: 0.5rem;
     }
     #alternative-signin {
+      font-size: 1.5rem;
       color: #686868;
     }
   }

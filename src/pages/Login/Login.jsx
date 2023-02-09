@@ -4,11 +4,12 @@ import logo from "../../assets/images/brand-y.png";
 import { FcGoogle } from "react-icons/fc";
 import * as Ant from "antd";
 import "./style.scss";
+import { Link } from "react-router-dom";
 
 const Login = () => {
   return (
     <>
-      <div class=" main-container row">
+      <div class="main-container">
         <div class="login-img">
           <img src={loginImg} alt="login-img" />
         </div>
@@ -19,23 +20,23 @@ const Login = () => {
 
           <p className="sign-in-title">Sign In</p>
 
-          <Ant.Input placeholder="Email" id="txt-email" />
+          <Ant.Input placeholder="Email" className="email" />
 
           <Ant.Input
             placeholder="Password"
             type={"password"}
-            id="txt-password"
+            className="password"
           />
-          <div style={{ width: "60%" }}>
-            <a href="#">Forgot Password</a>
+          <div className="forgot-password">
+            <Link to="#">Forgot Password</Link>
           </div>
-          <Ant.Button type="primary" id="login-button">
+          <Ant.Button block type="primary" className="login-button">
             SIGN IN
           </Ant.Button>
-          <span id="alternative-signin">Or sign in with</span>
-          <Ant.Button type="default" id="google-button">
-            <FcGoogle />
-            Google
+          <span id="alternative-signin">Or</span>
+          <Ant.Button block type="default" className="google-button">
+            <FcGoogle size={20}/>
+            Sign in with Google
           </Ant.Button>
         </div>
       </div>
