@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../Firebase";
 import { useDispatch } from "react-redux";
-import { loginWithGoogle } from "../../store/user/UserSlice";
+import { loginWithGoogle } from "../../store/User/UserSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
