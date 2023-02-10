@@ -25,9 +25,8 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/validate-account" element={<ValidateAccount />}></Route>
         <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
-        {/* </Route>
-        <Route element={<PrivateRoutes />}> */}
-
+      {/* </Route> */}
+      <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Layout />} >
           <Route index element={<Home />}></Route>
           <Route path="/building" element={<Building />}></Route>
@@ -37,8 +36,8 @@ const App = () => {
           <Route path="/service" element={<Service />}></Route>
           <Route path="/contract" element={<Contract />}></Route>
         </Route>
-        {/* </Route> */}
-        {/* <Route path="*" element={<> not found</>} /> */}
+      </Route>
+      {/* {/* <Route path="*" element={<> not found</>} /> */}
 
       </Routes>
     </BrowserRouter>

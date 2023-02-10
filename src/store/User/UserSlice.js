@@ -1,29 +1,36 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import userAPI from "../../config/api/user/userAPI"
+
+const { loginAPI } = userAPI;
 
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        user: []
+        user: [],
+        status: "idle",
     },
     reducers: {
-        
+
     },
     extraReducers: (builder) => {
-        
+        builder
+        .addCase(loginWithGoogle.pending, (state) => {
+            state.status = 'loading';
+        })
+        .addCase(loginWithGoogle.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.user = action.payload
+        })
     }
 })
 
-// export const getProfile = createAsyncThunk(
-//     "user/getProfile",
-//     async (uid) => {
-//         const docRef = doc(db, "users", uid);
-//         const res = await getDoc(docRef);
-//         if (res.exists()) {
-//             return res.data()
-//         }
-//         return {}
-//     }
-// );
+export const loginWithGoogle = createAsyncThunk(
+    "user/loginWithGoogle",
+    async (data) => {
+        const res = await loginAPI(data);
+        return res;
+    }
+);
 
 // export const setProfile = createAsyncThunk(
 //     "user/setProfile",

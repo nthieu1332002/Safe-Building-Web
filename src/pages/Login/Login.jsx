@@ -5,16 +5,37 @@ import { FcGoogle } from "react-icons/fc";
 import * as Ant from "antd";
 import "./style.scss";
 import { Link } from "react-router-dom";
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../Firebase";
+import { useDispatch } from "react-redux";
+import { loginWithGoogle } from "../../store/user/UserSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
+  const handleSignInWithGoogle = () => {
+    signInWithPopup(auth, provider)
+      .then((data) => {
+        console.log("data", data);
+        dispatch(
+          loginWithGoogle({ email: data.email, isVerified: data.isVerified })
+        );
+        // setValue(data.user.email)
+        // localStorage.setItem("email",data.user.email)
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  };
+
   return (
     <>
-      <div class="main-container">
-        <div class="login-img">
+      <div className="main-container">
+        <div className="login-img">
           <img src={loginImg} alt="login-img" />
         </div>
-        <div class="login-field">
-          <div class="logo">
+        <div className="login-field">
+          <div className="logo">
             <img src={logo} alt="logo" />
           </div>
 
@@ -34,8 +55,13 @@ const Login = () => {
             SIGN IN
           </Ant.Button>
           <span id="alternative-signin">Or</span>
-          <Ant.Button block type="default" className="google-button">
-            <FcGoogle size={20}/>
+          <Ant.Button
+            block
+            type="default"
+            className="google-button"
+            onClick={handleSignInWithGoogle}
+          >
+            <FcGoogle size={20} />
             Sign in with Google
           </Ant.Button>
         </div>

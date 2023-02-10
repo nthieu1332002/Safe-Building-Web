@@ -1,6 +1,5 @@
 import api from "./apiConfig";
 
-
 // sample: 
 
 const userAPI = {
@@ -13,25 +12,25 @@ const userAPI = {
 
         return api.post(url, body);
     },
-    registerAPI: (data) => {
-        const url = `/api/auth/register`;
+    // registerAPI: (data) => {
+    //     const url = `/api/auth/register`;
 
-        const body = {
-            ...data,
-        };
-        return api.post(url, body);
-    },
-    getAllUserAPI: ({id}) => {
-        const url =`/api/auth/getAllUsers/${id}`;
-        return api.get(url)
-    },
-    updateAvatar: (data) => {
-        const url =`/api/auth/updateAvatar`;
-        const body = {
-            ...data,
-        };
-        return api.post(url, body);
-    }
+    //     const body = {
+    //         ...data,
+    //     };
+    //     return api.post(url, body);
+    // },
+    // getAllUserAPI: ({id}) => {
+    //     const url =`/api/auth/getAllUsers/${id}`;
+    //     return api.get(url)
+    // },
+    // updateAvatar: (data) => {
+    //     const url =`/api/auth/updateAvatar`;
+    //     const body = {
+    //         ...data,
+    //     };
+    //     return api.post(url, body);
+    // }
 }
 
 export default userAPI
