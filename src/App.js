@@ -10,7 +10,7 @@ import Resident from "./pages/Resident/Resident.jsx"
 import Flat from "./pages/Flat/Flat.jsx"
 import Service from "./pages/Service/Service.jsx"
 import Contract from "./pages/Contract/Contract.jsx"
-
+import GuestPage from './pages/GuestPage/GuestPage'
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx"
 import ValidateAccount from "./pages/ValidateAccount/ValidateAccount.jsx"
 import ConfirmPassword from "./pages/ConfirmPassword/ConfirmPassword.jsx"
@@ -21,10 +21,12 @@ const App = () => {
     <BrowserRouter>
       <Routes>
         {/* <Route element={<ProtectedRoutes />}> */}
+        <Route path="/"element={<GuestPage />}>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/forgot-password" element={<ForgotPassword />}></Route>
         <Route path="/validate-account" element={<ValidateAccount />}></Route>
         <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
+        </Route>
       {/* </Route> */}
       <Route element={<PrivateRoutes />}>
         <Route path="/" element={<Layout />} >

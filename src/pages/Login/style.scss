@@ -1,27 +1,15 @@
 @use "../../assets/scss/" as *;
 
-.main-container {
-  display: flex;
-  background-color: var(--background-color);
-  height: 100%;
-  width: 100%;
-  font-size: 2rem;
-  .login-img {
-    width: 60%;
-    height: 100%;
-    img {
-      width: 100%;
-      object-fit: cover;
-      height: 100%;
-    }
-  }
+
+ 
+
   .login-field {
     padding: 4rem 6rem;
-    @include flex(null, center);
+    @include flex( center, center);
     flex-direction: column;
-    width: 40%;
+    
     height: 100%;
-    gap: 2rem;
+    gap: 2.5rem;
     .logo {
       width: 235px;
       height: 165px;
@@ -66,4 +54,4 @@
       color: #686868;
     }
   }
-}
+

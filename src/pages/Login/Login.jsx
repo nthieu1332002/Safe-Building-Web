@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../Firebase";
 import { useDispatch } from "react-redux";
-import { loginWithGoogle } from "../../store/User/UserSlice";
+import { loginWithGoogle } from "../../store/user/UserSlice.js";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,41 +30,36 @@ const Login = () => {
 
   return (
     <>
-      <div className="main-container">
-        <div className="login-img">
-          <img src={loginImg} alt="login-img" />
+      <div className="login-field">
+        <div className="logo">
+          <img src={logo} alt="logo" />
         </div>
-        <div className="login-field">
-          <div className="logo">
-            <img src={logo} alt="logo" />
-          </div>
 
-          <p className="sign-in-title">Sign In</p>
+        <p className="sign-in-title">Sign In</p>
 
-          <Ant.Input placeholder="Email" className="email" />
+        <Ant.Input placeholder="Email" className="email" />
 
-          <Ant.Input
-            placeholder="Password"
-            type={"password"}
-            className="password"
-          />
-          <div className="forgot-password">
-            <Link to="#">Forgot Password</Link>
-          </div>
-          <Ant.Button block type="primary" className="login-button">
-            SIGN IN
-          </Ant.Button>
-          <span id="alternative-signin">Or</span>
-          <Ant.Button
-            block
-            type="default"
-            className="google-button"
-            onClick={handleSignInWithGoogle}
-          >
-            <FcGoogle size={20} />
-            Sign in with Google
-          </Ant.Button>
+        <Ant.Input
+          placeholder="Password"
+          type={"password"}
+          className="password"
+        />
+        <div className="forgot-password">
+          <Link to="#">Forgot Password</Link>
         </div>
+        <Ant.Button block type="primary" className="login-button">
+          SIGN IN
+        </Ant.Button>
+        <span id="alternative-signin">Or</span>
+        <Ant.Button
+          block
+          type="default"
+          className="google-button"
+          onClick={handleSignInWithGoogle}
+        >
+          <FcGoogle size={20} />
+          Sign in with Google
+        </Ant.Button>
       </div>
     </>
   );
