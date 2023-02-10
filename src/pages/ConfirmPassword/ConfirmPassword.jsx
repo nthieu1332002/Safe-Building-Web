@@ -1,9 +1,38 @@
-import React from 'react'
+import React from "react";
+
+import logo from "../../assets/images/brand-y.png";
+import * as Ant from "antd";
+import "./style.scss";
+import { Link, NavLink } from "react-router-dom";
 
 const ConfirmPassword = () => {
   return (
-    <div>ConfirmPassword</div>
-  )
-}
+    <>
+      <div className="confirm-field">
+        <div className="logo">
+          <img src={logo} alt="logo" />
+        </div>
 
-export default ConfirmPassword
+        <p className="change-password-title">Forgot Password</p>
+
+        <Ant.Input
+          placeholder="Password"
+          type={"password"}
+          className="password"
+        />
+
+        <Ant.Input
+          placeholder=" Confirm Password"
+          type={"password"}
+          className="confirm-password"
+        />
+
+        <Ant.Button block type="primary" className="confirm-button">
+          CHANGE PASSWORD
+        </Ant.Button>
+      </div>
+    </>
+  );
+};
+
+export default ConfirmPassword;
