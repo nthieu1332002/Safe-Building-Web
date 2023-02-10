@@ -1,9 +1,5 @@
 @use "../../assets/scss/" as *;
-
-
- 
-
-  .login-field {
+.forgot-field {
     padding: 4rem 6rem;
     @include flex( null, center);
     flex-direction: column;
@@ -18,41 +14,36 @@
         height: auto;
       }
     }
-    .sign-in-title {
+    .forgot-title {
       font-size: 3rem;
       padding: 2rem 0;
     }
-    .email,
-    .password {
+    .email
+     {
       padding: 1rem;
       font-size: 1.5rem;
       background-color: var(--fifth-color);
     }
-    .forgot-password {
+    #forgot-text{
+        font-size: 1.90rem;
+    }
+    .return-login {
       width: 100%;
       display: flex;
       justify-content: flex-end;
-      #link{
+      #link {
         text-decoration: underline;
         font-size: 1.5rem;
-        color: black;
+        color:black;
       }
     }
 
-    .login-button {
+    .send-reset {
       height: 4rem;
       background-color: var(--fourth-color);
       font-size: 1.5rem;
+      
     }
-    .google-button {
-      font-size: 1.5rem;
-      height: 4rem;
-      @include flex(center, center);
-      gap: 0.5rem;
-    }
-    #alternative-signin {
-      font-size: 1.5rem;
-      color: #686868;
-    }
+
   }
 

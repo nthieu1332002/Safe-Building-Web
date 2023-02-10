@@ -1,14 +1,14 @@
 import React from "react";
-import loginImg from "../../assets/images/LoginImage.jpg";
+
 import logo from "../../assets/images/brand-y.png";
 import { FcGoogle } from "react-icons/fc";
 import * as Ant from "antd";
 import "./style.scss";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../Firebase";
 import { useDispatch } from "react-redux";
-import { loginWithGoogle } from "../../store/user/UserSlice.js";
+import { loginWithGoogle } from "../../store/user/UserSlice";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -45,7 +45,7 @@ const Login = () => {
           className="password"
         />
         <div className="forgot-password">
-          <Link to="#">Forgot Password</Link>
+          <Link to='/forgot-password' id="link">Forgot Password</Link>
         </div>
         <Ant.Button block type="primary" className="login-button">
           SIGN IN
