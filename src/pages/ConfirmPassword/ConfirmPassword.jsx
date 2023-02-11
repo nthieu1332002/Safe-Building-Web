@@ -5,6 +5,8 @@ import * as Ant from "antd";
 import "./style.scss";
 import { Link, NavLink } from "react-router-dom";
 
+
+
 const ConfirmPassword = () => {
   return (
     <>
@@ -30,6 +32,16 @@ const ConfirmPassword = () => {
         <Ant.Button block type="primary" className="confirm-button">
           CHANGE PASSWORD
         </Ant.Button>
+        <Ant.ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: 'ffbc80',
+            },
+          }}
+        >
+          
+          <Ant.Button block type="primary">AAAAAAAAA</Ant.Button>
+        </Ant.ConfigProvider>
       </div>
     </>
   );

@@ -24,11 +24,25 @@
     padding: 1rem;
     font-size: 1.5rem;
     background-color: var(--fifth-color);
+    
   }
 
   .confirm-button {
     height: 4rem;
     background-color: var(--fourth-color);
     font-size: 1.5rem;
+    
+    &:hover{
+      
+        background-color: var(--button-hover-color);
+      
+    }
+
+    &:active{
+      background-color: var(--button-active-color);
+    }
+     
   }
+
+ 
 }
