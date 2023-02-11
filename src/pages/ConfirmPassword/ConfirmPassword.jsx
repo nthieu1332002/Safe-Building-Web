@@ -32,7 +32,7 @@ const ConfirmPassword = () => {
         <Ant.Button block type="primary" className="confirm-button">
           CHANGE PASSWORD
         </Ant.Button>
-        <Ant.ConfigProvider
+        {/* <Ant.ConfigProvider
           theme={{
             token: {
               colorPrimary: 'ffbc80',
@@ -41,7 +41,7 @@ const ConfirmPassword = () => {
         >
           
           <Ant.Button block type="primary">AAAAAAAAA</Ant.Button>
-        </Ant.ConfigProvider>
+        </Ant.ConfigProvider> */}
       </div>
     </>
   );
