@@ -12,7 +12,7 @@ const Layout = () => {
   }
 
   return (
-    <div className="">
+    <div className="main-container">
       <div className="side-bar">
         <div className="brand-container" onClick={handleNavigate}>
           <img src={brand} alt="logo" />
