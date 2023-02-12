@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import logo from "../../assets/images/brand-y.png";
 import { FcGoogle } from "react-icons/fc";
-import * as Ant from "antd";
+import { Button, Form, Input } from "antd";
 import "./style.scss";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../Firebase";
-import { useDispatch } from "react-redux";
-import { loginWithGoogle } from "../../store/user/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { login, loginWithGoogle } from "../../store/user/UserSlice";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
 
   const handleSignInWithGoogle = () => {
     signInWithPopup(auth, provider)
@@ -28,6 +31,21 @@ const Login = () => {
       });
   };
 
+    
+  useEffect(() => {
+    console.log("user.users", user.userToken)
+    if (user.userToken) {
+      navigate('/')
+    }
+  }, [navigate, user.userToken])
+
+  const onFinish = (values) => {
+    dispatch(login(values.email, values.password));
+  };
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
   return (
     <>
       <div className="login-field">
@@ -36,22 +54,59 @@ const Login = () => {
         </div>
 
         <p className="sign-in-title">Sign In</p>
+        <Form
+          name="login-form"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Form.Item
+            name="email"
+            rules={[
+              {
+                type: "email",
+                required: true,
+                message: "Email is required.",
+              },
+            ]}
+          >
+            <Input placeholder="Email" className="custom-input"/>
+          </Form.Item>
+          <Form.Item
+            name="password"
+            rules={[
+              {
+                required: true,
+                message: "Password is required.",
+              },
+            ]}
+          >
+            <Input placeholder="Password" type="password" className="custom-input"/>
+          </Form.Item>
+          <div className="forgot-password">
+            <Link to="/forgot-password" id="link">
+              Forgot Password
+            </Link>
+          </div>
+          <Form.Item>
 
-        <Ant.Input placeholder="Email" className="email" />
+              <Button
+                block
+                type="primary"
+                className="login-button"
+                htmlType="submit"
+                loading={user.loading}
+              >
+                SIGN IN
+              </Button>
 
-        <Ant.Input
-          placeholder="Password"
-          type={"password"}
-          className="password"
-        />
-        <div className="forgot-password">
-          <Link to='/forgot-password' id="link">Forgot Password</Link>
-        </div>
-        <Ant.Button block type="primary" className="login-button">
-          SIGN IN
-        </Ant.Button>
+          </Form.Item>
+        </Form>
         <span id="alternative-signin">Or</span>
-        <Ant.Button
+        <Button
           block
           type="default"
           className="google-button"
@@ -59,7 +114,7 @@ const Login = () => {
         >
           <FcGoogle size={20} />
           Sign in with Google
-        </Ant.Button>
+        </Button>
       </div>
     </>
   );

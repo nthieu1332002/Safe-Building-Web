@@ -15,34 +15,40 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword.jsx"
 import ValidateAccount from "./pages/ValidateAccount/ValidateAccount.jsx"
 import ConfirmPassword from "./pages/ConfirmPassword/ConfirmPassword.jsx"
 import Layout from './pages/Layout/Layout.jsx'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
+
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* <Route element={<ProtectedRoutes />}> */}
-        <Route path="/"element={<GuestPage />}>
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-        <Route path="/validate-account" element={<ValidateAccount />}></Route>
-        <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
-        </Route>
-      {/* </Route> */}
-      <Route element={<PrivateRoutes />}>
-        <Route path="/" element={<Layout />} >
-          <Route index element={<Home />}></Route>
-          <Route path="/building" element={<Building />}></Route>
-          <Route path="/account" element={<Account />}></Route>
-          <Route path="/resident" element={<Resident />}></Route>
-          <Route path="/flat" element={<Flat />}></Route>
-          <Route path="/service" element={<Service />}></Route>
-          <Route path="/contract" element={<Contract />}></Route>
-        </Route>
-      </Route>
-      {/* {/* <Route path="*" element={<> not found</>} /> */}
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<ProtectedRoutes />}>
+          <Route path="/" element={<GuestPage />}>
+            <Route path="/login" element={<Login />}></Route>
+            <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+            <Route path="/validate-account" element={<ValidateAccount />}></Route>
+            <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
+          </Route>
+          </Route>
+          <Route element={<PrivateRoutes />}>
+            <Route path="/" element={<Layout />} >
+              <Route index element={<Home />}></Route>
+              <Route path="/building" element={<Building />}></Route>
+              <Route path="/account" element={<Account />}></Route>
+              <Route path="/resident" element={<Resident />}></Route>
+              <Route path="/flat" element={<Flat />}></Route>
+              <Route path="/service" element={<Service />}></Route>
+              <Route path="/contract" element={<Contract />}></Route>
+            </Route>
+          </Route>
+          {/* {/* <Route path="*" element={<> not found</>} /> */}
 
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+      <ToastContainer />
+    </>
   )
 }
 

@@ -19,12 +19,6 @@
     font-size: 3rem;
     padding: 2rem 0;
   }
-  .email,
-  .password {
-    padding: 1rem;
-    font-size: 1.5rem;
-    background-color: var(--fifth-color);
-  }
   .forgot-password {
     width: 100%;
     display: flex;
@@ -34,6 +28,11 @@
       font-size: 1.5rem;
       color: black;
     }
+  }
+  .custom-input {
+    padding: 1rem;
+    font-size: 1.5rem;
+    background-color: var(--fifth-color);
   }
 
   .login-button {

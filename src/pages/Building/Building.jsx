@@ -1,6 +1,8 @@
 import React from 'react'
 
 const Building = () => {
+
+  
   return (
     <div>Building</div>
   )

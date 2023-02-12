@@ -12,6 +12,13 @@ const userAPI = {
 
         return api.post(url, body);
     },
+    loginWithGoogleAPI: (data) => {
+        const url = `/api/auth/loginWithGoogle`;
+        const body = {
+            ...data,
+        }
+        return api.post(url, body);
+    }
     // registerAPI: (data) => {
     //     const url = `/api/auth/register`;
 

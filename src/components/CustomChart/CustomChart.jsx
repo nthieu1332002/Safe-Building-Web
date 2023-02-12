@@ -1,6 +1,6 @@
 import React from "react";
 import Chart from "chart.js/auto";
-import { Line, Pie } from "react-chartjs-2";
+import { Line, Bar, Doughnut } from "react-chartjs-2";
 import "./styles.scss";
 
 const CustomChart = ({ type }) => {
@@ -21,11 +21,10 @@ const CustomChart = ({ type }) => {
   };
 
   var dataPie = {
-    labels: ["Công ty", "Trường học"],
+    labels: ["Jan", "Feb", "Mar", "Apr", "May"],
     datasets: [
       {
-        label: "My First Dataset",
-        data: [300, 50],
+        data: [130, 170, 50, 266, 204],
         backgroundColor: ["rgb(255, 99, 132)", "rgb(54, 162, 235)"],
         hoverOffset: 4,
       },
@@ -33,6 +32,7 @@ const CustomChart = ({ type }) => {
   };
 
   var option = {
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -55,6 +55,7 @@ const CustomChart = ({ type }) => {
     },
   };
   var optionPie = {
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         display: false,
@@ -63,18 +64,20 @@ const CustomChart = ({ type }) => {
   };
   // return (<Line data={data} options={options} />);
   return (
-    <>
+    <div className="chart-container">
       {(() => {
         switch (type) {
           case "line":
             return <Line data={data} options={option} />;
-          case "pie":
-            return <Pie data={dataPie} options={optionPie} />;
+          case "bar":
+            return <Bar data={dataPie} options={optionPie} />;
+          case "doughnut":
+            return <Doughnut data={dataPie} options={optionPie} />;
           default:
             return null;
         }
       })()}
-    </>
+    </div>
   );
 };
 

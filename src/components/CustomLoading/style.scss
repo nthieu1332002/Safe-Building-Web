@@ -1,0 +1,8 @@
+@use "../../assets/scss/" as *;
+
+.custom-loading {
+    @include flex(center, center);
+    .ant-spin-dot-item {
+        background-color: var(--fourth-color);
+    }
+}

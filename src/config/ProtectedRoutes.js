@@ -1,12 +1,11 @@
 import { Outlet, Navigate, redirect } from "react-router-dom"
 import Cookies from 'js-cookie'
+import { useSelector } from "react-redux"
 
 const ProtectedRoutes = () => {
-    let auth = Cookies.get("token")
-    if (auth !== undefined)  {
-        // toast.error("You cannot access this.")
-    }
-    return (!auth ? <Outlet /> : <Navigate to="/chat" />)
+    const user = useSelector((state) => state.user);
+
+    return (!user.userToken ? <Outlet /> : <Navigate to="/" />)
 }
 
 export default ProtectedRoutes;
