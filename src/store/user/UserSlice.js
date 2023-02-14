@@ -57,6 +57,7 @@ export const login = createAsyncThunk(
     "user/login",
     async (data, { rejectWithValue }) => {
         try {
+            console.log("data", data);
             const res = await loginAPI(data);
             Cookies.set("token", res.token, { expires: 1, path: '' })
             return res;

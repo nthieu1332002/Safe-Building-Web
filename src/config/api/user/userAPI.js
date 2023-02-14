@@ -4,12 +4,12 @@ import api from "./apiConfig";
 
 const userAPI = {
     loginAPI: (data) => {
-        const url = `/api/auth/login`;
+        const url = `/admin/web/login`;
 
         const body = {
             ...data,
         };
-
+        console.log("body", body);
         return api.post(url, body);
     },
     loginWithGoogleAPI: (data) => {
