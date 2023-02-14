@@ -3,8 +3,7 @@ import CustomChart from "../../components/CustomChart/CustomChart";
 import CustomCard from "../../components/CustomCard/CustomCard";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import "./style.scss";
-import CustomTable from "../../components/CustomTable/CustomTable";
-import { Space, Tag } from "antd";
+import { Space, Table, Tag } from "antd";
 
 const Home = () => {
   const data = [
@@ -150,7 +149,7 @@ const Home = () => {
       <div className="table-wrapper">
         <CustomCard width="100%">
           <h3 className="card-title">New user</h3>
-          <CustomTable dataSource={dataSource} columns={columns} />
+          <Table dataSource={dataSource} columns={columns} />
         </CustomCard>
       </div>
     </div>

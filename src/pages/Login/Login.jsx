@@ -8,7 +8,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../Firebase";
 import { useDispatch, useSelector } from "react-redux";
-import { login, loginWithGoogle } from "../../store/user/UserSlice";
+import { login, loginWithGoogle } from "../../store/user/userSlice";
 import { toast } from "react-toastify";
 
 const Login = () => {

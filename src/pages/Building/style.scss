@@ -1,0 +1,19 @@
+@use "../../assets/scss/" as *;
+
+
+.building {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    .building-item {
+        padding: 2rem;
+        background-color: var(--primary-color);
+        @include flex(center, center);
+        flex-direction: column;
+        border-radius: 5px;
+        border: 1px solid var(--error);
+        &.available {
+        border: 1px solid var(--success);
+        }
+    }
+}

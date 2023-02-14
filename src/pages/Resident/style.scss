@@ -1,1 +1,9 @@
 @use "../../assets/scss/" as *;
+
+.resident-content {
+  background-color: var(--primary-color);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

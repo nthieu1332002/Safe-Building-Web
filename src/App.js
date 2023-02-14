@@ -17,6 +17,7 @@ import ConfirmPassword from "./pages/ConfirmPassword/ConfirmPassword.jsx"
 import Layout from './pages/Layout/Layout.jsx'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import Error from './pages/Error/Error'
 
 
 const App = () => {
@@ -25,12 +26,12 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route element={<ProtectedRoutes />}>
-          <Route path="/" element={<GuestPage />}>
-            <Route path="/login" element={<Login />}></Route>
-            <Route path="/forgot-password" element={<ForgotPassword />}></Route>
-            <Route path="/validate-account" element={<ValidateAccount />}></Route>
-            <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
-          </Route>
+            <Route path="/" element={<GuestPage />}>
+              <Route path="/login" element={<Login />}></Route>
+              <Route path="/forgot-password" element={<ForgotPassword />}></Route>
+              <Route path="/validate-account" element={<ValidateAccount />}></Route>
+              <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
+            </Route>
           </Route>
           <Route element={<PrivateRoutes />}>
             <Route path="/" element={<Layout />} >
@@ -43,7 +44,7 @@ const App = () => {
               <Route path="/contract" element={<Contract />}></Route>
             </Route>
           </Route>
-          {/* {/* <Route path="*" element={<> not found</>} /> */}
+          <Route path="*" element={<Error/>} />
 
         </Routes>
       </BrowserRouter>
