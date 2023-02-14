@@ -1,9 +1,14 @@
-import React from 'react'
+import { getMessaging, getToken } from "firebase/messaging";
+import React from "react";
 
+const messaging = getMessaging();
 const Service = () => {
+  
   return (
-    <div>Service</div>
-  )
-}
+    <>
+      {/* <button onClick={getToken}>aa</button> */}
+    </>
+  );
+};
 
-export default Service
+export default Service;

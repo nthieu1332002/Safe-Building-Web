@@ -6,10 +6,10 @@ import { Button, Form, Input } from "antd";
 import "./style.scss";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "../../Firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { login, loginWithGoogle } from "../../store/user/userSlice";
 import { toast } from "react-toastify";
+import { auth, provider } from "../../firebase-messaging-sw";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -30,14 +30,6 @@ const Login = () => {
         console.log("error", error);
       });
   };
-
-    
-  useEffect(() => {
-    console.log("user.users", user.userToken)
-    if (user.userToken) {
-      navigate('/')
-    }
-  }, [navigate, user.userToken])
 
   const onFinish = (values) => {
     dispatch(login(values.email, values.password));
