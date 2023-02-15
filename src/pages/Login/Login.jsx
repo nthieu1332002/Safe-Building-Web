@@ -18,9 +18,9 @@ const Login = () => {
   const handleSignInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
-        console.log("data", data);
+        console.log("data", data)
         dispatch(
-          loginWithGoogle({ email: data.email, isVerified: data.isVerified })
+          loginWithGoogle({email: data.user.email})
         );
         // setValue(data.user.email)
         // localStorage.setItem("email",data.user.email)

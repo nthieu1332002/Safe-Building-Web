@@ -29,8 +29,10 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
+                Cookies.set('userToken', action.payload.data.id, { expires: 1, path: '' })
                 state.loading = false
                 state.user = action.payload
+                state.userToken = action.payload.data.id
             })
             .addCase(login.rejected, (state, action) => {
                 state.loading = false
@@ -41,8 +43,10 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(loginWithGoogle.fulfilled, (state, action) => {
+                Cookies.set('userToken', action.payload.data.id, { expires: 1, path: '' })
                 state.loading = true;
                 state.user = action.payload
+                state.userToken = action.payload.data.id
                 state.error = ''
             })
             .addCase(loginWithGoogle.rejected, (state, action) => {
@@ -57,9 +61,7 @@ export const login = createAsyncThunk(
     "user/login",
     async (data, { rejectWithValue }) => {
         try {
-            console.log("data", data);
-            const res = await loginAPI(data);
-            Cookies.set("token", res.token, { expires: 1, path: '' })
+            const res = await loginAPI(data)
             return res;
         } catch (err) {
             return rejectWithValue(err.response.data)
@@ -105,5 +107,5 @@ export const loginWithGoogle = createAsyncThunk(
 //     }
 // );
 
-// export const { logIn, logOut } = userSlice.actions;
+export const { logout } = userSlice.actions;
 export default userSlice

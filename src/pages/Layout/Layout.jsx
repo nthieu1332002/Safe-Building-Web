@@ -4,11 +4,18 @@ import SideBarMenu from "../../components/SideBarMenu/SideBarMenu";
 import { HiOutlineLogout } from "react-icons/hi";
 import brand from "../../assets/images/brand-x.png";
 import "./style.scss";
+import { useDispatch } from "react-redux";
+import { logout } from "../../store/user/userSlice";
 
 const Layout = () => {
+  const dispatch = useDispatch();
   let navigate = useNavigate(); 
   const handleNavigate =() => {
     navigate("/")
+  }
+
+  const handleLogout = () => {
+    dispatch(logout());
   }
 
   return (
@@ -18,7 +25,7 @@ const Layout = () => {
           <img src={brand} alt="logo" />
         </div>
         <SideBarMenu />
-        <div className="logout-container">
+        <div className="logout-container" onClick={handleLogout}>
           <div className="icon">
             <HiOutlineLogout />
           </div>
