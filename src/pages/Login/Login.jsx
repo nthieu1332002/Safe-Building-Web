@@ -13,7 +13,6 @@ import { auth, provider } from "../../firebase-messaging-sw";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
 
   const handleSignInWithGoogle = () => {
@@ -32,7 +31,8 @@ const Login = () => {
   };
 
   const onFinish = (values) => {
-    dispatch(login(values.email, values.password));
+    console.log("values", values);
+    dispatch(login({ phone: values.phone, password: values.password }));
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -56,16 +56,15 @@ const Login = () => {
           }}
         >
           <Form.Item
-            name="email"
+            name="phone"
             rules={[
               {
-                type: "email",
                 required: true,
-                message: "Email is required.",
+                message: "Phone is required.",
               },
             ]}
           >
-            <Input placeholder="Email" className="custom-input"/>
+            <Input placeholder="Phone" className="custom-input" />
           </Form.Item>
           <Form.Item
             name="password"
@@ -76,7 +75,11 @@ const Login = () => {
               },
             ]}
           >
-            <Input placeholder="Password" type="password" className="custom-input"/>
+            <Input
+              placeholder="Password"
+              type="password"
+              className="custom-input"
+            />
           </Form.Item>
           <div className="forgot-password">
             <Link to="/forgot-password" id="link">
@@ -84,17 +87,15 @@ const Login = () => {
             </Link>
           </div>
           <Form.Item>
-
-              <Button
-                block
-                type="primary"
-                className="login-button"
-                htmlType="submit"
-                loading={user.loading}
-              >
-                SIGN IN
-              </Button>
-
+            <Button
+              block
+              type="primary"
+              className="login-button"
+              htmlType="submit"
+              loading={user.loading}
+            >
+              SIGN IN
+            </Button>
           </Form.Item>
         </Form>
         <span id="alternative-signin">Or</span>

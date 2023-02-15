@@ -1,4 +1,3 @@
-import { current } from "@reduxjs/toolkit";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import {getMessaging, getToken} from "firebase/messaging";
