@@ -33,7 +33,7 @@ const App = () => {
               <Route path="/confirm-password" element={<ConfirmPassword />}></Route>
             </Route>
           </Route>
-          <Route element={<PrivateRoutes />}>
+          {/* <Route element={<PrivateRoutes />}> */}
             <Route path="/" element={<Layout />} >
               <Route index element={<Home />}></Route>
               <Route path="/building" element={<Building />}></Route>
@@ -43,7 +43,7 @@ const App = () => {
               <Route path="/service" element={<Service />}></Route>
               <Route path="/contract" element={<Contract />}></Route>
             </Route>
-          </Route>
+          {/* </Route> */}
           {/* <Route path="*" element={<Error/>} /> */}
 
         </Routes>
