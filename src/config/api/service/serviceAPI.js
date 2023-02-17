@@ -4,7 +4,7 @@ import api from "./apiConfig";
 
 const serviceAPI = {
     getServiceAPI: ({ page, size }) => {
-        const url = `/service?page=${page}&size=${size}`;
+        const url = `/web/services?page=${page}&size=${size}`;
         return api.get(url)
     }
 }

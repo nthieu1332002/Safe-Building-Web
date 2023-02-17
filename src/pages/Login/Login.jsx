@@ -8,22 +8,19 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { signInWithPopup } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { login, loginWithGoogle } from "../../store/user/userSlice";
-import { toast } from "react-toastify";
 import { auth, provider } from "../../firebase-messaging-sw";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user);
+  const { loading } = useSelector(
+    (state) => state.user
+  );
+
 
   const handleSignInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
-        console.log("data", data)
-        dispatch(
-          loginWithGoogle({email: data.user.email})
-        );
-        // setValue(data.user.email)
-        // localStorage.setItem("email",data.user.email)
+        dispatch(loginWithGoogle({ email: data.user.email }));
       })
       .catch((error) => {
         console.log("error", error);
@@ -31,7 +28,6 @@ const Login = () => {
   };
 
   const onFinish = (values) => {
-    console.log("values", values);
     dispatch(login({ phone: values.phone, password: values.password }));
   };
   const onFinishFailed = (errorInfo) => {
@@ -92,7 +88,7 @@ const Login = () => {
               type="primary"
               className="login-button"
               htmlType="submit"
-              loading={user.loading}
+              loading={loading}
             >
               SIGN IN
             </Button>

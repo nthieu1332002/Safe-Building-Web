@@ -42,9 +42,9 @@ export const getResident = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getResidentAPI(data);
-            console.log("res",res)
             return res;
         } catch (err) {
+            console.log(err)
             return rejectWithValue(err.response.data)
         }
     }

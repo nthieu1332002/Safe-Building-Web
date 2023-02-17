@@ -20,11 +20,11 @@ api.interceptors.response.use(
     if (response && response.data) {
       return response.data;
     }
-
     return response;
   },
   (error) => {
-    throw error;
+    console.log("error", error)
+    return Promise.reject(error);
   }
 );
 

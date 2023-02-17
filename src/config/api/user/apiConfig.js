@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -10,8 +9,8 @@ const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
   // config.headers.Authorization
-  const token = Cookies.get('userToken')
-  config.headers["Authorization"] = "Bearer " + token;
+  // const token = Cookies.get('userToken')
+  // config.headers["Authorization"] = "Bearer " + token;
   return config;
 });
 
@@ -24,7 +23,7 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    throw error;
+    return Promise.reject(error);
   }
 );
 

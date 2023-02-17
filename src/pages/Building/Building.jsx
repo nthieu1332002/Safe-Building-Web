@@ -6,7 +6,6 @@ const { getBuildingAPI } = buildingAPI;
 
 const Building = () => {
   const [building, setBuilding] = useState([]);
-  console.log("building", building);
 
   useEffect(() => {
     getBuildingAPI().then((res) => {

@@ -12,7 +12,6 @@ const userAPI = {
         return api.post(url, body);
     },
     loginWithGoogleAPI: (data) => {
-        console.log(data);
         const url = `/admin/web/login-with-email?email=${data.email}`;
         const body = {
             ...data,

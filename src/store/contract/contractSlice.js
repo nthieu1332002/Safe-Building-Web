@@ -39,7 +39,6 @@ export const postContract = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await postContractAPI(data);
-            console.log("res",res)
             return res;
         } catch (err) {
             return rejectWithValue(err.response.data)

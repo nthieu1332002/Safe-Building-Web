@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import Cookies from "js-cookie";
 import userAPI from "../../config/api/user/userAPI"
+import { toast } from "react-toastify";
 
 const { loginAPI, loginWithGoogleAPI } = userAPI;
 
@@ -8,17 +9,24 @@ const userToken = Cookies.get('userToken')
     ? Cookies.get('userToken')
     : null
 
+const refreshToken = Cookies.get('refreshToken')
+    ? Cookies.get('refreshToken')
+    : null
+
+const users = JSON.parse(localStorage.getItem('users')) ? JSON.parse(localStorage.getItem('users')) : null
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        users: [],
+        users,
         userToken,
+        refreshToken,
         loading: false,
-        error: '',
     },
     reducers: {
         logout: (state) => {
+            console.log("cookie remove");
             Cookies.remove("userToken");
+            Cookies.remove("refreshToken");
             state.userToken = null
         }
 
@@ -29,30 +37,28 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
-                Cookies.set('userToken', action.payload.data.id, { expires: 1, path: '' })
+                Cookies.set('userToken', action.payload.data.accessToken, { expires: 1, path: '' })
+                Cookies.set('refreshToken', action.payload.data.refreshToken, { expires: 1, path: '' })
+                localStorage.setItem('users', JSON.stringify(action.payload.data.fullname));
+                state.users = action.payload.data.fullname
+                state.userToken = action.payload.data.accessToken
+                state.refreshToken = action.payload.data.refreshToken
                 state.loading = false
-                state.user = action.payload
-                state.userToken = action.payload.data.id
             })
-            .addCase(login.rejected, (state, action) => {
+            .addCase(login.rejected, (state) => {
+                state.users = {}
                 state.loading = false
-                state.user = []
-                state.error = action.error.message
-            })
-            .addCase(loginWithGoogle.pending, (state) => {
-                state.loading = true;
             })
             .addCase(loginWithGoogle.fulfilled, (state, action) => {
-                Cookies.set('userToken', action.payload.data.id, { expires: 1, path: '' })
-                state.loading = true;
-                state.user = action.payload
-                state.userToken = action.payload.data.id
-                state.error = ''
+                Cookies.set('userToken', action.payload.data.accessToken, { expires: 1, path: '' })
+                Cookies.set('refreshToken', action.payload.data.refreshToken, { expires: 1, path: '' })
+                localStorage.setItem('users', JSON.stringify(action.payload.data.fullname));
+                state.users = action.payload.data.fullname
+                state.userToken = action.payload.data.accessToken
+                state.refreshToken = action.payload.data.refreshToken
             })
-            .addCase(loginWithGoogle.rejected, (state, action) => {
-                state.loading = false
-                state.user = []
-                state.error = action.error.message
+            .addCase(loginWithGoogle.rejected, (state) => {
+                state.users = {}
             })
     }
 })
@@ -62,9 +68,16 @@ export const login = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await loginAPI(data)
-            return res;
+            if (res.status === "202 ACCEPTED") {
+                toast.success(res.message)
+                return res
+            } else {
+                toast.error(res.message)
+                return rejectWithValue(res)
+            }
         } catch (err) {
-            return rejectWithValue(err.response.data)
+            toast.error("Login failed! Check your info again.")
+            return rejectWithValue()
         }
     }
 );
@@ -74,38 +87,20 @@ export const loginWithGoogle = createAsyncThunk(
     "user/loginWithGoogle",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await loginWithGoogleAPI(data);
-            return res;
+            const res = await loginWithGoogleAPI(data)
+            if (res.status === "202 ACCEPTED") {
+                toast.success(res.message)
+                return res
+            } else {
+                toast.error(res.message)
+                return rejectWithValue(res)
+            }
         } catch (err) {
-            return rejectWithValue(err.response.data)
+            toast.error("Login failed! Check your info again.")
+            return rejectWithValue()
         }
     }
 );
-
-// export const setProfile = createAsyncThunk(
-//     "user/setProfile",
-//     async (data) => {
-//         const value = {
-//             firstName: data.firstName,
-//             lastName: data.lastName,
-//             phone: data.phone,
-//         }
-//         try {
-//             await setDoc(doc(db, "users", data.uid), value);
-//             toast.success("Update your information successfully!", {
-//                 position: toast.POSITION.BOTTOM_RIGHT,
-//                 className: "foo-bar",
-//             });
-//             return value
-//         } catch (err) {
-//             toast.error("Update your information failed!", {
-//                 position: toast.POSITION.BOTTOM_RIGHT,
-//                 className: "foo-bar",
-//             });
-//             console.log(err);
-//         }
-//     }
-// );
 
 export const { logout } = userSlice.actions;
 export default userSlice

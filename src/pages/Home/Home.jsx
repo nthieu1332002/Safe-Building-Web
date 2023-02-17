@@ -4,8 +4,11 @@ import CustomCard from "../../components/CustomCard/CustomCard";
 import { MdTrendingDown, MdTrendingUp } from "react-icons/md";
 import "./style.scss";
 import { Space, Table, Tag } from "antd";
+import { useSelector } from "react-redux";
 
 const Home = () => {
+  const { users } = useSelector((state) => state.user);
+
   const data = [
     {
       title: "Total revenue",
@@ -99,7 +102,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="page-title">
-        <h1>Hello Hieu 👋</h1>
+        <h1>Hello {users} 👋</h1>
         <p>Let's check stats today!</p>
       </div>
       <div className="statistic-wrapper">

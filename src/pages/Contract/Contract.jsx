@@ -73,7 +73,7 @@ const Contract = () => {
     (state) => state.resident
   );
   const [currentPage, setCurrentPage] = useState(page);
-  console.log("residents", residents);
+
   useEffect(() => {
     const getResidentList = () => {
       dispatch(getResident({ page: currentPage, size }));
