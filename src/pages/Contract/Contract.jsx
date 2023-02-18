@@ -3,7 +3,6 @@ import {
   Table,
   Tag,
   Button,
- 
   message,
   Form,
   Modal,
@@ -17,6 +16,12 @@ import { getResident } from "../../store/resident/residentSlice";
 import "./style.scss";
 
 import { postContract } from "../../store/contract/contractSlice";
+
+import CustomButton from "../../components/CustomButton/CustomButton";
+
+import CustomSearch from "../../components/CustomSearch/CustomSearch";
+
+import "./style.scss";
 const columns = [
   {
     title: "Building",
@@ -64,10 +69,12 @@ const columns = [
 ];
 
 const Contract = () => {
+  const onSearch = (value) => {
+    console.log("value", value);
+  };
 
-  
-   
-  
+  const handleAddNew = () => {};
+
   const dispatch = useDispatch();
   const { residents, page, size, totalPage, loading } = useSelector(
     (state) => state.resident
@@ -125,29 +132,31 @@ const Contract = () => {
     setIsModalOpen(false);
   };
   const onFinish = (values) => {
-    console.log('Success:', values);
+    console.log("Success:", values);
   };
 
-  
   // progress
-  
-	const [selectedFile, setSelectedFile] = useState();
-	const [isFilePicked, setIsFilePicked] = useState(false);
+
+  const [selectedFile, setSelectedFile] = useState();
+  const [isFilePicked, setIsFilePicked] = useState(false);
   // Handle file upload event and update state
   const changeHandler = (event) => {
-		setSelectedFile(event.target.files[0]);
-		setIsFilePicked(true);
-	};
+    setSelectedFile(event.target.files[0]);
+    setIsFilePicked(true);
+  };
 
-  const sendInfo = ( ) => {
-    
+  const sendInfo = () => {
     const formData = new FormData();
 
-    formData.append('File', selectedFile);
+    formData.append("File", selectedFile);
 
-  
     dispatch(
-      postContract({ file: selectedFile, customerId: form.getFieldValue('customer-id'), flatId : form.getFieldValue('flat-id'), rentContractId : form.getFieldValue("contract-id") } )
+      postContract({
+        file: selectedFile,
+        customerId: form.getFieldValue("customer-id"),
+        flatId: form.getFieldValue("flat-id"),
+        rentContractId: form.getFieldValue("contract-id"),
+      })
     );
   };
 
@@ -156,98 +165,105 @@ const Contract = () => {
   return (
     <div className="contract-container">
       <div className="page-title">
-        <h1>Resident</h1>
+        <h1>Contract</h1>
       </div>
-
-      <Button type="primary" onClick={showModal}>
-        Open Modal
-      </Button>
-      <Modal
-        title="Basic Modal"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        footer ={null}
-      >
-        <Form
-         form={form}
-          name="login-form"
-          onFinish={onFinish}
-          onFinishFailed={onFinish}
-          autoComplete="off"
-          encType="multipart/form-data"
-          style={{
-            width: "100%",
-          }}
-        >
-          <Form.Item
-            name="customer-id"
-            rules={[
-              {
-                required: true,
-                message: "Customer ID is required.",
-              },
-            ]}
-          >
-            <Input placeholder="Customer ID" className="custom-input" />
-          </Form.Item>
-          <Form.Item
-            name="flat-id"
-            rules={[
-              {
-                required: true,
-                message: "Flat ID is required",
-              },
-            ]}
-          >
-            <Input placeholder="Flat ID" className="custom-input" />
-          </Form.Item>
-          <Form.Item
-            name="contract-id"
-            rules={[
-              {
-                required: true,
-                message: "Contract ID is required",
-              },
-            ]}
-          >
-            <Input placeholder="Contract ID" className="custom-input" />
-          </Form.Item>
-          <Form.Item
-            name="upload-file"
-            
-            rules={[
-              {
-                required: true,
-                message: "Contract File is required",
-              },
-            ]}
-          >
-           <Input type="file" name="file" onChange={changeHandler} />
-                
-          </Form.Item>
-          <Form.Item
-     
-    >
-      <Button type="primary" htmlType="submit" onClick={sendInfo}>
-        Submit
-      </Button>
-    </Form.Item>
-        </Form>
-      </Modal>
       <div className="contract-content">
-        <Table
-          dataSource={residents}
-          columns={columns}
-          pagination={false}
-          loading={loading}
-        />
+        <div className="contract-action">
+          <CustomSearch
+            placeholder="Search contract.."
+            allowClear
+            onSearch={onSearch}
+            width="30%"
+          />
+          <CustomButton onClick={showModal}>Add Contract</CustomButton>
+        </div>
+      
+        <Modal
+          title="Basic Modal"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+          footer={null}
+        >
+          <Form
+          className="addForm"
+            form={form}
+            name="login-form"
+            onFinish={onFinish}
+            onFinishFailed={onFinish}
+            autoComplete="off"
+            encType="multipart/form-data"
+            style={{
+              width: "100%",
+            }}
+          >
+            <Form.Item
+              name="customer-id"
+              rules={[
+                {
+                  required: true,
+                  message: "Customer ID is required.",
+                },
+              ]}
+            >
+              <Input placeholder="Customer ID" className="custom-input" />
+            </Form.Item>
+            <Form.Item
+              name="flat-id"
+              rules={[
+                {
+                  required: true,
+                  message: "Flat ID is required",
+                },
+              ]}
+            >
+              <Input placeholder="Flat ID" className="custom-input" />
+            </Form.Item>
+            <Form.Item
+              name="contract-id"
+              rules={[
+                {
+                  required: true,
+                  message: "Contract ID is required",
+                },
+              ]}
+            >
+              <Input placeholder="Contract ID" className="custom-input" />
+            </Form.Item>
+            <Form.Item
+              name="upload-file"
+              rules={[
+                {
+                  required: true,
+                  message: "Contract File is required",
+                },
+              ]}
+            >
+              <Input type="file" name="file" onChange={changeHandler} />
+            </Form.Item>
+            <Form.Item>
+              <div  className="add-div">
+              <Button type="primary" htmlType="submit" onClick={sendInfo} className='add-button' >
+                Submit
+              </Button>
+              </div>
+            </Form.Item>
+          </Form>
+        </Modal>
+        <div className="contract-content">
+          <Table
+            dataSource={residents}
+            columns={columns}
+            pagination={false}
+            loading={loading}
+          />
 
-        <CustomPagination
-          onChange={onChange}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
+          <CustomPagination
+            onChange={onChange}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
+        </div>
       </div>
     </div>
   );

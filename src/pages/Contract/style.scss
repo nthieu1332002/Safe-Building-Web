@@ -1,10 +1,28 @@
-
 @use "../../assets/scss/" as *;
 
-.resident-content {
-  background-color: var(--primary-color);
-  padding: 2rem;
+.contract-container {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  .contract-content {
+    background-color: var(--primary-color);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border-radius: 15px;
+    .contract-action {
+      @include flex(space-between, null);
+      padding: 1rem;
+    }
+    
+  }
+  
+
 }
+.add-div{
+  .add-button{
+    float:right;
+  }
+}
+
