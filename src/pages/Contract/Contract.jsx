@@ -31,6 +31,12 @@ const Contract = () => {
       render: (value, item, index) => (page - 1) * 10 + index,
     },
     {
+      title: "Id",
+      dataIndex: "id",
+      key: "id",
+      render: (text) => <b>{text}</b>,
+    },
+    {
       title: "Customer Name",
       dataIndex: "customerName",
       key: "customerName",
@@ -56,6 +62,24 @@ const Contract = () => {
       dataIndex: "expiryDate",
       key: "expiryDate",
       sorter: (a, b) => moment(a.expiryDate).unix() - moment(b.expiryDate).unix(),
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Rent-Contract Link",
+      dataIndex: "rentContractLink",
+      key: "rentContractLink",
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "customerId",
+      dataIndex: "customerId",
+      key: "customerId",
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "flatId",
+      dataIndex: "flatId",
+      key: "flatId",
       render: (text) => <b>{text}</b>,
     },
     {
