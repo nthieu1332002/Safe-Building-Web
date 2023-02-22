@@ -4,7 +4,7 @@ import api from "./apiConfig";
 
 const userAPI = {
     loginAPI: (data) => {
-        const url = `/admin/web/login?phone=${data.phone}&password=${data.password}`;
+        const url = `/auth/web/login`;
 
         const body = {
             ...data,
@@ -12,31 +12,12 @@ const userAPI = {
         return api.post(url, body);
     },
     loginWithGoogleAPI: (data) => {
-        const url = `/admin/web/login-with-email?email=${data.email}`;
+        const url = `/auth/web/login-with-email`;
         const body = {
             ...data,
         }
         return api.post(url, body);
     }
-    // registerAPI: (data) => {
-    //     const url = `/api/auth/register`;
-
-    //     const body = {
-    //         ...data,
-    //     };
-    //     return api.post(url, body);
-    // },
-    // getAllUserAPI: ({id}) => {
-    //     const url =`/api/auth/getAllUsers/${id}`;
-    //     return api.get(url)
-    // },
-    // updateAvatar: (data) => {
-    //     const url =`/api/auth/updateAvatar`;
-    //     const body = {
-    //         ...data,
-    //     };
-    //     return api.post(url, body);
-    // }
 }
 
 export default userAPI

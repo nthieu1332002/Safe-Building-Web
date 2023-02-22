@@ -102,7 +102,7 @@ const Home = () => {
   return (
     <div className="home-container">
       <div className="page-title">
-        <h1>Hello {users} 👋</h1>
+        <h1>Hello {users?.fullname} 👋</h1>
         <p>Let's check stats today!</p>
       </div>
       <div className="statistic-wrapper">

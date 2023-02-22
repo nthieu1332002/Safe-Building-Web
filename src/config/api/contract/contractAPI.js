@@ -4,7 +4,7 @@ import api from "./apiConfig";
 
 const contractAPI = {
     getContractAPI: () => {
-        const url =`/contract?page=${1}&size=${10}`;
+        const url =`/rent-contracts?page=${1}&size=${10}`;
         return api.get(url)
     },
     postContractAPI: (data) => {

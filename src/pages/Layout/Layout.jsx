@@ -29,7 +29,7 @@ const Layout = () => {
           <div className="icon">
             <HiOutlineLogout />
           </div>
-          Logout
+          Log out
         </div>
       </div>
       <div className="main-content">

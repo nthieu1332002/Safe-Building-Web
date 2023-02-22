@@ -6,6 +6,7 @@ import { getResident } from "../../store/resident/residentSlice";
 import "./style.scss";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import CustomButton from "../../components/CustomButton/CustomButton";
+import { customerStatus } from "../../types";
 
 const Resident = () => {
   const dispatch = useDispatch();
@@ -20,9 +21,10 @@ const Resident = () => {
       render: (value, item, index) => (page - 1) * 10 + index,
     },
     {
-      title: "Building",
-      dataIndex: "buildingName",
-      key: "buildingName",
+      title: "Full name",
+      dataIndex: "fullname",
+      key: "fullname",
+      sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       render: (text) => <b>{text}</b>,
     },
     {
@@ -32,10 +34,9 @@ const Resident = () => {
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Full name",
-      dataIndex: "fullname",
-      key: "fullname",
-      sorter: (a, b) => a.fullname.localeCompare(b.fullname),
+      title: "Building",
+      dataIndex: "buildingName",
+      key: "buildingName",
       render: (text) => <b>{text}</b>,
     },
     {
@@ -48,6 +49,7 @@ const Resident = () => {
       title: "Room",
       dataIndex: "roomNumber",
       key: "roomNumber",
+      sorter: (a, b) => a.roomNumber - b.roomNumber,
       render: (text) => <b>{text}</b>,
     },
     {
@@ -56,13 +58,24 @@ const Resident = () => {
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
-        <Tag className="tag" color={text === "ACTIVE" ? "green" : "red"}>
-          {text}
-        </Tag>
+        <>
+          {customerStatus.map((item) => {
+            return (
+              <>
+                {item.status === text ? (
+                  <Tag className="tag" color={item.color}>
+                    {text}
+                  </Tag>
+                ) : (
+                  ""
+                )}
+              </>
+            );
+          })}
+        </>
       ),
     },
   ];
-
 
   useEffect(() => {
     const getResidentList = () => {

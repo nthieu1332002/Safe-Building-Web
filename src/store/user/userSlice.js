@@ -17,7 +17,7 @@ const users = JSON.parse(localStorage.getItem('users')) ? JSON.parse(localStorag
 const userSlice = createSlice({
     name: "user",
     initialState: {
-        users,
+        users: users,
         userToken,
         refreshToken,
         loading: false,
@@ -37,12 +37,12 @@ const userSlice = createSlice({
                 state.loading = true;
             })
             .addCase(login.fulfilled, (state, action) => {
-                Cookies.set('userToken', action.payload.data.accessToken, { expires: 1, path: '' })
-                Cookies.set('refreshToken', action.payload.data.refreshToken, { expires: 1, path: '' })
-                localStorage.setItem('users', JSON.stringify(action.payload.data.fullname));
-                state.users = action.payload.data.fullname
-                state.userToken = action.payload.data.accessToken
-                state.refreshToken = action.payload.data.refreshToken
+                Cookies.set('userToken', action.payload.data.tokenResponse.accessToken, { expires: 1/48, path: '' })
+                Cookies.set('refreshToken', action.payload.data.tokenResponse.refreshToken, { expires: 1/24, path: '' })
+                localStorage.setItem('users', JSON.stringify(action.payload.data));
+                state.users = action.payload.data
+                state.userToken = action.payload.data.tokenResponse.accessToken
+                state.refreshToken = action.payload.data.tokenResponse.refreshToken
                 state.loading = false
             })
             .addCase(login.rejected, (state) => {
@@ -50,12 +50,12 @@ const userSlice = createSlice({
                 state.loading = false
             })
             .addCase(loginWithGoogle.fulfilled, (state, action) => {
-                Cookies.set('userToken', action.payload.data.accessToken, { expires: 1, path: '' })
-                Cookies.set('refreshToken', action.payload.data.refreshToken, { expires: 1, path: '' })
-                localStorage.setItem('users', JSON.stringify(action.payload.data.fullname));
-                state.users = action.payload.data.fullname
-                state.userToken = action.payload.data.accessToken
-                state.refreshToken = action.payload.data.refreshToken
+                Cookies.set('userToken', action.payload.data.tokenResponse.accessToken, { expires: 1/48, path: '' })
+                Cookies.set('refreshToken', action.payload.data.tokenResponse.refreshToken, { expires: 1/24, path: '' })
+                localStorage.setItem('users', JSON.stringify(action.payload.data));
+                state.users = action.payload.data.data
+                state.userToken = action.payload.data.tokenResponse.accessToken
+                state.refreshToken = action.payload.data.tokenResponse.refreshToken
             })
             .addCase(loginWithGoogle.rejected, (state) => {
                 state.users = {}

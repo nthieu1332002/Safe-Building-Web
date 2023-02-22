@@ -5,6 +5,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import { getService } from "../../store/service/serviceSlice";
+import { serviceStatus } from "../../types";
 import "./style.scss";
 
 const Service = () => {
@@ -45,9 +46,21 @@ const Service = () => {
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
-        <Tag className="tag" color={text === "ACTIVE" ? "green" : "red"}>
-          {text}
-        </Tag>
+        <>
+          {serviceStatus.map((item) => {
+            return (
+              <>
+                {item.status === text ? (
+                  <Tag className="tag" color={item.color}>
+                    {text}
+                  </Tag>
+                ) : (
+                  ""
+                )}
+              </>
+            );
+          })}
+        </>
       ),
     },
   ];
