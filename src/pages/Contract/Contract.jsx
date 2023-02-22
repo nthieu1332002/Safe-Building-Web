@@ -20,6 +20,7 @@ import { rentContractStatus } from "../../types";
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT
 const Contract = () => {
+  console.log(process.env.REACT_APP_FIREBASE_ENDPOINT)
   const dispatch = useDispatch();
   const { contracts, page, size, totalPage, loading } = useSelector(
     (state) => state.contract
@@ -69,7 +70,7 @@ const Contract = () => {
       title: "Rent-Contract Link",
       dataIndex: "rentContractLink",
       key: "rentContractLink",
-      render: (text) => <b>{`${firebaseEndpoint}{text}`}</b>,
+      render: (text) => <b>{`${firebaseEndpoint}${text}`}</b>,
     },
     {
       title: "customerId",
