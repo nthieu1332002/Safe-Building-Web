@@ -1,6 +1,10 @@
 import {
   Table,
   Tag,
+  Form,
+  Input,
+  Button,
+  Modal
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +24,13 @@ import { rentContractStatus } from "../../types";
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT
 const Contract = () => {
+
   console.log(process.env.REACT_APP_FIREBASE_ENDPOINT)
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+
   const dispatch = useDispatch();
   const { contracts, page, size, totalPage, loading } = useSelector(
     (state) => state.contract
@@ -126,6 +136,39 @@ const Contract = () => {
 
   const handleAddNew = () => {};
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const [selectedFile, setSelectedFile] = useState();
+	const [isFilePicked, setIsFilePicked] = useState(false);
+  // Handle file upload event and update state
+  const changeHandler = (event) => {
+		setSelectedFile(event.target.files[0]);
+		setIsFilePicked(true);
+	};
+  const sendInfo = ( ) => {
+
+    const formData = new FormData();
+
+    formData.append('File', selectedFile);
+
+
+    dispatch(
+      postContract({ file: selectedFile, customerId: form.getFieldValue('customer-id'), flatId : form.getFieldValue('flat-id'), rentContractId : form.getFieldValue("contract-id") } )
+    );
+  };
+  const [form] = Form.useForm();
+  const reader = new FileReader();
   return (
     <div className="contract-container">
       <div className="page-title">
@@ -138,8 +181,82 @@ const Contract = () => {
             allowClear
             onSearch={onSearch}
             width="30%"
-          />
-          <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+          />  
+          <CustomButton onClick={showModal}>Add new</CustomButton>
+          
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer ={null}
+      >
+        <Form
+         form={form}
+          name="login-form"
+          onFinish={onFinish}
+          onFinishFailed={onFinish}
+          autoComplete="off"
+          encType="multipart/form-data"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Form.Item
+            name="customer-id"
+            rules={[
+              {
+                required: true,
+                message: "Customer ID is required.",
+              },
+            ]}
+          >
+            <Input placeholder="Customer ID" className="custom-input" />
+          </Form.Item>
+          <Form.Item
+            name="flat-id"
+            rules={[
+              {
+                required: true,
+                message: "Flat ID is required",
+              },
+            ]}
+          >
+            <Input placeholder="Flat ID" className="custom-input" />
+          </Form.Item>
+          <Form.Item
+            name="contract-id"
+            rules={[
+              {
+                required: true,
+                message: "Contract ID is required",
+              },
+            ]}
+          >
+            <Input placeholder="Contract ID" className="custom-input" />
+          </Form.Item>
+          <Form.Item
+            name="upload-file"
+
+            rules={[
+              {
+                required: true,
+                message: "Contract File is required",
+              },
+            ]}
+          >
+           <Input type="file" name="file" onChange={changeHandler} />
+
+          </Form.Item>
+          <Form.Item
+
+    >
+      <Button type="primary" htmlType="submit" onClick={sendInfo}>
+        Submit
+      </Button>
+    </Form.Item>
+        </Form>
+      </Modal>
         </div>
         <Table
           // rowKey="citizenId"
