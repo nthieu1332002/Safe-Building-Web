@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
-import { getBuilding } from "../../store/building/buildingSlice";
+import { getBuilding, searchBuilding } from "../../store/building/buildingSlice";
 import { buildingStatus } from "../../types";
 import "./style.scss";
 
@@ -64,7 +64,7 @@ const Building = () => {
   };
 
   const onSearch = (value) => {
-    console.log("value", value);
+    dispatch(searchBuilding({ page: currentPage, size, name: value }))
   };
 
   const handleAddNew = () => {};

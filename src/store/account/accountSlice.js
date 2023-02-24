@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import buildingAPI from "../../config/api/building/buildingAPI.js"
+import accountAPI from "../../config/api/account/accountAPI.js"
 
-const { getBuildingAPI, searchBuildingAPI } = buildingAPI;
+const { getAdminAccountAPI, getCustomerAccountAPI } = accountAPI;
 
 
-const buildingSlice = createSlice({
-    name: "building",
+const accountSlice = createSlice({
+    name: "account",
     initialState: {
-        buildings: [],
+        adminAccounts: [],
+        customerAccounts: [],
         loading: false,
         error: '',
         page: 1,
@@ -19,43 +20,43 @@ const buildingSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getBuilding.pending, (state) => {
+            .addCase(getAdminAccount.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(getBuilding.fulfilled, (state, action) => {
+            .addCase(getAdminAccount.fulfilled, (state, action) => {
                 state.loading = false
-                state.buildings = action.payload.data
+                state.adminAccounts = action.payload.data
                 state.page = action.payload.pagination.page
                 state.totalPage = action.payload.pagination.totalPage
             })
-            .addCase(getBuilding.rejected, (state, action) => {
+            .addCase(getAdminAccount.rejected, (state, action) => {
                 state.loading = false
-                state.buildings = []
+                state.adminAccounts = []
                 state.error = action.error.message
             })
-            .addCase(searchBuilding.pending, (state) => {
+            .addCase(getCustomerAccount.pending, (state) => {
                 state.loading = true;
             })
-            .addCase(searchBuilding.fulfilled, (state, action) => {
+            .addCase(getCustomerAccount.fulfilled, (state, action) => {
                 state.loading = false
-                state.buildings = action.payload.data
+                state.customerAccounts = action.payload.data
                 state.page = action.payload.pagination.page
                 state.totalPage = action.payload.pagination.totalPage
             })
-            .addCase(searchBuilding.rejected, (state, action) => {
+            .addCase(getCustomerAccount.rejected, (state, action) => {
                 state.loading = false
-                state.buildings = []
+                state.customerAccounts = []
                 state.error = action.error.message
             })
-
     }
 })
 
-export const getBuilding = createAsyncThunk(
-    "building/getBuilding",
+export const getAdminAccount = createAsyncThunk(
+    "account/getAdminAccount",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await getBuildingAPI(data);
+            const res = await getAdminAccountAPI(data);
+            console.log(res);
             return res;
         } catch (err) {
             console.log(err)
@@ -64,11 +65,11 @@ export const getBuilding = createAsyncThunk(
     }
 );
 
-export const searchBuilding = createAsyncThunk(
-    "building/searchBuilding",
+export const getCustomerAccount = createAsyncThunk(
+    "account/getCustomerAccount",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await searchBuildingAPI(data);
+            const res = await getCustomerAccountAPI(data);
             return res;
         } catch (err) {
             console.log(err)
@@ -78,4 +79,4 @@ export const searchBuilding = createAsyncThunk(
 );
 
 
-export default buildingSlice
+export default accountSlice
