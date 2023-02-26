@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import accountAPI from "../../config/api/account/accountAPI.js"
 
-const { getAdminAccountAPI, getCustomerAccountAPI } = accountAPI;
+const { getAdminAccountAPI, getCustomerAccountAPI, createCustomerAccountAPI } = accountAPI;
 
 
 const accountSlice = createSlice({
@@ -78,5 +78,18 @@ export const getCustomerAccount = createAsyncThunk(
     }
 );
 
+
+export const createCustomerAccount = createAsyncThunk(
+    "account/createCustomerAccount",
+    async (data, { rejectWithValue }) => {
+        try {
+            const res = await createCustomerAccountAPI(data);
+            return res;
+        } catch (err) {
+            console.log(err)
+            return rejectWithValue(err.response.data)
+        }
+    }
+);
 
 export default accountSlice

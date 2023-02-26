@@ -43,3 +43,14 @@ button {
 .tag {
   font-weight: bold;
 }
+
+
+:where(.css-dev-only-do-not-override-ixblex).ant-btn-primary {
+  color: #fff;
+  background-color: var(--fourth-color);
+  box-shadow: 0 2px 0 rgb(5 145 255 / 10%);
+  &:hover {
+    background-color: var(--button-hover-color) !important;
+
+  }
+}
