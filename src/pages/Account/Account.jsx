@@ -1,4 +1,23 @@
-import { Table, Tabs, Tag } from "antd";
+import {
+  Modal,
+  Table,
+  Tabs,
+  Tag,
+  AutoComplete,
+  Button,
+  Cascader,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Row,
+  Select,
+  DatePicker,
+  Space,
+  Radio,
+} from "antd";
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../components/CustomButton/CustomButton";
@@ -9,15 +28,17 @@ import {
   getCustomerAccount,
 } from "../../store/account/accountSlice";
 import { customerStatus } from "../../types";
-import "./style.scss";
 
+import "./style.scss";
+const { Option } = Select;
 const Account = () => {
+  const [form] = Form.useForm();
   const dispatch = useDispatch();
   const { adminAccounts, customerAccounts, page, size, totalPage, loading } =
     useSelector((state) => state.account);
   const [currentPage, setCurrentPage] = useState(page);
   const [currentKey, setCurrentKey] = useState(1);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const columns = [
     {
       title: "#",
@@ -25,7 +46,7 @@ const Account = () => {
       render: (value, item, index) => (page - 1) * 10 + index,
     },
     {
-      title: "Full name",
+      title: "",
       dataIndex: "fullname",
       key: "fullname",
       sorter: (a, b) => a.fullname.localeCompare(b.fullname),
@@ -94,9 +115,17 @@ const Account = () => {
     console.log("value", value);
   };
 
-  const handleAddNew = () => {};
   const onChangeTabs = (key) => {
     setCurrentKey(key);
+  };
+
+  const handleAddNew = () => {
+    setIsModalOpen(true);
+  };
+
+  const onCreateCustomerAccount = (value) => {};
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   const items = [
@@ -169,7 +198,145 @@ const Account = () => {
       ),
     },
   ];
-  return <Tabs defaultActiveKey="1" items={items} onChange={onChangeTabs} />;
+
+  // const formItemLayout = {
+  //   labelCol: {
+  //     xs: {
+  //       span: 24,
+  //     },
+  //     sm: {
+  //       span: 8,
+  //     },
+  //   },
+  //   wrapperCol: {
+  //     xs: {
+  //       span: 24,
+  //     },
+  //     sm: {
+  //       span: 16,
+  //     },
+  //   },
+  // };
+  return (
+    <>
+      <Tabs defaultActiveKey="1" items={items} onChange={onChangeTabs} />
+      <Modal
+        title="Create customer account"
+        open={isModalOpen}
+        onCancel={handleCancel}
+        okText="Create"
+        onOk={() => {
+          form
+            .validateFields()
+            .then((values) => {
+              form.resetFields();
+              onCreateCustomerAccount(values);
+            })
+            .catch((info) => {
+              console.log("Validate Failed:", info);
+            });
+        }}
+      >
+        <Form
+          form={form}
+          name="create-customer-form"
+          layout="vertical"
+          autoComplete="off"
+          style={{
+            width: "100%",
+          }}
+        >
+          <Form.Item
+            name="fullName"
+            label="Full Name"
+            rules={[
+              {
+                required: true,
+                message: " is required.",
+              },
+            ]}
+          >
+            <Input placeholder="" className="custom-input" />
+          </Form.Item>
+          <Form.Item
+            name="email"
+            label="Email"
+            rules={[
+              {
+                type: "email",
+                message: "Email is not valid.",
+              },
+            ]}
+          >
+            <Input placeholder="Email (Optional)" className="custom-input" />
+          </Form.Item>
+          <Space size="large">
+            <Form.Item
+              name="phone"
+              label="Phone"
+              rules={[
+                {
+                  required: true,
+                  message: "Phone is required.",
+                },
+              ]}
+            >
+              <Input placeholder="Phone" className="custom-input" />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              label="Password"
+              rules={[
+                {
+                  required: true,
+                  message: "Password is required.",
+                },
+              ]}
+            >
+              <Input
+                placeholder="Password"
+                type="password"
+                className="custom-input"
+              />
+            </Form.Item>
+          </Space>
+          <Space size="large">
+              <Form.Item name="gender" label="Gender">
+                <Radio.Group>
+                  <Radio value="MALE">Male</Radio>
+                  <Radio value="FEMALE">Female</Radio>
+                  <Radio value="OTHER">Other</Radio>
+                </Radio.Group>
+              </Form.Item>
+            <Form.Item
+              name="dateOfBirth"
+              label="Date of birth"
+              rules={[
+                {
+                  required: true,
+                  message: "DOB is required.",
+                },
+              ]}
+            >
+              <DatePicker />
+            </Form.Item>
+          </Space>
+          <Form.Item
+            name="address"
+            label="Address"
+            rules={[
+              {
+                required: true,
+                message: "Address is required.",
+              },
+            ]}
+          >
+            <Input placeholder="Address" className="custom-input" />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
+  );
 };
 
 export default Account;

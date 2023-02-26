@@ -11,6 +11,14 @@ const contractAPI = {
         const url =`/admins/accounts?page=${page}&size=${size}`;
         return api.get(url)
     },
+    createCustomerAccountAPI: (data) => {
+        const url =`/customers/create-customer`;
+        const body = {
+            ...data,
+        };
+
+        return api.post(url, body);
+    }
 }
 
 export default contractAPI
