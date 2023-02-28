@@ -4,16 +4,31 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
-import { getBuilding, searchBuilding } from "../../store/building/buildingSlice";
-import { buildingStatus } from "../../types";
+import {
+  getBuilding,
+} from "../../store/building/buildingSlice";
+import { buildingStatus, sortOption } from "../../types";
+import { AiFillFilter } from "react-icons/ai";
 import "./style.scss";
+import CustomSelect from "../../components/CustomSelect/CustomSelect";
 
 const Building = () => {
   const dispatch = useDispatch();
-  const { buildings, page, size, totalPage, loading } = useSelector(
-    (state) => state.building
-  );
+  const {
+    buildings,
+    searchKey,
+    sortBy,
+    order,
+    page,
+    size,
+    totalPage,
+    loading,
+  } = useSelector((state) => state.building);
   const [currentPage, setCurrentPage] = useState(page);
+  const [searchString, setSearchString] = useState(searchKey);
+  const [sortByString, setSortByString] = useState(sortBy);
+  const [sortByOrder, setSortByOrder] = useState(order);
+
   const columns = [
     {
       title: "#",
@@ -54,17 +69,25 @@ const Building = () => {
 
   useEffect(() => {
     const getBuildingList = () => {
-      dispatch(getBuilding({ page: currentPage, size }));
+      dispatch(
+        getBuilding({
+          page: currentPage,
+          size,
+          searchKey: searchString,
+          sortBy: sortByString,
+          order: sortByOrder,
+        })
+      );
     };
     getBuildingList();
-  }, [currentPage, dispatch, size]);
+  }, [currentPage, dispatch, searchString, size, sortByOrder, sortByString]);
 
   const onChange = (page) => {
     setCurrentPage(page);
   };
 
   const onSearch = (value) => {
-    dispatch(searchBuilding({ page: currentPage, size, name: value }))
+    setSearchString(value);
   };
 
   const handleAddNew = () => {};
@@ -76,16 +99,41 @@ const Building = () => {
       </div>
       <div className="building-content">
         <div className="building-action">
-          <CustomSearch
-            placeholder="Search building.."
-            allowClear
-            onSearch={onSearch}
-            width="30%"
-          />
+          <div className="building-action__search-group">
+            <CustomSearch
+              placeholder="Search building.."
+              allowClear
+              onSearch={onSearch}
+            />
+            <CustomSelect
+              suffixIcon={<AiFillFilter size={15} />}
+              title="Sort by"
+              onChange={(value) => setSortByString(value)}
+              options={[
+                {
+                  value: "Name",
+                  label: "Name",
+                },
+                {
+                  value: "Address",
+                  label: "Address",
+                },
+                {
+                  value: "Status",
+                  label: "Status",
+                },
+              ]}
+            />
+            <CustomSelect
+              title="Default"
+              onChange={(value) => setSortByOrder(value)}
+              options={sortOption}
+            />
+          </div>
           <CustomButton onClick={handleAddNew}>Add new</CustomButton>
         </div>
         <Table
-          // rowKey="citizenId"
+          // rowKey="id"
           dataSource={buildings}
           columns={columns}
           pagination={false}

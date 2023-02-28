@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import userAPI from "../../config/api/user/userAPI"
 import { toast } from "react-toastify";
 
-const { loginAPI, loginWithGoogleAPI } = userAPI;
+const { loginAPI } = userAPI;
 
 const userToken = Cookies.get('userToken')
     ? Cookies.get('userToken')
@@ -49,17 +49,6 @@ const userSlice = createSlice({
                 state.users = {}
                 state.loading = false
             })
-            .addCase(loginWithGoogle.fulfilled, (state, action) => {
-                Cookies.set('userToken', action.payload.data.tokenResponse.accessToken, { expires: 1/48, path: '' })
-                Cookies.set('refreshToken', action.payload.data.tokenResponse.refreshToken, { expires: 1/24, path: '' })
-                localStorage.setItem('users', JSON.stringify(action.payload.data));
-                state.users = action.payload.data.data
-                state.userToken = action.payload.data.tokenResponse.accessToken
-                state.refreshToken = action.payload.data.tokenResponse.refreshToken
-            })
-            .addCase(loginWithGoogle.rejected, (state) => {
-                state.users = {}
-            })
     }
 })
 
@@ -83,24 +72,6 @@ export const login = createAsyncThunk(
 );
 
 
-export const loginWithGoogle = createAsyncThunk(
-    "user/loginWithGoogle",
-    async (data, { rejectWithValue }) => {
-        try {
-            const res = await loginWithGoogleAPI(data)
-            if (res.status === "202 ACCEPTED") {
-                toast.success(res.message)
-                return res
-            } else {
-                toast.error(res.message)
-                return rejectWithValue(res)
-            }
-        } catch (err) {
-            toast.error("Login failed! Check your info again.")
-            return rejectWithValue()
-        }
-    }
-);
 
 export const { logout } = userSlice.actions;
 export default userSlice
