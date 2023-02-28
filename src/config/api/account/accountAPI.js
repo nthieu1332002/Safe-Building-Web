@@ -4,7 +4,7 @@ import api from "./apiConfig";
 
 const contractAPI = {
     getCustomerAccountAPI: ({ page, size }) => {
-        const url =`/customers/accounts?page=${page}&size=${size}`;
+        const url =`/customers?page=${page}&size=${size}`;
         return api.get(url)
     },
     getAdminAccountAPI: ({ page, size }) => {

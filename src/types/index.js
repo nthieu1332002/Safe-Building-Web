@@ -196,3 +196,13 @@ export const walletStatus = [
     }
 ];
 
+export const sortOption = [
+    {
+        value: 'asc',
+        label: 'Ascending',
+    },
+    {
+        value: 'desc',
+        label: 'Descending',
+    },
+]

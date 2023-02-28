@@ -13,6 +13,9 @@ const buildingSlice = createSlice({
         page: 1,
         size: 10,
         totalPage: 0,
+        searchKey: '',
+        sortBy: '',
+        order: '',
     },
     reducers: {
 
@@ -24,25 +27,14 @@ const buildingSlice = createSlice({
             })
             .addCase(getBuilding.fulfilled, (state, action) => {
                 state.loading = false
-                state.buildings = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
+                state.buildings = action.payload.res.data
+                state.page = action.payload.res.pagination.page
+                state.totalPage = action.payload.res.pagination.totalPage
+                state.searchKey = action.payload.data.searchKey
+                state.sortBy = action.payload.data.sortBy
+                state.order = action.payload.data.order
             })
             .addCase(getBuilding.rejected, (state, action) => {
-                state.loading = false
-                state.buildings = []
-                state.error = action.error.message
-            })
-            .addCase(searchBuilding.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(searchBuilding.fulfilled, (state, action) => {
-                state.loading = false
-                state.buildings = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
-            })
-            .addCase(searchBuilding.rejected, (state, action) => {
                 state.loading = false
                 state.buildings = []
                 state.error = action.error.message
@@ -56,26 +48,16 @@ export const getBuilding = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getBuildingAPI(data);
-            return res;
+            const response = {
+                data, res
+            }
+            console.log(response);
+            return response;
         } catch (err) {
             console.log(err)
             return rejectWithValue(err.response.data)
         }
     }
 );
-
-export const searchBuilding = createAsyncThunk(
-    "building/searchBuilding",
-    async (data, { rejectWithValue }) => {
-        try {
-            const res = await searchBuildingAPI(data);
-            return res;
-        } catch (err) {
-            console.log(err)
-            return rejectWithValue(err.response.data)
-        }
-    }
-);
-
 
 export default buildingSlice
