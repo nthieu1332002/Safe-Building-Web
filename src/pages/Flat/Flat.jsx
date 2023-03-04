@@ -5,7 +5,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import { getFlat } from "../../store/flat/flatSlice";
-import { flatStatus } from "../../types";
+import { flatStatus } from "../../ultis/types";
 import "./style.scss";
 
 const Flat = () => {

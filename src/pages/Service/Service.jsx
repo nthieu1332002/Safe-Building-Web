@@ -5,7 +5,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import { getService } from "../../store/service/serviceSlice";
-import { serviceStatus } from "../../types";
+import { serviceStatus } from "../../ultis/types";
 import "./style.scss";
 
 const Service = () => {

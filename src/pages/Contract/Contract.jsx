@@ -20,7 +20,7 @@ import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 
 import "./style.scss";
-import { rentContractStatus } from "../../types";
+import { rentContractStatus } from "../../ultis/types";
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT
 const Contract = () => {

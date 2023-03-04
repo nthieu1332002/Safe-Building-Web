@@ -5,7 +5,7 @@ import serviceSlice from "./service/serviceSlice";
 import userSlice from "./user/userSlice";
 import flatSlice from "./flat/flatSlice.js";
 import buildingSlice from "./building/buildingSlice.js";
-import accountSlice from "./account/accountSlice.js";
+import adminSlice from "./admin/adminSlice.js";
 
 
 const store = configureStore({
@@ -16,7 +16,7 @@ const store = configureStore({
         service: serviceSlice.reducer,
         flat: flatSlice.reducer,
         building: buildingSlice.reducer,
-        account: accountSlice.reducer,
+        admin: adminSlice.reducer,
     },
     middleware: [
         ...getDefaultMiddleware({
