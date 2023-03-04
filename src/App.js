@@ -5,7 +5,7 @@ import PrivateRoutes from "./config/PrivateRoutes"
 import Login from "./pages/Login/Login.jsx"
 import Home from "./pages/Home/Home.jsx"
 import Building from "./pages/Building/Building.jsx"
-import Account from "./pages/Account/Account.jsx"
+import Admin from "./pages/Admin/Admin.jsx"
 import Resident from "./pages/Resident/Resident.jsx"
 import Flat from "./pages/Flat/Flat.jsx"
 import Service from "./pages/Service/Service.jsx"
@@ -37,7 +37,7 @@ const App = () => {
             <Route path="/" element={<Layout />} >
               <Route index element={<Home />}></Route>
               <Route path="/building" element={<Building />}></Route>
-              <Route path="/account" element={<Account />}></Route>
+              <Route path="/admin" element={<Admin />}></Route>
               <Route path="/resident" element={<Resident />}></Route>
               <Route path="/flat" element={<Flat />}></Route>
               <Route path="/service" element={<Service />}></Route>

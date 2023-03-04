@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import store from '../../../store/store';
 import { logout } from "../../../store/user/userSlice";
+import { toast } from "react-toastify";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,

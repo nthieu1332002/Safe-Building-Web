@@ -1,19 +1,30 @@
-import { Table, Tag } from "antd";
+import { Drawer, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
-import { getResident } from "../../store/resident/residentSlice";
+import {
+  createResident,
+  getResident,
+  getResidentById,
+} from "../../store/resident/residentSlice";
 import "./style.scss";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import { customerStatus } from "../../types";
+import { customerStatus } from "../../ultis/types";
+import CustomAction from "../../components/CustomAction/CustomAction";
+import ResidentFormAdd from "../../components/ResidentForm/ResidentFormAdd";
+import ResidentFormDetail from "../../components/ResidentForm/ResidentFormDetail.jsx";
+import ResidentFormEdit from "../../components/ResidentForm/ResidentFormEdit";
 
 const Resident = () => {
   const dispatch = useDispatch();
-  const { residents, page, size, totalPage, loading } = useSelector(
-    (state) => state.resident
-  );
+  const { residents, residentDetail, page, size, totalPage, loading } =
+    useSelector((state) => state.resident);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(page);
+
   const columns = [
     {
       title: "#",
@@ -28,34 +39,16 @@ const Resident = () => {
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Citizen Id",
-      dataIndex: "citizenId",
-      key: "citizenId",
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Building",
-      dataIndex: "buildingName",
-      key: "buildingName",
-      render: (text) => <b>{text}</b>,
-    },
-    {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Room",
-      dataIndex: "roomNumber",
-      key: "roomNumber",
-      sorter: (a, b) => a.roomNumber - b.roomNumber,
-      render: (text) => <b>{text}</b>,
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
         <>
@@ -75,6 +68,20 @@ const Resident = () => {
         </>
       ),
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <CustomAction
+            type="resident"
+            onClickEdit={() => onClickEdit(record)}
+            onClickDetail={() => onClickDetail(record)}
+          />
+        );
+      },
+    },
   ];
 
   useEffect(() => {
@@ -92,37 +99,69 @@ const Resident = () => {
     console.log("value", value);
   };
 
-  const handleAddNew = () => {};
-
+  const onClickEdit = (record) => {
+    dispatch(getResidentById({ id: record.id }));
+    setIsModalEditOpen(true);
+  };
+  const onClickDetail = (record) => {
+    dispatch(getResidentById({ id: record.id }));
+    setIsModalDetailOpen(true);
+  }
+  const handleAddNew = (data) => {
+    dispatch(createResident(data));
+  };
+  const handleEdit = (data) => {};
   return (
-    <div className="resident-container">
-      <div className="page-title">
-        <h1>Resident</h1>
-      </div>
-      <div className="resident-content">
-        <div className="resident-action">
-          <CustomSearch
-            placeholder="Search resident.."
-            allowClear
-            onSearch={onSearch}
-            width="30%"
-          />
-          <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+    <>
+      <div className="resident-container">
+        <div className="page-title">
+          <h1>Resident</h1>
         </div>
-        <Table
-          // rowKey="citizenId"
-          dataSource={residents}
-          columns={columns}
-          pagination={false}
-          loading={loading}
-        />
-        <CustomPagination
-          onChange={onChange}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
+        <div className="resident-content">
+          <div className="resident-action">
+            <CustomSearch
+              placeholder="Search resident.."
+              allowClear
+              onSearch={onSearch}
+              width="30%"
+            />
+            <CustomButton onClick={() => setIsModalAddOpen(true)}>
+              Add new
+            </CustomButton>
+          </div>
+          <Table
+            // rowKey="citizenId"
+            dataSource={residents}
+            columns={columns}
+            pagination={false}
+            loading={loading}
+          />
+          <CustomPagination
+            onChange={onChange}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
+        </div>
       </div>
-    </div>
+      <ResidentFormAdd
+        loading={loading}
+        isModalOpen={isModalAddOpen}
+        handleCancel={() => setIsModalAddOpen(false)}
+        handleSubmit={handleAddNew}
+      />
+      <ResidentFormEdit
+        loading={loading}
+        isModalOpen={isModalEditOpen}
+        handleCancel={() => setIsModalEditOpen(false)}
+        handleSubmit={handleEdit}
+      />
+      <ResidentFormDetail
+        title="Basic Drawer"
+        onClose={()=> setIsModalDetailOpen(false)}
+        open={isModalDetailOpen}
+        item={residentDetail}
+      />
+    </>
   );
 };
 

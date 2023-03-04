@@ -1,44 +1,71 @@
-import {
-  Modal,
-  Table,
-  Tabs,
-  Tag,
-  AutoComplete,
-  Button,
-  Cascader,
-  Checkbox,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  DatePicker,
-  Space,
-  Radio,
-} from "antd";
+import { Table, Tag, Form, Input } from "antd";
 
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomAction from "../../components/CustomAction/CustomAction";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
-import {
-  getAdminAccount,
-  getCustomerAccount,
-} from "../../store/account/accountSlice";
-import { customerStatus } from "../../types";
+import { getAdminAccount } from "../../store/admin/adminSlice";
+import { adminStatus } from "../../ultis/types";
+import { EditableCell } from "../../ultis/EditableCell";
 
 import "./style.scss";
-const { Option } = Select;
-const Account = () => {
+
+const Admin = () => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { adminAccounts, customerAccounts, page, size, totalPage, loading } =
-    useSelector((state) => state.account);
+  const { adminAccounts, page, size, totalPage, loading } = useSelector(
+    (state) => state.admin
+  );
   const [currentPage, setCurrentPage] = useState(page);
-  const [currentKey, setCurrentKey] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [data, setData] = useState(adminAccounts);
+  useEffect(() => {
+    const getAdminAccountList = () => {
+      dispatch(getAdminAccount({ page: currentPage, size }));
+    };
+    getAdminAccountList();
+  }, [currentPage, dispatch, size]);
+
+  useEffect(() => {
+    setData(adminAccounts);
+  }, [adminAccounts]);
+
+  const [editingKey, setEditingKey] = useState("");
+  const isEditing = (record) => record.id === editingKey;
+  const edit = (record) => {
+    form.setFieldsValue({
+      ...record,
+    });
+    setEditingKey(record.id);
+  };
+  const cancel = () => {
+    setEditingKey("");
+  };
+  const save = async (key) => {
+    try {
+      const row = await form.validateFields();
+      const newData = [...data];
+      const index = newData.findIndex((item) => key === item.id);
+      if (index > -1) {
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        setData(newData);
+        setEditingKey("");
+      } else {
+        newData.push(row);
+        setData(newData);
+        setEditingKey("");
+      }
+    } catch (errInfo) {
+      console.log("Validate Failed:", errInfo);
+    }
+  };
   const columns = [
     {
       title: "#",
@@ -46,23 +73,26 @@ const Account = () => {
       render: (value, item, index) => (page - 1) * 10 + index,
     },
     {
-      title: "",
+      title: "Full name",
       dataIndex: "fullname",
       key: "fullname",
       sorter: (a, b) => a.fullname.localeCompare(b.fullname),
       render: (text) => <b>{text}</b>,
+      editable: true,
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       render: (text) => <b>{text}</b>,
+      editable: true,
     },
     {
       title: "Email",
       dataIndex: "email",
       key: "email",
       render: (text) => <b>{text}</b>,
+      editable: true,
     },
     {
       title: "Status",
@@ -71,11 +101,11 @@ const Account = () => {
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
         <>
-          {customerStatus.map((item) => {
+          {adminStatus.map((item) => {
             return (
               <>
                 {item.status === text ? (
-                  <Tag className="tag" color={item.color}>
+                  <Tag key={item.id} className="tag" color={item.color}>
                     {text}
                   </Tag>
                 ) : (
@@ -86,26 +116,40 @@ const Account = () => {
           })}
         </>
       ),
+      editable: true,
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (_, record) => {
+        return (
+          <CustomAction
+            editable={isEditing(record)}
+            onConfirm={cancel}
+            onClickSave={() => save(record.id)}
+            disabled={editingKey !== ""}
+            onClickEdit={() => edit(record)}
+          />
+        );
+      },
     },
   ];
-
-  useEffect(() => {
-    const getCustomerAccountList = () => {
-      dispatch(getCustomerAccount({ page: currentPage, size }));
-    };
-    const getAdminAccountList = () => {
-      dispatch(getAdminAccount({ page: currentPage, size }));
-    };
-    console.log("currentKey", currentKey);
-    if (currentKey === 2) {
-      console.log("call 2");
-      getAdminAccountList();
+  const mergedColumns = columns.map((col) => {
+    if (!col.editable) {
+      return col;
     }
-    if (currentKey === 1) {
-      console.log("call 1");
-      getCustomerAccountList();
-    }
-  }, [currentKey, currentPage, dispatch, size]);
+    return {
+      ...col,
+      onCell: (record) => ({
+        record,
+        tableName: "admin",
+        inputType: col.dataIndex === "status" ? "status" : "text",
+        dataIndex: col.dataIndex,
+        title: col.title,
+        editing: isEditing(record),
+      }),
+    };
+  });
 
   const onChange = (page) => {
     setCurrentPage(page);
@@ -115,112 +159,51 @@ const Account = () => {
     console.log("value", value);
   };
 
-  const onChangeTabs = (key) => {
-    setCurrentKey(key);
-  };
-
   const handleAddNew = () => {
     setIsModalOpen(true);
   };
-
-  const onCreateCustomerAccount = (value) => {};
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
-  const items = [
-    {
-      key: "1",
-      label: `Customer Account`,
-      children: (
-        <div className="account-container">
-          <div className="page-title">
-            <h1>Customer</h1>
-          </div>
-          <div className="account-content">
-            <div className="account-action">
-              <CustomSearch
-                placeholder="Search customer account.."
-                allowClear
-                onSearch={onSearch}
-                width="30%"
-              />
-              <CustomButton onClick={handleAddNew}>Add new</CustomButton>
-            </div>
-            <Table
-              // rowKey="citizenId"
-              dataSource={customerAccounts}
-              columns={columns}
-              pagination={false}
-              loading={loading}
-            />
-            <CustomPagination
-              onChange={onChange}
-              currentPage={currentPage}
-              totalPage={totalPage}
-            />
-          </div>
-        </div>
-      ),
-    },
-    {
-      key: "2",
-      label: `Admin Account`,
-      children: (
-        <div className="account-container">
-          <div className="page-title">
-            <h1>Admin</h1>
-          </div>
-          <div className="account-content">
-            <div className="account-action">
-              <CustomSearch
-                placeholder="Search admin account.."
-                allowClear
-                onSearch={onSearch}
-                width="30%"
-              />
-              <CustomButton onClick={handleAddNew}>Add new</CustomButton>
-            </div>
-            <Table
-              // rowKey="citizenId"
-              dataSource={adminAccounts}
-              columns={columns}
-              pagination={false}
-              loading={loading}
-            />
-            <CustomPagination
-              onChange={onChange}
-              currentPage={currentPage}
-              totalPage={totalPage}
-            />
-          </div>
-        </div>
-      ),
-    },
-  ];
-
-  // const formItemLayout = {
-  //   labelCol: {
-  //     xs: {
-  //       span: 24,
-  //     },
-  //     sm: {
-  //       span: 8,
-  //     },
-  //   },
-  //   wrapperCol: {
-  //     xs: {
-  //       span: 24,
-  //     },
-  //     sm: {
-  //       span: 16,
-  //     },
-  //   },
-  // };
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} onChange={onChangeTabs} />
-      <Modal
+      <div className="admin-container">
+        <div className="page-title">
+          <h1>Admin</h1>
+        </div>
+        <div className="admin-content">
+          <div className="admin-action">
+            <CustomSearch
+              placeholder="Search admin account.."
+              allowClear
+              onSearch={onSearch}
+              width="30%"
+            />
+            <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+          </div>
+          <Form form={form} component={false}>
+            <Table
+              components={{
+                body: {
+                  cell: EditableCell,
+                },
+              }}
+              dataSource={data}
+              columns={mergedColumns}
+              rowClassName="editable-row"
+              pagination={false}
+              loading={loading}
+            />
+          </Form>
+          <CustomPagination
+            onChange={onChange}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
+        </div>
+      </div>
+      {/* <Modal
         title="Create customer account"
         open={isModalOpen}
         onCancel={handleCancel}
@@ -301,13 +284,13 @@ const Account = () => {
             </Form.Item>
           </Space>
           <Space size="large">
-              <Form.Item name="gender" label="Gender">
-                <Radio.Group>
-                  <Radio value="MALE">Male</Radio>
-                  <Radio value="FEMALE">Female</Radio>
-                  <Radio value="OTHER">Other</Radio>
-                </Radio.Group>
-              </Form.Item>
+            <Form.Item name="gender" label="Gender">
+              <Radio.Group>
+                <Radio value="MALE">Male</Radio>
+                <Radio value="FEMALE">Female</Radio>
+                <Radio value="OTHER">Other</Radio>
+              </Radio.Group>
+            </Form.Item>
             <Form.Item
               name="dateOfBirth"
               label="Date of birth"
@@ -334,9 +317,9 @@ const Account = () => {
             <Input placeholder="Address" className="custom-input" />
           </Form.Item>
         </Form>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
 
-export default Account;
+export default Admin;

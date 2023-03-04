@@ -7,7 +7,7 @@ import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import {
   getBuilding,
 } from "../../store/building/buildingSlice";
-import { buildingStatus, sortOption } from "../../types";
+import { buildingStatus, sortOption } from "../../ultis/types";
 import { AiFillFilter } from "react-icons/ai";
 import "./style.scss";
 import CustomSelect from "../../components/CustomSelect/CustomSelect";
