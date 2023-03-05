@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import {
-  createResident,
   getResident,
   getResidentById,
 } from "../../store/resident/residentSlice";
@@ -83,11 +82,11 @@ const Resident = () => {
       },
     },
   ];
+  const getResidentList = () => {
+    dispatch(getResident({ page: currentPage, size }));
+  };
 
   useEffect(() => {
-    const getResidentList = () => {
-      dispatch(getResident({ page: currentPage, size }));
-    };
     getResidentList();
   }, [currentPage, dispatch, size]);
 
@@ -106,11 +105,7 @@ const Resident = () => {
   const onClickDetail = (record) => {
     dispatch(getResidentById({ id: record.id }));
     setIsModalDetailOpen(true);
-  }
-  const handleAddNew = (data) => {
-    dispatch(createResident(data));
   };
-  const handleEdit = (data) => {};
   return (
     <>
       <div className="resident-container">
@@ -146,20 +141,23 @@ const Resident = () => {
       <ResidentFormAdd
         loading={loading}
         isModalOpen={isModalAddOpen}
+        setIsModalDetailOpen={setIsModalDetailOpen}
+        handleSubmit={getResidentList}
         handleCancel={() => setIsModalAddOpen(false)}
-        handleSubmit={handleAddNew}
       />
       <ResidentFormEdit
+        dispatch={dispatch}
         loading={loading}
         isModalOpen={isModalEditOpen}
+        setIsModalEditOpen={setIsModalEditOpen}
+        handleSubmit={getResidentList}
         handleCancel={() => setIsModalEditOpen(false)}
-        handleSubmit={handleEdit}
+        item={residentDetail}
       />
       <ResidentFormDetail
-        title="Basic Drawer"
-        onClose={()=> setIsModalDetailOpen(false)}
+        onClose={() => setIsModalDetailOpen(false)}
         open={isModalDetailOpen}
-        item={residentDetail}
+        customer={residentDetail}
       />
     </>
   );

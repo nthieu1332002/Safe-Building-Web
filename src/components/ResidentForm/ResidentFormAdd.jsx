@@ -1,17 +1,17 @@
 import { DatePicker, Form, Input, Modal, Radio, Space } from "antd";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { createResident } from "../../store/resident/residentSlice";
 
-const ResidentFormAdd = ({ loading, isModalOpen, handleCancel, handleSubmit}) => {
+const ResidentFormAdd = ({
+  loading,
+  isModalOpen,
+  handleCancel,
+  setIsModalAddOpen,
+  handleSubmit
+}) => {
   const [form] = Form.useForm();
-
-  const onFinish = ({ fieldsValue }) => {
-    const values = {
-      ...fieldsValue,
-      dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD"),
-    };
-    console.log("success", values);
-  };
-
+  const dispatch = useDispatch();
   return (
     <Modal
       title="CREATE RESIDENT ACCOUNT"
@@ -26,9 +26,17 @@ const ResidentFormAdd = ({ loading, isModalOpen, handleCancel, handleSubmit}) =>
             const values = {
               ...fieldsValue,
               dateOfBirth: fieldsValue["dateOfBirth"].format("YYYY-MM-DD"),
+              email: fieldsValue["email"] || "",
+              citizenId: "ctid",
             };
-            handleSubmit(values);
-            form.resetFields();
+            dispatch(createResident(values)).then((res) => {
+              console.log("res", res);
+              if (res.payload.status === 201) {
+                form.resetFields();
+                setIsModalAddOpen(false);
+                handleSubmit()
+              }
+            });
           })
           .catch((info) => {
             console.log("Validate Failed:", info);
@@ -43,10 +51,9 @@ const ResidentFormAdd = ({ loading, isModalOpen, handleCancel, handleSubmit}) =>
         style={{
           width: "100%",
         }}
-        onFinish={onFinish}
       >
         <Form.Item
-          name="fullName"
+          name="fullname"
           label="Full Name"
           rules={[
             {
@@ -83,7 +90,7 @@ const ResidentFormAdd = ({ loading, isModalOpen, handleCancel, handleSubmit}) =>
               {
                 pattern: /^\d+$/,
                 message: "Phone is not valid.",
-              }
+              },
             ]}
           >
             <Input placeholder="Phone" className="custom-input" />
@@ -134,7 +141,7 @@ const ResidentFormAdd = ({ loading, isModalOpen, handleCancel, handleSubmit}) =>
               },
             ]}
           >
-            <DatePicker />
+            <DatePicker format="DD/MM/YYYY" />
           </Form.Item>
         </Space>
         <Form.Item

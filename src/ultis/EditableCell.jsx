@@ -1,6 +1,4 @@
-import { Form, Input } from "antd";
-import { useEffect } from "react";
-import CustomSelect from "../components/CustomSelect/CustomSelect";
+import { Form, Input, Select } from "antd";
 import { adminStatus, customerStatus, flatStatus } from "./types";
 
 export const EditableCell = ({
@@ -33,7 +31,7 @@ export const EditableCell = ({
   });
   const inputNode =
     inputType === "status" ? (
-      <CustomSelect title={record.status} options={options} onChange />
+      <Select defaultValue={record.status} options={options}/>
     ) : (
       <Input />
     );

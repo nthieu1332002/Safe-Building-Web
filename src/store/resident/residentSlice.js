@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import residentAPI from "../../config/api/resident/residentAPI"
 import { toast } from "react-toastify";
-const { getResidentAPI, createResidentAccountAPI, getResidentAccountByIdAPI } = residentAPI;
+const { getResidentAPI, createResidentAccountAPI, getResidentAccountByIdAPI, updateResidentAccountAPI } = residentAPI;
 
 
 const residentSlice = createSlice({
@@ -24,13 +24,12 @@ const residentSlice = createSlice({
             })
             .addCase(getResident.fulfilled, (state, action) => {
                 state.loading = false
-                state.residents = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
+                state.residents = action.payload.data.data
+                state.page = action.payload.data.pagination.page
+                state.totalPage = action.payload.data.pagination.totalPage
             })
             .addCase(getResident.rejected, (state, action) => {
                 state.loading = false
-                state.resident = []
                 state.error = action.error.message
             })
             .addCase(createResident.pending, (state) => {
@@ -38,17 +37,23 @@ const residentSlice = createSlice({
             })
             .addCase(createResident.fulfilled, (state, action) => {
                 state.loading = false
-                state.residents = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
             })
             .addCase(createResident.rejected, (state, action) => {
                 state.loading = false
-                state.resident = []
                 state.error = action.error.message
             })
             .addCase(getResidentById.fulfilled, (state, action) => {
-                state.residentDetail = action.payload.data
+                state.residentDetail = action.payload.data.data
+            })
+            .addCase(updateResident.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(updateResident.fulfilled, (state, action) => {
+                state.loading = false
+            })
+            .addCase(updateResident.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
             })
     }
 })
@@ -71,14 +76,13 @@ export const createResident = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await createResidentAccountAPI(data);
-            if (res.status === "202 ACCEPTED") {
-                toast.success(res.message)
+            console.log("res", res);
+            if (res.status === 201) {
+                toast.success(res.data.message)
                 return res
-            } else {
-                toast.error(res.message)
-                return rejectWithValue(res)
             }
         } catch (err) {
+            console.log("err", err);
             return rejectWithValue(err.response.data)
         }
     }
@@ -89,6 +93,7 @@ export const getResidentById = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getResidentAccountByIdAPI(data);
+            console.log("res", res)
             return res;
         } catch (err) {
             console.log(err)
@@ -97,5 +102,22 @@ export const getResidentById = createAsyncThunk(
     }
 );
 
+export const updateResident = createAsyncThunk(
+    "resident/updateResident",
+    async (data, { rejectWithValue }) => {
+        try {
+            console.log("data", data)
+            const res = await updateResidentAccountAPI(data);
+            console.log("res", res);
+            if (res.status === 201) {
+                toast.success(res.data.message)
+                return res
+            }
+        } catch (err) {
+            console.log("err", err);
+            return rejectWithValue(err.response.data)
+        }
+    }
+);
 
 export default residentSlice
