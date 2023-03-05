@@ -15,6 +15,13 @@ const residentAPI = {
     getResidentAccountByIdAPI: ({id}) => {
         const url = `/customers/${id}`;
         return api.get(url)
+    },
+    updateResidentAccountAPI: (data) => {
+        const url = `/customers/update-customer`;
+        const body = {
+            ...data,
+        };
+        return api.put(url, body);
     }
 }
 
