@@ -1,5 +1,8 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from "react-toastify";
+import store from "../../../store/store";
+import { logout } from "../../../store/user/userSlice";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -24,6 +27,11 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    toast.error(error.response.data.message)
+    const { dispatch } = store;
+    if (error?.response?.status === 403) {
+      dispatch(logout())
+    }
     return Promise.reject(error);
   }
 );

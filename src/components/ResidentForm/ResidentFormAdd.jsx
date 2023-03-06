@@ -30,7 +30,6 @@ const ResidentFormAdd = ({
               citizenId: "ctid",
             };
             dispatch(createResident(values)).then((res) => {
-              console.log("res", res);
               if (res.payload.status === 201) {
                 form.resetFields();
                 setIsModalAddOpen(false);

@@ -98,12 +98,16 @@ const Resident = () => {
     console.log("value", value);
   };
 
+  const fetchResidentById = (id) => {
+    dispatch(getResidentById({ id }));
+  };
+
   const onClickEdit = (record) => {
-    dispatch(getResidentById({ id: record.id }));
+    fetchResidentById(record.id);
     setIsModalEditOpen(true);
   };
   const onClickDetail = (record) => {
-    dispatch(getResidentById({ id: record.id }));
+    fetchResidentById(record.id);
     setIsModalDetailOpen(true);
   };
   return (
@@ -141,7 +145,7 @@ const Resident = () => {
       <ResidentFormAdd
         loading={loading}
         isModalOpen={isModalAddOpen}
-        setIsModalDetailOpen={setIsModalDetailOpen}
+        setIsModalAddOpen={setIsModalAddOpen}
         handleSubmit={getResidentList}
         handleCancel={() => setIsModalAddOpen(false)}
       />
