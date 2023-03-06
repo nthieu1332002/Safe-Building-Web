@@ -46,7 +46,7 @@ const Flat = () => {
       dataIndex: "price",
       key: "price",
       sorter: (a, b) => a.price - b.price,
-      render: (text) => <b>{text}</b>,
+      render: (text) => <b>{text} VND</b>,
     },
     {
       title: "Status",
