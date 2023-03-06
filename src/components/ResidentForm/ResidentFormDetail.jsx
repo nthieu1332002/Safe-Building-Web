@@ -13,7 +13,6 @@ import { customerStatus, rentContractStatus } from "../../ultis/types";
 import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
 const { Text, Link } = Typography;
 const ResidentFormDetail = ({ title, onClose, open, customer }) => {
-  console.log(customer.contract);
   return (
     <Drawer
       title={customer.fullname}

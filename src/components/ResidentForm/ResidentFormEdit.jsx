@@ -37,7 +37,6 @@ const ResidentFormEdit = ({
             };
 
             dispatch(updateResident(values)).then((res) => {
-              console.log("res", res);
               if (res.payload.status === 201) {
                 form.resetFields();
                 setIsModalEditOpen(false);

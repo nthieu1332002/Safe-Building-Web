@@ -76,7 +76,6 @@ export const createResident = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await createResidentAccountAPI(data);
-            console.log("res", res);
             if (res.status === 201) {
                 toast.success(res.data.message)
                 return res
@@ -93,7 +92,6 @@ export const getResidentById = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getResidentAccountByIdAPI(data);
-            console.log("res", res)
             return res;
         } catch (err) {
             console.log(err)
@@ -106,9 +104,7 @@ export const updateResident = createAsyncThunk(
     "resident/updateResident",
     async (data, { rejectWithValue }) => {
         try {
-            console.log("data", data)
             const res = await updateResidentAccountAPI(data);
-            console.log("res", res);
             if (res.status === 201) {
                 toast.success(res.data.message)
                 return res

@@ -1,19 +1,27 @@
 import { Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import CustomAction from "../../components/CustomAction/CustomAction";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
-import { getFlat } from "../../store/flat/flatSlice";
+import FlatFormAdd from "../../components/FlatFormAdd/FlatFormAdd";
+import flatAPI from "../../config/api/flat/flatAPI";
+import { getFlat, getFlatType } from "../../store/flat/flatSlice";
 import { flatStatus } from "../../ultis/types";
 import "./style.scss";
 
+const { getFlatTypeAPI } = flatAPI;
+
 const Flat = () => {
   const dispatch = useDispatch();
-  const { flats, page, size, totalPage, loading } = useSelector(
+  const { flats, flatType, page, size, totalPage, loading } = useSelector(
     (state) => state.flat
   );
   const [currentPage, setCurrentPage] = useState(page);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalUpdateOpen, setIsModalUpdateOpen] = useState(false);
+
   const columns = [
     {
       title: "#",
@@ -71,12 +79,27 @@ const Flat = () => {
         </>
       ),
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <CustomAction
+          // type="resident"
+          // onClickEdit={() => onClickEdit(record)}
+          // onClickDetail={() => onClickDetail(record)}
+          />
+        );
+      },
+    },
   ];
 
+  const getFlatList = () => {
+    dispatch(getFlat({ page: currentPage, size }));
+  };
+
   useEffect(() => {
-    const getFlatList = () => {
-      dispatch(getFlat({ page: currentPage, size }));
-    };
     getFlatList();
   }, [currentPage, dispatch, size]);
 
@@ -88,37 +111,60 @@ const Flat = () => {
     console.log("value", value);
   };
 
-  const handleAddNew = () => {};
+  const fetchFlatType = () => {
+    dispatch(getFlatType());
+  };
+
+  const handleAddNew = () => {
+    fetchFlatType()
+   setIsModalAddOpen(true)
+  }
+  const handleUpdate = () => {
+    fetchFlatType()
+    setIsModalUpdateOpen(true)
+  }
 
   return (
-    <div className="flat-container">
-      <div className="page-title">
-        <h1>Flat</h1>
-      </div>
-      <div className="flat-content">
-        <div className="flat-action">
-          <CustomSearch
-            placeholder="Search flat.."
-            allowClear
-            onSearch={onSearch}
-            width="30%"
-          />
-          <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+    <>
+      <div className="flat-container">
+        <div className="page-title">
+          <h1>Flat</h1>
         </div>
-        <Table
-          // rowKey="citizenId"
-          dataSource={flats}
-          columns={columns}
-          pagination={false}
-          loading={loading}
-        />
-        <CustomPagination
-          onChange={onChange}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
+        <div className="flat-content">
+          <div className="flat-action">
+            <CustomSearch
+              placeholder="Search flat.."
+              allowClear
+              onSearch={onSearch}
+              width="30%"
+            />
+            <CustomButton onClick={handleAddNew}>
+              Add new
+            </CustomButton>
+          </div>
+          <Table
+            // rowKey="citizenId"
+            dataSource={flats}
+            columns={columns}
+            pagination={false}
+            loading={loading}
+          />
+          <CustomPagination
+            onChange={onChange}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
+        </div>
       </div>
-    </div>
+      <FlatFormAdd
+        loading={loading}
+        isModalOpen={isModalAddOpen}
+        setIsModalAddOpen={setIsModalAddOpen}
+        handleSubmit={getFlatList}
+        handleCancel={() => setIsModalAddOpen(false)}
+        flatType={flatType}
+      />
+    </>
   );
 };
 
