@@ -36,6 +36,7 @@ const Service = () => {
     {
       title: "Price",
       dataIndex: "price",
+      align: "center",
       key: "price",
       sorter: (a, b) => a.price - b.price,
       render: (text) => <b>{text}</b>,
@@ -43,6 +44,7 @@ const Service = () => {
     {
       title: "Status",
       dataIndex: "status",
+      align: "center",
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (

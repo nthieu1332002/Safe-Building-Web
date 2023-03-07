@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import buildingAPI from "../../config/api/building/buildingAPI.js"
 
-const { getBuildingFilterAPI, createBuildingAPI  } = buildingAPI;
+const { getBuildingFilterAPI, createBuildingAPI, getFlatListByBuildingIdAPI  } = buildingAPI;
 
 
 const buildingSlice = createSlice({
@@ -10,6 +10,7 @@ const buildingSlice = createSlice({
     initialState: {
         buildings: [],
         buildingList: [],
+        flatList: [],
         loading: false,
         error: '',
         page: 1,
@@ -54,6 +55,19 @@ const buildingSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message
             })
+            .addCase(getFlatByBuilding.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(getFlatByBuilding.fulfilled, (state, action) => {
+                state.flatList = action.payload.data.data
+                state.loading = false;
+
+            })
+            .addCase(getFlatByBuilding.rejected, (state, action) => {
+                state.flatList = []
+                state.loading = false;
+
+            })
     }
 })
 
@@ -97,6 +111,21 @@ export const createBuilding = createAsyncThunk(
             }
         } catch (err) {
             console.log("err", err);
+            return rejectWithValue(err.response.data)
+        }
+    }
+);
+
+export const getFlatByBuilding = createAsyncThunk(
+    "building/getFlatByBuilding",
+    async (data, { rejectWithValue }) => {
+        try {
+            console.log("getFlatByBuilding", data);
+            const res = await getFlatListByBuildingIdAPI(data);
+            console.log("res", res);
+            return res;
+        } catch (err) {
+            console.log(err)
             return rejectWithValue(err.response.data)
         }
     }

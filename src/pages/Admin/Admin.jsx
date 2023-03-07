@@ -97,6 +97,7 @@ const Admin = () => {
     {
       title: "Status",
       dataIndex: "status",
+      align: "center",
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
@@ -120,6 +121,7 @@ const Admin = () => {
     },
     {
       title: "Action",
+      align: "center",
       dataIndex: "action",
       render: (_, record) => {
         return (

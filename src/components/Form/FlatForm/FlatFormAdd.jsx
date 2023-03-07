@@ -111,7 +111,7 @@ const FlatFormAdd = ({
             <Select
               options={buildingListOptions}
               style={{
-                width: 120,
+                width: 180,
               }}
             />
           </Form.Item>
@@ -185,7 +185,7 @@ const FlatFormAdd = ({
             },
           ]}
         >
-          <TextArea rows={4} placeholder="Detail" maxLength={6} />
+          <TextArea rows={4} placeholder="Detail" />
         </Form.Item>
       </Form>
     </Modal>

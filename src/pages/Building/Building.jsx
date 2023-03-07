@@ -59,12 +59,14 @@ const Building = () => {
       title: "Capacity",
       dataIndex: "capacity",
       key: "capacity",
+      align: "center",
       sorter: (a, b) => a.capacity - b.capacity,
       render: (text) => <b>{text}</b>,
     },
     {
       title: "Status",
       dataIndex: "status",
+      align: "center",
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (

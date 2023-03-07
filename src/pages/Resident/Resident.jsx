@@ -16,6 +16,7 @@ import ResidentFormDetail from "../../components/Form/ResidentForm/ResidentFormD
 import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
 import CustomSelect from "../../components/CustomSelect/CustomSelect";
 import { AiFillFilter } from "react-icons/ai";
+import ResidentFormAddContract from "../../components/Form/ResidentForm/ResidentFormAddContract";
 
 const Resident = () => {
   const dispatch = useDispatch();
@@ -118,7 +119,7 @@ const Resident = () => {
   }
 
   const onSearch = (value) => {
-    setSearchString(value)
+    setSearchString(value);
   };
 
   const fetchResidentById = (id) => {
@@ -211,6 +212,7 @@ const Resident = () => {
         open={isModalDetailOpen}
         customer={residentDetail}
       />
+      
     </>
   );
 };
