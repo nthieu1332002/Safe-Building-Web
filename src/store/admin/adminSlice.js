@@ -1,14 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import accountAPI from "../../config/api/account/accountAPI.js"
+import adminAPI from "../../config/api/admin/adminAPI.js"
 
-const { getAdminAccountAPI, getCustomerAccountAPI } = accountAPI;
+const { getAdminAccountAPI } = adminAPI;
 
 
-const accountSlice = createSlice({
-    name: "account",
+const adminSlice = createSlice({
+    name: "admin",
     initialState: {
         adminAccounts: [],
-        customerAccounts: [],
         loading: false,
         error: '',
         page: 1,
@@ -34,25 +33,12 @@ const accountSlice = createSlice({
                 state.adminAccounts = []
                 state.error = action.error.message
             })
-            .addCase(getCustomerAccount.pending, (state) => {
-                state.loading = true;
-            })
-            .addCase(getCustomerAccount.fulfilled, (state, action) => {
-                state.loading = false
-                state.customerAccounts = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
-            })
-            .addCase(getCustomerAccount.rejected, (state, action) => {
-                state.loading = false
-                state.customerAccounts = []
-                state.error = action.error.message
-            })
+        
     }
 })
 
 export const getAdminAccount = createAsyncThunk(
-    "account/getAdminAccount",
+    "admin/getAdminAccount",
     async (data, { rejectWithValue }) => {
         try {
             const res = await getAdminAccountAPI(data);
@@ -65,18 +51,31 @@ export const getAdminAccount = createAsyncThunk(
     }
 );
 
-export const getCustomerAccount = createAsyncThunk(
-    "account/getCustomerAccount",
-    async (data, { rejectWithValue }) => {
-        try {
-            const res = await getCustomerAccountAPI(data);
-            return res;
-        } catch (err) {
-            console.log(err)
-            return rejectWithValue(err.response.data)
-        }
-    }
-);
+// export const getCustomerAccount = createAsyncThunk(
+//     "account/getCustomerAccount",
+//     async (data, { rejectWithValue }) => {
+//         try {
+//             const res = await getCustomerAccountAPI(data);
+//             return res;
+//         } catch (err) {
+//             console.log(err)
+//             return rejectWithValue(err.response.data)
+//         }
+//     }
+// );
 
 
-export default accountSlice
+// export const createCustomerAccount = createAsyncThunk(
+//     "account/createCustomerAccount",
+//     async (data, { rejectWithValue }) => {
+//         try {
+//             const res = await createCustomerAccountAPI(data);
+//             return res;
+//         } catch (err) {
+//             console.log(err)
+//             return rejectWithValue(err.response.data)
+//         }
+//     }
+// );
+
+export default adminSlice

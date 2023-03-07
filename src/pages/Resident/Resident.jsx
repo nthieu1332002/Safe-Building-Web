@@ -1,19 +1,45 @@
-import { Table, Tag } from "antd";
+import { Drawer, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
-import { getResident } from "../../store/resident/residentSlice";
+import {
+  getResident,
+  getResidentById,
+} from "../../store/resident/residentSlice";
 import "./style.scss";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import { customerStatus } from "../../types";
+import { customerStatus, sortOption } from "../../ultis/types";
+import CustomAction from "../../components/CustomAction/CustomAction";
+import ResidentFormAdd from "../../components/Form/ResidentForm/ResidentFormAdd";
+import ResidentFormDetail from "../../components/Form/ResidentForm/ResidentFormDetail.jsx";
+import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
+import CustomSelect from "../../components/CustomSelect/CustomSelect";
+import { AiFillFilter } from "react-icons/ai";
+import ResidentFormAddContract from "../../components/Form/ResidentForm/ResidentFormAddContract";
 
 const Resident = () => {
   const dispatch = useDispatch();
-  const { residents, page, size, totalPage, loading } = useSelector(
-    (state) => state.resident
-  );
+  const {
+    residents,
+    residentDetail,
+    page,
+    size,
+    totalPage,
+    searchKey,
+    sortBy,
+    order,
+    loading,
+  } = useSelector((state) => state.resident);
+  const [isModalAddOpen, setIsModalAddOpen] = useState(false);
+  const [isModalEditOpen, setIsModalEditOpen] = useState(false);
+  const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(page);
+
+  const [searchString, setSearchString] = useState(searchKey);
+  const [sortByString, setSortByString] = useState(sortBy);
+  const [sortByOrder, setSortByOrder] = useState(order);
+
   const columns = [
     {
       title: "#",
@@ -28,34 +54,16 @@ const Resident = () => {
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Citizen Id",
-      dataIndex: "citizenId",
-      key: "citizenId",
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Building",
-      dataIndex: "buildingName",
-      key: "buildingName",
-      render: (text) => <b>{text}</b>,
-    },
-    {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Room",
-      dataIndex: "roomNumber",
-      key: "roomNumber",
-      sorter: (a, b) => a.roomNumber - b.roomNumber,
-      render: (text) => <b>{text}</b>,
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
+      align: "center",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (
         <>
@@ -75,54 +83,137 @@ const Resident = () => {
         </>
       ),
     },
+    {
+      title: "Action",
+      dataIndex: "action",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <CustomAction
+            type="resident"
+            onClickEdit={() => onClickEdit(record)}
+            onClickDetail={() => onClickDetail(record)}
+          />
+        );
+      },
+    },
   ];
+  const getResidentList = () => {
+    dispatch(
+      getResident({
+        page: currentPage,
+        size,
+        searchKey: searchString,
+        sortBy: sortByString,
+        order: sortByOrder,
+      })
+    );
+  };
 
   useEffect(() => {
-    const getResidentList = () => {
-      dispatch(getResident({ page: currentPage, size }));
-    };
     getResidentList();
-  }, [currentPage, dispatch, size]);
+  }, [currentPage, dispatch, searchString, size, sortByOrder, sortByString]);
 
-  const onChange = (page) => {
+  function onChange(page) {
     setCurrentPage(page);
-  };
+  }
 
   const onSearch = (value) => {
-    console.log("value", value);
+    setSearchString(value);
   };
 
-  const handleAddNew = () => {};
+  const fetchResidentById = (id) => {
+    dispatch(getResidentById({ id }));
+  };
 
+  const onClickEdit = (record) => {
+    fetchResidentById(record.id);
+    setIsModalEditOpen(true);
+  };
+  const onClickDetail = (record) => {
+    fetchResidentById(record.id);
+    setIsModalDetailOpen(true);
+  };
   return (
-    <div className="resident-container">
-      <div className="page-title">
-        <h1>Resident</h1>
-      </div>
-      <div className="resident-content">
-        <div className="resident-action">
-          <CustomSearch
-            placeholder="Search resident.."
-            allowClear
-            onSearch={onSearch}
-            width="30%"
-          />
-          <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+    <>
+      <div className="resident-container">
+        <div className="page-title">
+          <h1>Resident</h1>
         </div>
-        <Table
-          // rowKey="citizenId"
-          dataSource={residents}
-          columns={columns}
-          pagination={false}
-          loading={loading}
-        />
-        <CustomPagination
-          onChange={onChange}
-          currentPage={currentPage}
-          totalPage={totalPage}
-        />
+        <div className="resident-content">
+          <div className="resident-action">
+            <div className="resident-action__search-group">
+              <CustomSearch
+                placeholder="Search resident.."
+                allowClear
+                onSearch={onSearch}
+              />
+              <CustomSelect
+                suffixIcon={<AiFillFilter size={15} />}
+                title="Sort by"
+                onChange={(value) => setSortByString(value)}
+                options={[
+                  {
+                    value: "fullname",
+                    label: "Name",
+                  },
+                  {
+                    value: "phone",
+                    label: "Phone",
+                  },
+                  {
+                    value: "status",
+                    label: "Status",
+                  },
+                ]}
+              />
+              <CustomSelect
+                title="Default"
+                onChange={(value) => setSortByOrder(value)}
+                options={sortOption}
+              />
+            </div>
+            <CustomButton onClick={() => setIsModalAddOpen(true)}>
+              Add new
+            </CustomButton>
+          </div>
+          <Table
+            // rowKey="citizenId"
+            dataSource={residents}
+            columns={columns}
+            pagination={false}
+            loading={loading}
+          />
+          <CustomPagination
+            onChange={onChange}
+            currentPage={currentPage}
+            totalPage={totalPage}
+          />
+        </div>
       </div>
-    </div>
+      <ResidentFormAdd
+        loading={loading}
+        isModalOpen={isModalAddOpen}
+        setIsModalAddOpen={setIsModalAddOpen}
+        handleSubmit={getResidentList}
+        handleCancel={() => setIsModalAddOpen(false)}
+      />
+      <ResidentFormEdit
+        dispatch={dispatch}
+        loading={loading}
+        isModalOpen={isModalEditOpen}
+        setIsModalEditOpen={setIsModalEditOpen}
+        handleSubmit={getResidentList}
+        handleCancel={() => setIsModalEditOpen(false)}
+        item={residentDetail}
+      />
+      <ResidentFormDetail
+        onClose={() => setIsModalDetailOpen(false)}
+        open={isModalDetailOpen}
+        customer={residentDetail}
+      />
+      
+    </>
   );
 };
 

@@ -8,12 +8,12 @@ const contractAPI = {
         return api.get(url)
     },
     postContractAPI: (data) => {
-        const url = `/file-upload`;
+        const url = `/rent-contracts/create-contract`;
         const body = {
             ...data
         }
         return api.post(url, body);
-    }
+    },
 }
 
 export default contractAPI

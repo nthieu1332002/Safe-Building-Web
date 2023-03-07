@@ -2,6 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import store from '../../../store/store';
 import { logout } from "../../../store/user/userSlice";
+import { toast } from "react-toastify";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
@@ -19,12 +20,10 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
     return response;
   },
   (error) => {
+    toast.error(error.response.data.message)
     const { dispatch } = store;
     if (error?.response?.status === 403) {
       dispatch(logout())

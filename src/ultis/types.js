@@ -5,7 +5,7 @@ const paidColor = "cyan";
 const unpaidColor = "#faad14";
 const availableColor = "cyan"
 const unAvailableColor = "#fa541c"
-const fullColor = "gold"
+const fullColor = "#ffbc80"
 const repairColor = "yellow"
 const successColor = "cyan";
 const pendingColor = "#fffb8f"
@@ -57,12 +57,7 @@ export const buildingStatus = [
         id: 3,
         status: "REPAIR",
         color: repairColor,
-    },
-    {
-        id: 4,
-        status: "UNAVAILABLE",
-        color: unAvailableColor
-    },
+    }
 ];
 
 export const customerStatus = [
@@ -196,3 +191,13 @@ export const walletStatus = [
     }
 ];
 
+export const sortOption = [
+    {
+        value: 'asc',
+        label: 'Ascending',
+    },
+    {
+        value: 'desc',
+        label: 'Descending',
+    },
+]

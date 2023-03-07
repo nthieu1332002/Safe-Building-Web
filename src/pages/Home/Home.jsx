@@ -152,7 +152,7 @@ const Home = () => {
       <div className="table-wrapper">
         <CustomCard width="100%">
           <h3 className="card-title">New user</h3>
-          <Table dataSource={dataSource} columns={columns} />
+          <Table dataSource={dataSource} columns={columns}/>
         </CustomCard>
       </div>
     </div>

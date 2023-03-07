@@ -12,15 +12,19 @@ import { auth, provider } from "../../firebase-messaging-sw";
 
 const Login = () => {
   const dispatch = useDispatch();
-  const { loading } = useSelector(
-    (state) => state.user
-  );
-
+  const { loading } = useSelector((state) => state.user);
 
   const handleSignInWithGoogle = () => {
     signInWithPopup(auth, provider)
       .then((data) => {
-        dispatch(loginWithGoogle({ email: data.user.email }));
+        dispatch(
+          login({
+            email: data.user.email,
+            token: data.user.accessToken,
+            withEmail: true,
+            web: true,
+          })
+        );
       })
       .catch((error) => {
         console.log("error", error);
@@ -28,7 +32,14 @@ const Login = () => {
   };
 
   const onFinish = (values) => {
-    dispatch(login({ phone: values.phone, password: values.password }));
+    dispatch(
+      login({
+        phone: values.phone,
+        password: values.password,
+        withEmail: false,
+        web: true,
+      })
+    );
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);

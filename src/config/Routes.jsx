@@ -17,8 +17,8 @@ const Routes = [
         icon: <FaBuilding />,
     },
     {
-        path: "/account",
-        name: "Account",
+        path: "/admin",
+        name: "Admin",
         icon: <FaUserAlt/>,
     },
     {

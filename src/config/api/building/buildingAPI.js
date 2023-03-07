@@ -1,13 +1,20 @@
 import api from "./apiConfig";
 
 const buildingAPI = {
-    getBuildingAPI: ({ page, size }) => {
-        const url =`/buildings?page=${page}&size=${size}`;
-        return api.get(url)
+    getBuildingFilterAPI: ({page, size, searchKey, sortBy, order }) => {
+        const url = `/buildings/get-building-list?page=${page}&size=${size}&searchKey=${searchKey}&sortBy=${sortBy}&order=${order}`;
+        return api.get(url);
     },
-    searchBuildingAPI: ({ page, size, name }) => {
-        const url =`/buildings/find-building?page=${page}&size=${size}&name=${name}`;
-        return api.get(url)
+    createBuildingAPI: (data) => {
+        const url = `/buildings/add-building`;
+        const body = {
+            ...data,
+        };
+        return api.post(url, body);
+    },
+    getFlatListByBuildingIdAPI: (data) => {
+        const url = `buildings/${data}/get-flats`;
+        return api.get(url);
     },
 }
 
