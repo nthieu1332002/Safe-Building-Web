@@ -37,6 +37,7 @@ const Flat = () => {
       title: "Room number",
       dataIndex: "roomNumber",
       key: "roomNumber",
+      align: "center",
       sorter: (a, b) => a.roomNumber - b.roomNumber,
       render: (text) => <b>{text}</b>,
     },
@@ -51,12 +52,14 @@ const Flat = () => {
       title: "Price",
       dataIndex: "price",
       key: "price",
+      align: "center",
       sorter: (a, b) => a.price - b.price,
       render: (text) => <b>{text} VND</b>,
     },
     {
       title: "Status",
       dataIndex: "status",
+      align: "center",
       key: "status",
       sorter: (a, b) => a.status.localeCompare(b.status),
       render: (text) => (

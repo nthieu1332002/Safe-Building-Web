@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import contractAPI from "../../config/api/contract/contractAPI";
 
 const { getContractAPI, postContractAPI } = contractAPI;
@@ -23,9 +24,9 @@ const contractSlice = createSlice({
             })
             .addCase(getContract.fulfilled, (state, action) => {
                 state.loading = false
-                state.contracts = action.payload.data
-                state.page = action.payload.pagination.page
-                state.totalPage = action.payload.pagination.totalPage
+                state.contracts = action.payload.data.data
+                state.page = action.payload.data.pagination.page
+                state.totalPage = action.payload.data.pagination.totalPage
             })
             .addCase(getContract.rejected, (state, action) => {
                 state.loading = false
@@ -51,6 +52,7 @@ export const getContract = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getContractAPI(data);
+            console.log("res", res);
             return res;
         } catch (err) {
             console.log(err)
@@ -65,7 +67,10 @@ export const postContract = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await postContractAPI(data);
-            return res;
+            if (res.status === 201) {
+                toast.success(res.data.message)
+                return res
+            }
         } catch (err) {
             return rejectWithValue(err.response.data)
         }
