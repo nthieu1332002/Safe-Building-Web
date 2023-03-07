@@ -5,17 +5,15 @@ import {
   Input,
   InputNumber,
   Modal,
-  Radio,
   Select,
   Space,
   Upload,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { postContract } from "../../../store/contract/contractSlice";
 import { UploadOutlined } from "@ant-design/icons";
 import { getFlatByBuilding } from "../../../store/building/buildingSlice";
-import { current } from "@reduxjs/toolkit";
 const ResidentFormAddContract = ({
   isModalOpen,
   handleCancel,

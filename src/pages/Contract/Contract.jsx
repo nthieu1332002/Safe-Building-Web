@@ -17,7 +17,6 @@ import { rentContractStatus } from "../../ultis/types";
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 const Contract = () => {
-  console.log(process.env.REACT_APP_FIREBASE_ENDPOINT);
 
   const onFinish = (values) => {
     console.log("Success:", values);
