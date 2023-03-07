@@ -1,9 +1,9 @@
 import { Form, Input, InputNumber, Modal, Radio, Select, Space } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { createFlat } from "../../store/flat/flatSlice";
-import { flatStatus } from "../../ultis/types";
+import { useDispatch, useSelector } from "react-redux";
+import { createFlat } from "../../../store/flat/flatSlice";
+import { flatStatus } from "../../../ultis/types";
 
 const FlatFormAdd = ({
   loading,
@@ -11,16 +11,21 @@ const FlatFormAdd = ({
   handleCancel,
   setIsModalAddOpen,
   handleSubmit,
-  flatType,
+  flatType
 }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
+  const { buildingList } = useSelector((state) => state.building)
   const options = flatStatus.map((item) => {
     return { value: item.status, label: item.status };
   });
   const flatTypeOptions = flatType.map((item) => {
     return { value: item.id, label: item.name };
   });
+
+  const buildingListOptions = buildingList.map((item) => {
+    return { value: item.id, label: item.name };
+  })
   return (
     <Modal
       title="CREATE A NEW FLAT"
@@ -34,7 +39,6 @@ const FlatFormAdd = ({
           .then((values) => {
             const data = {
               ...values,
-              buildingId: "177db79d-d423-4c65-83fd-37b15e18c96c",
             };
             dispatch(createFlat(data)).then((res) => {
               if (res.payload.status === 201) {
@@ -55,6 +59,10 @@ const FlatFormAdd = ({
           {
             name: ["flatTypeId"],
             value: flatTypeOptions[0]?.value,
+          },
+          {
+            name: ["buildingId"],
+            value: buildingListOptions[0]?.value,
           },
           {
             name: ["status"],
@@ -82,8 +90,12 @@ const FlatFormAdd = ({
           >
             <InputNumber
               min={101}
+              max={999}
               placeholder="Room number"
               className="custom-input"
+              style={{
+                width: 180,
+              }}
             />
           </Form.Item>
           <Form.Item
@@ -97,7 +109,7 @@ const FlatFormAdd = ({
             ]}
           >
             <Select
-              options={options}
+              options={buildingListOptions}
               style={{
                 width: 120,
               }}

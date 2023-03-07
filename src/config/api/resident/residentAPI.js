@@ -1,8 +1,9 @@
 import api from "./apiConfig";
 
 const residentAPI = {
-    getResidentAPI: ({ page, size }) => {
-        const url = `/customers?page=${page}&size=${size}`;
+    getResidentAPI: ({ page, size, searchKey, sortBy, order }) => {
+        const url = `/customers/filter?page=${page}&size=${size}&searchKey=${searchKey}&sortBy=${sortBy}&order=${order}`;
+        console.log("url", url);
         return api.get(url)
     },
     createResidentAccountAPI: (data) => {
