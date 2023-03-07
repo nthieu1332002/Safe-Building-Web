@@ -14,7 +14,9 @@ import { customerStatus, rentContractStatus } from "../../../ultis/types";
 import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
 import ResidentFormAddContract from "./ResidentFormAddContract";
 import { getAllBuilding } from "../../../store/building/buildingSlice";
+
 const { Text, Link } = Typography;
+const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 
 const ResidentFormDetail = ({ title, onClose, open, customer }) => {
   const [isModalAddContractOpen, setIsModalAddContractOpen] = useState(false);
@@ -108,7 +110,7 @@ const ResidentFormDetail = ({ title, onClose, open, customer }) => {
               >
                 <List.Item.Meta
                   title={
-                    <a href={contract.link}>
+                    <a target="_blank" href={`${firebaseEndpoint}${contract.link}`}>
                       <Text ellipsis={{ tooltip: `${contract.title}` }}>
                         <FilePdfTwoTone /> {contract.title}
                       </Text>
