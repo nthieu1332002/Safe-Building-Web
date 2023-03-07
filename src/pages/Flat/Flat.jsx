@@ -5,13 +5,11 @@ import CustomAction from "../../components/CustomAction/CustomAction";
 import CustomButton from "../../components/CustomButton/CustomButton";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
-import FlatFormAdd from "../../components/FlatFormAdd/FlatFormAdd";
-import flatAPI from "../../config/api/flat/flatAPI";
+import FlatFormAdd from "../../components/Form/FlatForm/FlatFormAdd";
+import { getAllBuilding } from "../../store/building/buildingSlice";
 import { getFlat, getFlatType } from "../../store/flat/flatSlice";
 import { flatStatus } from "../../ultis/types";
 import "./style.scss";
-
-const { getFlatTypeAPI } = flatAPI;
 
 const Flat = () => {
   const dispatch = useDispatch();
@@ -114,15 +112,19 @@ const Flat = () => {
   const fetchFlatType = () => {
     dispatch(getFlatType());
   };
-
+  const fetchBuildingList = () => {
+    dispatch(getAllBuilding({ page: 1, size: 100, searchKey: '', sortBy: 'name', order: 'asc'}));
+  };
   const handleAddNew = () => {
-    fetchFlatType()
-   setIsModalAddOpen(true)
-  }
+    fetchFlatType();
+    fetchBuildingList();
+    setIsModalAddOpen(true);
+  };
   const handleUpdate = () => {
-    fetchFlatType()
-    setIsModalUpdateOpen(true)
-  }
+    fetchFlatType();
+    fetchBuildingList();
+    setIsModalUpdateOpen(true);
+  };
 
   return (
     <>
@@ -138,9 +140,7 @@ const Flat = () => {
               onSearch={onSearch}
               width="30%"
             />
-            <CustomButton onClick={handleAddNew}>
-              Add new
-            </CustomButton>
+            <CustomButton onClick={handleAddNew}>Add new</CustomButton>
           </div>
           <Table
             // rowKey="citizenId"

@@ -9,20 +9,35 @@ import {
 import "./style.scss";
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 import CustomButton from "../../components/CustomButton/CustomButton";
-import { customerStatus } from "../../ultis/types";
+import { customerStatus, sortOption } from "../../ultis/types";
 import CustomAction from "../../components/CustomAction/CustomAction";
 import ResidentFormAdd from "../../components/ResidentForm/ResidentFormAdd";
 import ResidentFormDetail from "../../components/ResidentForm/ResidentFormDetail.jsx";
-import ResidentFormEdit from "../../components/ResidentForm/ResidentFormEdit";
+import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
+import CustomSelect from "../../components/CustomSelect/CustomSelect";
+import { AiFillFilter } from "react-icons/ai";
 
 const Resident = () => {
   const dispatch = useDispatch();
-  const { residents, residentDetail, page, size, totalPage, loading } =
-    useSelector((state) => state.resident);
+  const {
+    residents,
+    residentDetail,
+    page,
+    size,
+    totalPage,
+    searchKey,
+    sortBy,
+    order,
+    loading,
+  } = useSelector((state) => state.resident);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(page);
+
+  const [searchString, setSearchString] = useState(searchKey);
+  const [sortByString, setSortByString] = useState(sortBy);
+  const [sortByOrder, setSortByOrder] = useState(order);
 
   const columns = [
     {
@@ -83,19 +98,27 @@ const Resident = () => {
     },
   ];
   const getResidentList = () => {
-    dispatch(getResident({ page: currentPage, size }));
+    dispatch(
+      getResident({
+        page: currentPage,
+        size,
+        searchKey: searchString,
+        sortBy: sortByString,
+        order: sortByOrder,
+      })
+    );
   };
 
   useEffect(() => {
     getResidentList();
-  }, [currentPage, dispatch, size]);
+  }, [currentPage, dispatch, searchString, size, sortByOrder, sortByString]);
 
-  const onChange = (page) => {
+  function onChange(page) {
     setCurrentPage(page);
-  };
+  }
 
   const onSearch = (value) => {
-    console.log("value", value);
+    setSearchString(value)
   };
 
   const fetchResidentById = (id) => {
@@ -118,12 +141,37 @@ const Resident = () => {
         </div>
         <div className="resident-content">
           <div className="resident-action">
-            <CustomSearch
-              placeholder="Search resident.."
-              allowClear
-              onSearch={onSearch}
-              width="30%"
-            />
+            <div className="resident-action__search-group">
+              <CustomSearch
+                placeholder="Search resident.."
+                allowClear
+                onSearch={onSearch}
+              />
+              <CustomSelect
+                suffixIcon={<AiFillFilter size={15} />}
+                title="Sort by"
+                onChange={(value) => setSortByString(value)}
+                options={[
+                  {
+                    value: "fullname",
+                    label: "Name",
+                  },
+                  {
+                    value: "phone",
+                    label: "Phone",
+                  },
+                  {
+                    value: "status",
+                    label: "Status",
+                  },
+                ]}
+              />
+              <CustomSelect
+                title="Default"
+                onChange={(value) => setSortByOrder(value)}
+                options={sortOption}
+              />
+            </div>
             <CustomButton onClick={() => setIsModalAddOpen(true)}>
               Add new
             </CustomButton>

@@ -1,8 +1,8 @@
 import React from "react";
 import { DatePicker, Form, Input, Modal, Radio, Select, Space } from "antd";
 import dayjs from "dayjs";
-import { customerStatus } from "../../ultis/types";
-import { updateResident } from "../../store/resident/residentSlice";
+import { customerStatus } from "../../../ultis/types";
+import { updateResident } from "../../../store/resident/residentSlice";
 
 const ResidentFormEdit = ({
   loading,

@@ -14,6 +14,9 @@ const residentSlice = createSlice({
         page: 1,
         size: 10,
         totalPage: 0,
+        searchKey: '',
+        sortBy: '',
+        order: '',
     },
     reducers: {
     },

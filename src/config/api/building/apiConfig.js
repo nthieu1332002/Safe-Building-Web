@@ -20,9 +20,6 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
     return response;
   },
   (error) => {
