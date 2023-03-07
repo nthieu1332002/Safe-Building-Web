@@ -1,7 +1,7 @@
 import { DatePicker, Form, Input, Modal, Radio, Space } from "antd";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { createResident } from "../../store/resident/residentSlice";
+import { createResident } from "../../../store/resident/residentSlice";
 
 const ResidentFormAdd = ({
   loading,

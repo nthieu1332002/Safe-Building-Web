@@ -10,21 +10,15 @@ import {
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { customerStatus, rentContractStatus } from "../../ultis/types";
+import { customerStatus, rentContractStatus } from "../../../ultis/types";
 import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
-import ContractFormAdd from "../../components/ContractForm/ContractFormAdd"
-import  getFlatType  from "../../store/flat/flatSlice";
+import ContractFormAdd from "../../../components/Form/ContractForm/ContractFormAdd";
+import getFlatType from "../../../store/flat/flatSlice";
 const { Text, Link } = Typography;
 
-
 const ResidentFormDetail = ({ title, onClose, open, customer }) => {
-  
   const [isModalAddContractOpen, setIsModalAddContractOpen] = useState(false);
-  const {  flatType} = useSelector(
-    (state) => state.flat
-  );
-  
-
+  const { flatType } = useSelector((state) => state.flat);
 
   return (
     <Drawer
@@ -88,7 +82,10 @@ const ResidentFormDetail = ({ title, onClose, open, customer }) => {
           renderItem={(contract) => (
             <List.Item
               actions={[
-                <Button type="text" onClick={() => setIsModalAddContractOpen(true)}>
+                <Button
+                  type="text"
+                  onClick={() => setIsModalAddContractOpen(true)}
+                >
                   <EditOutlined />
                 </Button>,
               ]}
@@ -127,11 +124,10 @@ const ResidentFormDetail = ({ title, onClose, open, customer }) => {
         <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
       )}
       <ContractFormAdd>
-        onClose ={() => setIsModalAddContractOpen(false) }
+        onClose ={() => setIsModalAddContractOpen(false)}
         open={isModalAddContractOpen}
         flatType = {flatType}
         customerId = {customer.id}
-        
       </ContractFormAdd>
     </Drawer>
   );
