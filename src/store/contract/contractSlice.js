@@ -52,7 +52,6 @@ export const getContract = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getContractAPI(data);
-            console.log("res", res);
             return res;
         } catch (err) {
             console.log(err)
