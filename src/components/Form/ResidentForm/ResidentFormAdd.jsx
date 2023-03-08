@@ -52,7 +52,7 @@ const ResidentFormAdd = ({
         }}
       >
         <Form.Item
-          name="fullname"
+          name="fullName"
           label="Full Name"
           rules={[
             {
