@@ -42,7 +42,6 @@ export const getAdminAccount = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getAdminAccountAPI(data);
-            console.log(res);
             return res;
         } catch (err) {
             console.log(err)

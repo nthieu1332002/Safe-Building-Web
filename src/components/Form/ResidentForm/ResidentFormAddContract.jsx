@@ -27,9 +27,6 @@ const ResidentFormAddContract = ({
   const { buildingList, flatList, loading } = useSelector((state) => state.building);
   const [currentBuilding, setCurrentBuilding] = useState(null);
 
-  console.log("currentBuilding", currentBuilding);
-  console.log("buildingList", buildingList);
-
   useEffect(() => {
     if (buildingList.length > 0) {
       setCurrentBuilding(buildingList[0].id);
@@ -53,7 +50,6 @@ const ResidentFormAddContract = ({
   });
 
   const normFile = (e) => {
-    console.log("Upload event:", e);
     if (Array.isArray(e)) {
       return e;
     }
@@ -73,7 +69,6 @@ const ResidentFormAddContract = ({
         form
           .validateFields()
           .then((fieldsValue) => {
-            console.log("fieldsValue", fieldsValue);
             const values = {
               files: fieldsValue.files[0].originFileObj,
               requestContract: JSON.stringify({
@@ -84,9 +79,7 @@ const ResidentFormAddContract = ({
                 expiryDate: fieldsValue["expiryDate"].format("YYYY-MM-DD"),
               })
             };
-            console.log("values", values);
             dispatch(postContract(values)).then((res) => {
-              console.log("ré", res);
               if (res.payload.status === 201) {
                 form.resetFields();
                 setIsModalAddContractOpen(false);
