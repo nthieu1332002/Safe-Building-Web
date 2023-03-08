@@ -120,9 +120,7 @@ export const getFlatByBuilding = createAsyncThunk(
     "building/getFlatByBuilding",
     async (data, { rejectWithValue }) => {
         try {
-            console.log("getFlatByBuilding", data);
             const res = await getFlatListByBuildingIdAPI(data);
-            console.log("res", res);
             return res;
         } catch (err) {
             console.log(err)
