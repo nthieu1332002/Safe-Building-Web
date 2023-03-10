@@ -16,7 +16,7 @@ import ResidentFormDetail from "../../components/Form/ResidentForm/ResidentFormD
 import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
 import CustomSelect from "../../components/CustomSelect/CustomSelect";
 import { AiFillFilter } from "react-icons/ai";
-import ResidentFormAddContract from "../../components/Form/ResidentForm/ResidentFormAddContract";
+import ResidentFormAddContract from "../../components/Form/ContractForm/ContractFormAdd";
 
 const Resident = () => {
   const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const Resident = () => {
     {
       title: "#",
       key: "index",
-      render: (value, item, index) => (page - 1) * 10 + index,
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
       title: "Full name",
@@ -208,11 +208,11 @@ const Resident = () => {
         item={residentDetail}
       />
       <ResidentFormDetail
+        dispatch={dispatch}
         onClose={() => setIsModalDetailOpen(false)}
         open={isModalDetailOpen}
         customer={residentDetail}
       />
-      
     </>
   );
 };

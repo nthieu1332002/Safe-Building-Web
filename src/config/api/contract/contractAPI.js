@@ -14,6 +14,17 @@ const contractAPI = {
         }
         return api.post(url, body);
     },
+    getContractByIdAPI: ({id}) => {
+        const url =`/rent-contracts/${id}`;
+        return api.get(url)
+    },
+    editContractAPI: (data) => {
+        const url = `/rent-contracts/edit-contract`;
+        const body = {
+            ...data
+        }
+        return api.put(url, body);
+    },
 }
 
 export default contractAPI

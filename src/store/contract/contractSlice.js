@@ -2,12 +2,13 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import contractAPI from "../../config/api/contract/contractAPI";
 
-const { getContractAPI, postContractAPI } = contractAPI;
+const { getContractAPI, postContractAPI, getContractByIdAPI, editContractAPI } = contractAPI;
 
 const contractSlice = createSlice({
     name: "contract",
     initialState: {
         contracts: [],
+        contractDetail: {},
         loading: false,
         error: '',
         page: 1,
@@ -43,7 +44,9 @@ const contractSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message
             })
-
+            .addCase(getContractById.fulfilled, (state, action) => {
+                state.contractDetail = action.payload.data.data
+            })
     }
 })
 
@@ -76,5 +79,33 @@ export const postContract = createAsyncThunk(
     }
 );
 
+
+export const editContract = createAsyncThunk(
+    "contract/editContract",
+    async (data, { rejectWithValue }) => {
+        try {
+            const res = await editContractAPI(data);
+            if (res.status === 201) {
+                toast.success(res.data.message)
+                return res
+            }
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
+);
+
+export const getContractById = createAsyncThunk(
+    "contract/getContractById",
+    async (data, { rejectWithValue }) => {
+        try {
+            const res = await getContractByIdAPI(data);
+            return res;
+        } catch (err) {
+            console.log(err)
+            return rejectWithValue(err.response.data)
+        }
+    }
+);
 
 export default contractSlice
