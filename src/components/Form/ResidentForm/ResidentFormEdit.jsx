@@ -74,7 +74,7 @@ const ResidentFormEdit = ({
           },
           {
             name: ["dateOfBirth"],
-            value: dayjs(item.dateOfBirth, "YYYY/DD/MM"),
+            value: dayjs(item.dateOfBirth, "YYYY/MM/DD"),
           },
           {
             name: ["address"],
