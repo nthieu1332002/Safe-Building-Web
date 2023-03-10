@@ -24,7 +24,8 @@ const ResidentFormAddContract = ({
 }) => {
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
-  const { buildingList, flatList, loading } = useSelector((state) => state.building);
+  const { buildingList, flatList } = useSelector((state) => state.building);
+  const { loading } = useSelector((state) => state.contract);
   const [currentBuilding, setCurrentBuilding] = useState(null);
 
   useEffect(() => {
@@ -57,14 +58,15 @@ const ResidentFormAddContract = ({
   };
 
   const onChange = (value) => {
-    setCurrentBuilding(value)
-  }
+    setCurrentBuilding(value);
+  };
   return (
     <Modal
       title="CREATE CONTRACT"
       open={isModalOpen}
       onCancel={handleCancel}
       okText="Create"
+      confirmLoading={loading}
       onOk={() => {
         form
           .validateFields()
@@ -76,8 +78,9 @@ const ResidentFormAddContract = ({
                 flatId: fieldsValue.flatId,
                 value: fieldsValue.value,
                 title: fieldsValue.title,
+                startDate: fieldsValue["startDate"].format("YYYY-MM-DD"),
                 expiryDate: fieldsValue["expiryDate"].format("YYYY-MM-DD"),
-              })
+              }),
             };
             dispatch(postContract(values)).then((res) => {
               if (res.payload.status === 201) {
@@ -156,8 +159,7 @@ const ResidentFormAddContract = ({
             disabled={flatListOptions.length === 0}
           >
             <Select
-            disabled={flatListOptions.length === 0}
-
+              disabled={flatListOptions.length === 0}
               options={flatListOptions}
               style={{
                 width: 180,
@@ -165,24 +167,40 @@ const ResidentFormAddContract = ({
             />
           </Form.Item>
         </Space>
+        <Form.Item
+          name="value"
+          label="Value"
+          rules={[
+            {
+              required: true,
+              type: "number",
+              message: "Value is not valid.",
+            },
+          ]}
+        >
+          <InputNumber
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+            min={1}
+            placeholder="Value"
+            className="custom-input"
+            addonAfter="VND"
+          />
+        </Form.Item>
         <Space size="large">
           <Form.Item
-            name="value"
-            label="Value"
+            name="startDate"
+            label="Start date"
             rules={[
               {
                 required: true,
-                type: "number",
-                message: "Value is not valid.",
+                message: "Start date is required.",
               },
             ]}
           >
-            <InputNumber
-              min={1}
-              placeholder="Value"
-              className="custom-input"
-              addonAfter="VND"
-            />
+            <DatePicker format="DD/MM/YYYY" />
           </Form.Item>
           <Form.Item
             name="expiryDate"

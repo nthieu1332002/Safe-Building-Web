@@ -12,15 +12,34 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { customerStatus, rentContractStatus } from "../../../ultis/types";
 import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
-import ResidentFormAddContract from "./ResidentFormAddContract";
+import ContractFormAdd from "../ContractForm/ContractFormAdd";
 import { getAllBuilding } from "../../../store/building/buildingSlice";
+import ContractFormEdit from "../ContractForm/ContractFormEdit";
+import { getContractById } from "../../../store/contract/contractSlice";
 
-const { Text, Link } = Typography;
+const { Text} = Typography;
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 
-const ResidentFormDetail = ({ title, onClose, open, customer }) => {
+const ResidentFormDetail = ({ dispatch, title, onClose, open, customer }) => {
   const [isModalAddContractOpen, setIsModalAddContractOpen] = useState(false);
-  const dispatch = useDispatch();
+  const [isModalEditContractOpen, setIsModalEditContractOpen] = useState(false);
+  const { contractDetail } = useSelector(
+    (state) => state.contract
+  );
+
+  const handleEditContract = (id) => {
+    dispatch(
+      getAllBuilding({
+        page: 1,
+        size: 100,
+        searchKey: "",
+        sortBy: "name",
+        order: "asc",
+      })
+    );
+    dispatch(getContractById({id: id}));
+    setIsModalEditContractOpen(true);
+  }
   return (
     <>
       <Drawer
@@ -103,7 +122,7 @@ const ResidentFormDetail = ({ title, onClose, open, customer }) => {
             renderItem={(contract) => (
               <List.Item
                 actions={[
-                  <Button type="text">
+                  <Button type="text" onClick={() => handleEditContract(contract.id)}>
                     <EditOutlined />
                   </Button>,
                 ]}
@@ -142,12 +161,19 @@ const ResidentFormDetail = ({ title, onClose, open, customer }) => {
           <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
         )}
       </Drawer>
-      <ResidentFormAddContract
+      <ContractFormAdd
         dispatch={dispatch}
         handleCancel={() => setIsModalAddContractOpen(false)}
         isModalOpen={isModalAddContractOpen}
         setIsModalAddContractOpen={setIsModalAddContractOpen}
         customer={customer}
+      />
+      <ContractFormEdit
+        dispatch={dispatch}
+        handleCancel={() => setIsModalEditContractOpen(false)}
+        isModalOpen={isModalEditContractOpen}
+        setIsModalEditContractOpen={setIsModalEditContractOpen}
+        contract={contractDetail}
       />
     </>
   );

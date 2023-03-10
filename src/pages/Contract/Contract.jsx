@@ -1,23 +1,22 @@
-import { Table, Tag, Form, Input, Button, Modal } from "antd";
+import { Table, Tag, Form, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import moment from "moment";
+import { FilePdfTwoTone } from "@ant-design/icons";
 
 import "./style.scss";
 
-import { getContract, postContract } from "../../store/contract/contractSlice";
-
-import CustomButton from "../../components/CustomButton/CustomButton";
+import { getContract } from "../../store/contract/contractSlice";
 
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 
-import "./style.scss";
 import { rentContractStatus } from "../../ultis/types";
+import CustomAction from "../../components/CustomAction/CustomAction";
+const { Text } = Typography;
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 const Contract = () => {
-
   const onFinish = (values) => {
     console.log("Success:", values);
   };
@@ -27,20 +26,36 @@ const Contract = () => {
     (state) => state.contract
   );
   const [currentPage, setCurrentPage] = useState(page);
+  const [ellipsis, setEllipsis] = useState(true);
+
   const columns = [
     {
       title: "#",
       key: "index",
-      render: (value, item, index) => (page - 1) * 10 + index,
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
-      title: "Id",
-      dataIndex: "id",
-      key: "id",
-      render: (text) => <b>{text}</b>,
+      title: "Contract",
+      dataIndex: ["title", "rentContractLink"],
+      // key: "rentContractLink",
+      render: (text, record) => (
+        <b>
+          <a
+            target="_blank"
+            href={`${firebaseEndpoint}${record.rentContractLink}`}
+          >
+            <Text
+              ellipsis={{ tooltip: `${record.title}` }}
+              style={ellipsis ? { width: 250 } : undefined}
+            >
+              <FilePdfTwoTone /> {record.title}
+            </Text>
+          </a>
+        </b>
+      ),
     },
     {
-      title: "Customer Name",
+      title: "Resident",
       dataIndex: "customerName",
       key: "customerName",
       sorter: (a, b) => a.customerName.localeCompare(b.customerName),
@@ -69,24 +84,6 @@ const Contract = () => {
       render: (text) => <b>{text}</b>,
     },
     {
-      title: "Rent-Contract Link",
-      dataIndex: "rentContractLink",
-      key: "rentContractLink",
-      render: (text) => <b>{`${firebaseEndpoint}${text}`}</b>,
-    },
-    {
-      title: "customerId",
-      dataIndex: "customerId",
-      key: "customerId",
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "flatId",
-      dataIndex: "flatId",
-      key: "flatId",
-      render: (text) => <b>{text}</b>,
-    },
-    {
       title: "Status",
       dataIndex: "status",
       key: "status",
@@ -108,6 +105,20 @@ const Contract = () => {
           })}
         </>
       ),
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      align: "center",
+      render: (_, record) => {
+        return (
+          <CustomAction
+            type="contract"
+            // onClickEdit={() => onClickEdit(record)}
+            // onClickDetail={() => onClickDetail(record)}
+          />
+        );
+      },
     },
   ];
 
@@ -141,33 +152,7 @@ const Contract = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const [selectedFile, setSelectedFile] = useState();
-  const [isFilePicked, setIsFilePicked] = useState(false);
-  // Handle file upload event and update state
-  const changeHandler = (event) => {
-    setSelectedFile(event.target.files[0]);
-    setIsFilePicked(true);
-  };
-  const sendInfo = () => {
-    const formData = new FormData();
 
-    formData.append("File", selectedFile);
-    const value = {
-      file: selectedFile,
-      customerId: form.getFieldValue("customer-id"),
-      flatId: form.getFieldValue("flat-id"),
-      rentContractId: form.getFieldValue("contract-id"),
-    };
-    console.log("value", value);
-    // dispatch(
-    //   postContract({
-    //     file: selectedFile,
-    //     customerId: form.getFieldValue("customer-id"),
-    //     flatId: form.getFieldValue("flat-id"),
-    //     rentContractId: form.getFieldValue("contract-id"),
-    //   })
-    // );
-  };
   const [form] = Form.useForm();
   const reader = new FileReader();
   return (
@@ -183,77 +168,7 @@ const Contract = () => {
             onSearch={onSearch}
             width="30%"
           />
-          <CustomButton onClick={showModal}>Add new</CustomButton>
-
-          <Modal
-            title="Basic Modal"
-            open={isModalOpen}
-            onOk={handleOk}
-            onCancel={handleCancel}
-            footer={null}
-          >
-            <Form
-              form={form}
-              name="login-form"
-              onFinish={onFinish}
-              onFinishFailed={onFinish}
-              autoComplete="off"
-              encType="multipart/form-data"
-              style={{
-                width: "100%",
-              }}
-            >
-              <Form.Item
-                name="customer-id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Customer ID is required.",
-                  },
-                ]}
-              >
-                <Input placeholder="Customer ID" className="custom-input" />
-              </Form.Item>
-              <Form.Item
-                name="flat-id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Flat ID is required",
-                  },
-                ]}
-              >
-                <Input placeholder="Flat ID" className="custom-input" />
-              </Form.Item>
-              <Form.Item
-                name="contract-id"
-                rules={[
-                  {
-                    required: true,
-                    message: "Contract ID is required",
-                  },
-                ]}
-              >
-                <Input placeholder="Contract ID" className="custom-input" />
-              </Form.Item>
-              <Form.Item
-                name="upload-file"
-                rules={[
-                  {
-                    required: true,
-                    message: "Contract File is required",
-                  },
-                ]}
-              >
-                <Input type="file" name="file" onChange={changeHandler} />
-              </Form.Item>
-              <Form.Item>
-                <Button type="primary" htmlType="submit" onClick={sendInfo}>
-                  Submit
-                </Button>
-              </Form.Item>
-            </Form>
-          </Modal>
+          {/* <CustomButton onClick={showModal}>Add new</CustomButton> */}
         </div>
         <Table
           // rowKey="citizenId"

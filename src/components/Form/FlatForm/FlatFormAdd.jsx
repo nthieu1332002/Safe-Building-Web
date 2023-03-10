@@ -11,11 +11,11 @@ const FlatFormAdd = ({
   handleCancel,
   setIsModalAddOpen,
   handleSubmit,
-  flatType
+  flatType,
 }) => {
   const [form] = Form.useForm();
   const dispatch = useDispatch();
-  const { buildingList } = useSelector((state) => state.building)
+  const { buildingList } = useSelector((state) => state.building);
   const options = flatStatus.map((item) => {
     return { value: item.status, label: item.status };
   });
@@ -25,7 +25,7 @@ const FlatFormAdd = ({
 
   const buildingListOptions = buildingList.map((item) => {
     return { value: item.id, label: item.name };
-  })
+  });
   return (
     <Modal
       title="CREATE A NEW FLAT"
@@ -128,6 +128,10 @@ const FlatFormAdd = ({
           ]}
         >
           <InputNumber
+            formatter={(value) =>
+              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+            }
+            parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
             min={1}
             placeholder="Price"
             className="custom-input"

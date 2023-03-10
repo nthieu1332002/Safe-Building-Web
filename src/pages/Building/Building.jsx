@@ -36,7 +36,7 @@ const Building = () => {
     {
       title: "#",
       key: "index",
-      render: (value, item, index) => (page - 1) * 10 + index,
+      render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
       title: "Building name",
