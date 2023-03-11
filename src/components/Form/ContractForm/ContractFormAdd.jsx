@@ -81,7 +81,9 @@ const ResidentFormAddContract = ({
                 startDate: fieldsValue["startDate"].format("YYYY-MM-DD"),
                 expiryDate: fieldsValue["expiryDate"].format("YYYY-MM-DD"),
               }),
+              deviceToken: 'e5P0xOyYRe6HuadvjABCQe:APA91bHql95fAq4V5LFYV8djxLdfA0cw1lX_fo6z1dNhCxMxNmDsztd2mDVPGgJxgV5qDXs0YMwRWdUdZ-zR2xfI_N-fwA5-bFlN49KrHru1UYvGO-D0X2mCKJbxWag59Ucc_SRmOQPP',
             };
+            console.log("values", values);
             dispatch(postContract(values)).then((res) => {
               if (res.payload.status === 201) {
                 form.resetFields();
