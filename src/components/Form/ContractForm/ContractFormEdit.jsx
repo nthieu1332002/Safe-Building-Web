@@ -29,7 +29,6 @@ const ContractFormEdit = ({
   contract,
   dispatch,
 }) => {
-  console.log("contract", contract);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState([]);
   const { buildingList, flatList } = useSelector((state) => state.building);
@@ -37,7 +36,6 @@ const ContractFormEdit = ({
 
   const [currentBuilding, setCurrentBuilding] = useState(contract.buildingId);
 
-  console.log("buildingList", buildingList);
   useEffect(() => {
     if (buildingList.length > 0) {
       setCurrentBuilding(buildingList[0].id);
@@ -61,7 +59,6 @@ const ContractFormEdit = ({
   });
 
   const normFile = (e) => {
-    console.log("e", e);
     if (Array.isArray(e)) {
       return e;
     }
@@ -83,7 +80,6 @@ const ContractFormEdit = ({
         form
           .validateFields()
           .then((fieldsValue) => {
-            console.log("fieldsValue", fieldsValue);
             const values = {
               files: fieldsValue.files[0].originFileObj || '',
               requestContract: JSON.stringify({

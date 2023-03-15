@@ -95,6 +95,7 @@ export const getResidentById = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getResidentAccountByIdAPI(data);
+            console.log("res", res);
             return res;
         } catch (err) {
             console.log(err)

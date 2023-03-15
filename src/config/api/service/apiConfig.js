@@ -7,7 +7,7 @@ import { logout } from "../../../store/user/userSlice";
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "multipart/form-data",
   },
 });
 
@@ -20,9 +20,6 @@ api.interceptors.request.use(async (config) => {
 
 api.interceptors.response.use(
   (response) => {
-    if (response && response.data) {
-      return response.data;
-    }
     return response;
   },
   (error) => {

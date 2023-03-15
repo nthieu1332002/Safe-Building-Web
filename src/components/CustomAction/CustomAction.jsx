@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
 import { BsThreeDots } from "react-icons/bs";
-import { AiOutlineEdit, AiOutlineDelete,AiOutlineEye } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 const CustomAction = ({
   type,
   onConfirm,

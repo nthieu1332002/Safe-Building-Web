@@ -35,6 +35,35 @@ const Contract = () => {
       render: (value, item, index) => (page - 1) * 10 + index + 1,
     },
     {
+      title: "Building",
+      dataIndex: "buildingName",
+      key: "buildingName",
+      sorter: (a, b) => a.buildingName.localeCompare(b.buildingName),
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Room",
+      dataIndex: "roomNumber",
+      key: "roomNumber",
+      sorter: (a, b) => a.roomNumber - b.roomNumber,
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Resident",
+      dataIndex: "customerName",
+      key: "customerName",
+      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expiryDate",
+      key: "expiryDate",
+      sorter: (a, b) =>
+        moment(a.expiryDate).unix() - moment(b.expiryDate).unix(),
+      render: (text) => <b>{text}</b>,
+    },
+    {
       title: "Contract",
       dataIndex: ["title", "rentContractLink"],
       // key: "rentContractLink",
@@ -53,35 +82,6 @@ const Contract = () => {
           </a>
         </b>
       ),
-    },
-    {
-      title: "Resident",
-      dataIndex: "customerName",
-      key: "customerName",
-      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Room",
-      dataIndex: "roomNumber",
-      key: "roomNumber",
-      sorter: (a, b) => a.roomNumber - b.roomNumber,
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Building",
-      dataIndex: "buildingName",
-      key: "buildingName",
-      sorter: (a, b) => a.buildingName.localeCompare(b.buildingName),
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Expiration Date",
-      dataIndex: "expiryDate",
-      key: "expiryDate",
-      sorter: (a, b) =>
-        moment(a.expiryDate).unix() - moment(b.expiryDate).unix(),
-      render: (text) => <b>{text}</b>,
     },
     {
       title: "Status",

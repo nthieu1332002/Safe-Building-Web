@@ -54,7 +54,7 @@ const Flat = () => {
       key: "price",
       align: "center",
       sorter: (a, b) => a.price - b.price,
-      render: (text) => <b>{text} VND</b>,
+      render: (text) => <b>{new Intl.NumberFormat("en-Us").format(text)} VND</b>,
     },
     {
       title: "Status",

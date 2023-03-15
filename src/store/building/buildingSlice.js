@@ -91,7 +91,9 @@ export const getAllBuilding = createAsyncThunk(
     "building/getAllBuilding",
     async (data, { rejectWithValue }) => {
         try {
+            console.log("vô");
             const res = await getBuildingFilterAPI(data);
+            console.log("building", res);
             return res;
         } catch (err) {
             console.log(err)
