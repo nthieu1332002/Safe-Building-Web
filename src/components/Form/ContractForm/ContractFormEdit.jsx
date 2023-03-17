@@ -95,7 +95,6 @@ const ContractFormEdit = ({
                 oldLink: contract.rentContractLink
               }),
             };
-            console.log("values", values);
             dispatch(postContract(values)).then((res) => {
               if (res.payload.status === 201) {
                 form.resetFields();

@@ -99,7 +99,6 @@ const ResidentFormAddContract = ({
               }),
               deviceTokens: JSON.stringify(token),
             };
-            console.log("values", values);
             dispatch(postContract(values)).then((res) => {
               if (res.payload.status === 201) {
                 form.resetFields();

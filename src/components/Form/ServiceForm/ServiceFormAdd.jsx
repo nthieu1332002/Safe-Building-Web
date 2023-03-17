@@ -50,7 +50,6 @@ const ServiceFormAdd = ({
         form
           .validateFields()
           .then((fieldsValue) => {
-            console.log(fieldsValue);
             const values = {
               icon: fieldsValue.icon[0].originFileObj,
               requestObject: JSON.stringify({
@@ -60,9 +59,7 @@ const ServiceFormAdd = ({
                 status: fieldsValue.status,
               }),
             };
-            console.log("values", values);
             dispatch(createService(values)).then((res) => {
-                console.log("resss", res);
               if (res.payload.status === 201) {
                 form.resetFields();
                 setIsModalAddOpen(false);
