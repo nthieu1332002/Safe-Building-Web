@@ -6,7 +6,7 @@ import userSlice from "./user/userSlice";
 import flatSlice from "./flat/flatSlice.js";
 import buildingSlice from "./building/buildingSlice.js";
 import adminSlice from "./admin/adminSlice.js";
-
+import dashboardSlice from "./dashboard/dashboardSlice.js";
 
 const store = configureStore({
     reducer: {
@@ -17,6 +17,7 @@ const store = configureStore({
         flat: flatSlice.reducer,
         building: buildingSlice.reducer,
         admin: adminSlice.reducer,
+        dashboard: dashboardSlice.reducer
     },
     middleware: [
         ...getDefaultMiddleware({

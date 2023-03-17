@@ -134,6 +134,10 @@ const Resident = () => {
     fetchResidentById(record.id);
     setIsModalDetailOpen(true);
   };
+  const onDelete = () => {
+    fetchResidentById(residentDetail.id);
+    setIsModalDetailOpen(true);
+  }
   return (
     <>
       <div className="resident-container">
@@ -212,6 +216,7 @@ const Resident = () => {
         onClose={() => setIsModalDetailOpen(false)}
         open={isModalDetailOpen}
         customer={residentDetail}
+        onDelete={onDelete}
       />
     </>
   );

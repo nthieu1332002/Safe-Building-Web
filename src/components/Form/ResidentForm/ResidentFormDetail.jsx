@@ -7,39 +7,35 @@ import {
   Empty,
   List,
   Typography,
+  Popconfirm,
 } from "antd";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { customerStatus, rentContractStatus } from "../../../ultis/types";
 import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
+import { AiOutlineDelete } from "react-icons/ai";
 import ContractFormAdd from "../ContractForm/ContractFormAdd";
 import { getAllBuilding } from "../../../store/building/buildingSlice";
-import ContractFormEdit from "../ContractForm/ContractFormEdit";
-import { getContractById } from "../../../store/contract/contractSlice";
+import { deleteContractById } from "../../../store/contract/contractSlice";
 
-const { Text} = Typography;
+const { Text } = Typography;
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 
-const ResidentFormDetail = ({ dispatch, title, onClose, open, customer }) => {
+const ResidentFormDetail = ({
+  dispatch,
+  title,
+  onClose,
+  open,
+  customer,
+  onDelete,
+}) => {
   const [isModalAddContractOpen, setIsModalAddContractOpen] = useState(false);
-  const [isModalEditContractOpen, setIsModalEditContractOpen] = useState(false);
-  const { contractDetail } = useSelector(
-    (state) => state.contract
-  );
 
-  const handleEditContract = (id) => {
-    dispatch(
-      getAllBuilding({
-        page: 1,
-        size: 100,
-        searchKey: "",
-        sortBy: "name",
-        order: "asc",
-      })
-    );
-    dispatch(getContractById({id: id}));
-    setIsModalEditContractOpen(true);
-  }
+  const handleDeleteContract = (id) => {
+    dispatch(deleteContractById({ id: id })).then(() => {
+      onDelete();
+    });
+  };
   return (
     <>
       <Drawer
@@ -122,14 +118,30 @@ const ResidentFormDetail = ({ dispatch, title, onClose, open, customer }) => {
             renderItem={(contract) => (
               <List.Item
                 actions={[
-                  <Button type="text" onClick={() => handleEditContract(contract.id)}>
-                    <EditOutlined />
-                  </Button>,
+                  <Popconfirm
+                    title="Delete contract"
+                    description="Are you sure to delete this contract?"
+                    onConfirm={() => handleDeleteContract(contract.id)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <Button
+                      disabled={contract.status === "DELETED"}
+                      danger
+                      type="text"
+                    >
+                      <AiOutlineDelete />
+                    </Button>
+                    ,
+                  </Popconfirm>,
                 ]}
               >
                 <List.Item.Meta
                   title={
-                    <a target="_blank" href={`${firebaseEndpoint}${contract.link}`}>
+                    <a
+                      target="_blank"
+                      href={`${firebaseEndpoint}${contract.link}`}
+                    >
                       <Text ellipsis={{ tooltip: `${contract.title}` }}>
                         <FilePdfTwoTone /> {contract.title}
                       </Text>
@@ -168,13 +180,13 @@ const ResidentFormDetail = ({ dispatch, title, onClose, open, customer }) => {
         setIsModalAddContractOpen={setIsModalAddContractOpen}
         customer={customer}
       />
-      <ContractFormEdit
+      {/* <ContractFormEdit
         dispatch={dispatch}
         handleCancel={() => setIsModalEditContractOpen(false)}
         isModalOpen={isModalEditContractOpen}
         setIsModalEditContractOpen={setIsModalEditContractOpen}
         contract={contractDetail}
-      />
+      /> */}
     </>
   );
 };
