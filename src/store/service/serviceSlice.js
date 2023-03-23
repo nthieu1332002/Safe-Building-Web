@@ -67,7 +67,6 @@ export const createService = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await createServiceAPI(data);
-            console.log(res);
             if (res.status === 201) {
                 toast.success(res.data.message)
                 return res

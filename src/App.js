@@ -18,6 +18,7 @@ import Layout from './pages/Layout/Layout.jsx'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import Error from './pages/Error/Error'
+import Bill from './pages/Bill/Bill'
 
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
               <Route path="/building" element={<Building />}></Route>
               <Route path="/admin" element={<Admin />}></Route>
               <Route path="/resident" element={<Resident />}></Route>
+              <Route path="/bill" element={<Bill />}></Route>
               <Route path="/flat" element={<Flat />}></Route>
               <Route path="/service" element={<Service />}></Route>
               <Route path="/contract" element={<Contract />}></Route>

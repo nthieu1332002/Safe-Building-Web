@@ -9,10 +9,9 @@ import {
   Typography,
   Popconfirm,
 } from "antd";
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
 import { customerStatus, rentContractStatus } from "../../../ultis/types";
-import { FilePdfTwoTone, EditOutlined } from "@ant-design/icons";
+import { FilePdfTwoTone } from "@ant-design/icons";
 import { AiOutlineDelete } from "react-icons/ai";
 import ContractFormAdd from "../ContractForm/ContractFormAdd";
 import { getAllBuilding } from "../../../store/building/buildingSlice";
@@ -23,7 +22,6 @@ const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 
 const ResidentFormDetail = ({
   dispatch,
-  title,
   onClose,
   open,
   customer,

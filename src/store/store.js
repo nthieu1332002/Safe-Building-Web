@@ -7,17 +7,21 @@ import flatSlice from "./flat/flatSlice.js";
 import buildingSlice from "./building/buildingSlice.js";
 import adminSlice from "./admin/adminSlice.js";
 import dashboardSlice from "./dashboard/dashboardSlice.js";
+import billSlice from "./bill/billSlice.js";
+import notificationSlice from "./notification/notificationSlice.js";
 
 const store = configureStore({
     reducer: {
         user: userSlice.reducer,
         resident: residentSlice.reducer,
         contract: contractSlice.reducer,
+        bill: billSlice.reducer,
         service: serviceSlice.reducer,
         flat: flatSlice.reducer,
         building: buildingSlice.reducer,
         admin: adminSlice.reducer,
-        dashboard: dashboardSlice.reducer
+        dashboard: dashboardSlice.reducer,
+        notification: notificationSlice.reducer
     },
     middleware: [
         ...getDefaultMiddleware({

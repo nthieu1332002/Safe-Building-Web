@@ -10,7 +10,7 @@ const CustomAction = ({
   disabled,
   onClickEdit,
   onClickDelete,
-  onClickDetail
+  onClickDetail,
 }) => {
   let items = [];
   switch (type) {
@@ -26,7 +26,7 @@ const CustomAction = ({
           key: "1",
           icon: <AiOutlineEdit />,
         },
-        
+
         {
           type: "divider",
         },
@@ -39,6 +39,15 @@ const CustomAction = ({
           key: "2",
           icon: <AiOutlineDelete className="delete" />,
         },
+      ];
+      break;
+    case "bill":
+      items = [
+        {
+          label: <div onClick={onClickDetail}>Detail</div>,
+          key: "0",
+          icon: <AiOutlineEye />,
+        }
       ];
       break;
     default:

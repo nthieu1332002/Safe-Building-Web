@@ -100,7 +100,6 @@ export const getServiceByMonthYear = createAsyncThunk(
     async (data, { rejectWithValue }) => {
         try {
             const res = await getServicesByMonthYearAPI(data);
-            console.log("res", res);
             return res
         } catch (err) {
             console.log(err)

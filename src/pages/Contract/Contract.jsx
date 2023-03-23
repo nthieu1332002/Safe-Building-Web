@@ -7,7 +7,7 @@ import { FilePdfTwoTone } from "@ant-design/icons";
 
 import "./style.scss";
 
-import { getContract } from "../../store/contract/contractSlice";
+import { deleteContractById, getContract } from "../../store/contract/contractSlice";
 
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 
@@ -17,17 +17,27 @@ const { Text } = Typography;
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 const Contract = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
   const dispatch = useDispatch();
   const { contracts, page, size, totalPage, loading } = useSelector(
     (state) => state.contract
   );
   const [currentPage, setCurrentPage] = useState(page);
   const [ellipsis, setEllipsis] = useState(true);
+  
+  const getContractList = () => {
+    dispatch(getContract({ page: currentPage, size }));
+  };
 
+  useEffect(() => {
+   
+    getContractList();
+  }, [currentPage, dispatch, size]);
+
+  const handleDeleteContract = (id) => {
+    dispatch(deleteContractById({ id: id })).then(() => {
+      getContractList();
+    })
+  };
   const columns = [
     {
       title: "#",
@@ -114,6 +124,7 @@ const Contract = () => {
         return (
           <CustomAction
             type="contract"
+            onClickDelete={() => handleDeleteContract(record.id)}
             // onClickEdit={() => onClickEdit(record)}
             // onClickDetail={() => onClickDetail(record)}
           />
@@ -122,12 +133,7 @@ const Contract = () => {
     },
   ];
 
-  useEffect(() => {
-    const getContractList = () => {
-      dispatch(getContract({ page: currentPage, size }));
-    };
-    getContractList();
-  }, [currentPage, dispatch, size]);
+  
 
   const onChange = (page) => {
     setCurrentPage(page);
