@@ -25,7 +25,7 @@ const Bill = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
   const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
-  console.log(isMonthlyModalOpen);
+  console.log(isModalDetailOpen);
   const columns = [
     {
       title: "#",
