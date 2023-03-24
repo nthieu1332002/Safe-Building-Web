@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Table, Tag } from "antd";
 
 const BillFormDetail = ({ bill, isModalOpen, handleCancel }) => {
+  const [data, setData] = useState(null)
+  useEffect(() => {
+    if (bill.length > 0) {
+      setData(bill)
+    }
+  }, [bill])
   const columns = [
     {
       title: "Service",
@@ -32,7 +38,7 @@ const BillFormDetail = ({ bill, isModalOpen, handleCancel }) => {
   return (
     <Modal title="BILL DETAIL" open={isModalOpen} onCancel={handleCancel}>
       <Table
-        dataSource={bill}
+        dataSource={data}
         columns={columns}
         pagination={false}
       />

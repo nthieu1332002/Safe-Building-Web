@@ -89,9 +89,7 @@ export const createMonthlyBill = createAsyncThunk(
     "bill/createMonthlyBill",
     async (data, { rejectWithValue }) => {
       try {
-        console.log(data)
         const res = await createMonthlyBillAPI(data);
-        console.log("res", res);
         if (res.status === 201) {
           toast.success(res.data.message);
           return res;
