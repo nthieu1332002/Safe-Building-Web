@@ -12,8 +12,9 @@ import { getBill, getBillById } from "../../store/bill/billSlice";
 import { getAllBuilding } from "../../store/building/buildingSlice";
 import { getService } from "../../store/service/serviceSlice";
 import { billStatus } from "../../ultis/types";
-
+import { RiNewspaperLine } from "react-icons/ri";
 import "./style.scss";
+import BillFormMonthly from "../../components/Form/BillForm/BillFormMonthly";
 
 const Bill = () => {
   const dispatch = useDispatch();
@@ -23,8 +24,8 @@ const Bill = () => {
   const [currentPage, setCurrentPage] = useState(page);
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
-
-
+  const [isMonthlyModalOpen, setIsMonthlyModalOpen] = useState(false);
+  console.log(isMonthlyModalOpen);
   const columns = [
     {
       title: "#",
@@ -92,13 +93,18 @@ const Bill = () => {
       dataIndex: "action",
       align: "center",
       render: (_, record) => {
-        return <CustomAction type="bill" onClickDetail={() => onClickDetail(record)}/>;
+        return (
+          <CustomAction
+            type="bill"
+            onClickDetail={() => onClickDetail(record)}
+          />
+        );
       },
     },
   ];
 
   const onClickDetail = (record) => {
-    dispatch(getBillById({id: record.id }));
+    dispatch(getBillById({ id: record.id }));
     setIsModalDetailOpen(true);
   };
   const getBillList = () => {
@@ -137,8 +143,21 @@ const Bill = () => {
         order: "",
       })
     );
-    setIsModalAddOpen(true)
-  }
+    setIsModalAddOpen(true);
+  };
+
+  const handleMonthlyBill = () => {
+    setIsMonthlyModalOpen(true);
+    dispatch(
+      getAllBuilding({
+        page: 1,
+        size: 100,
+        searchKey: "",
+        sortBy: "name",
+        order: "asc",
+      })
+    );
+  };
   return (
     <>
       <div className="bill-container">
@@ -153,7 +172,14 @@ const Bill = () => {
               //   onSearch={onSearch}
               width="30%"
             />
-            <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+
+            <div className="bill-action__button-group">
+              <button className="custom-button" onClick={handleMonthlyBill}>
+                Monthly bill
+                <RiNewspaperLine />
+              </button>
+              <CustomButton onClick={handleAddNew}>Add new</CustomButton>
+            </div>
           </div>
           <Table
             dataSource={bills}
@@ -169,6 +195,7 @@ const Bill = () => {
         </div>
       </div>
       <BillFormAdd
+        dispatch={dispatch}
         loading={loading}
         isModalOpen={isModalAddOpen}
         setIsModalAddOpen={setIsModalAddOpen}
@@ -179,6 +206,13 @@ const Bill = () => {
         isModalOpen={isModalDetailOpen}
         handleCancel={() => setIsModalDetailOpen(false)}
         bill={billDetail}
+      />
+      <BillFormMonthly
+        dispatch={dispatch}
+        loading={loading}
+        isModalOpen={isMonthlyModalOpen}
+        setIsModalOpen={setIsMonthlyModalOpen}
+        handleCancel={() => setIsMonthlyModalOpen(false)}
       />
     </>
   );
