@@ -7,7 +7,7 @@ import { logout } from "../../../store/user/userSlice";
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/json",
   },
 });
 

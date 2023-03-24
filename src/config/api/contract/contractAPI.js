@@ -25,6 +25,10 @@ const contractAPI = {
         }
         return api.put(url, body);
     },
+    deleteContractAPI: ({id}) => {
+        const url =`/rent-contracts/delete-contract/${id}`;
+        return api.delete(url)
+    }
 }
 
 export default contractAPI

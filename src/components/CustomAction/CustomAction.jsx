@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Popconfirm } from "antd";
 import { BsThreeDots } from "react-icons/bs";
-import { AiOutlineEdit, AiOutlineDelete,AiOutlineEye } from "react-icons/ai";
+import { AiOutlineEdit, AiOutlineDelete, AiOutlineEye, AiOutlineNotification } from "react-icons/ai";
 const CustomAction = ({
   type,
   onConfirm,
@@ -10,7 +10,8 @@ const CustomAction = ({
   disabled,
   onClickEdit,
   onClickDelete,
-  onClickDetail
+  onClickDetail,
+  onClickNoti
 }) => {
   let items = [];
   switch (type) {
@@ -26,7 +27,11 @@ const CustomAction = ({
           key: "1",
           icon: <AiOutlineEdit />,
         },
-        
+        {
+          label: <div onClick={onClickNoti}>Noti</div>,
+          key: "2",
+          icon: <AiOutlineNotification />,
+        },
         {
           type: "divider",
         },
@@ -36,9 +41,18 @@ const CustomAction = ({
               Delete
             </div>
           ),
-          key: "2",
+          key: "3",
           icon: <AiOutlineDelete className="delete" />,
         },
+      ];
+      break;
+    case "bill":
+      items = [
+        {
+          label: <div onClick={onClickDetail}>Detail</div>,
+          key: "0",
+          icon: <AiOutlineEye />,
+        }
       ];
       break;
     default:

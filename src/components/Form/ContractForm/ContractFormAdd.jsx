@@ -13,6 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { postContract } from "../../../store/contract/contractSlice";
 import { UploadOutlined } from "@ant-design/icons";
+
 import { getFlatByBuilding } from "../../../store/building/buildingSlice";
 const ResidentFormAddContract = ({
   isModalOpen,
@@ -27,12 +28,21 @@ const ResidentFormAddContract = ({
   const { buildingList, flatList } = useSelector((state) => state.building);
   const { loading } = useSelector((state) => state.contract);
   const [currentBuilding, setCurrentBuilding] = useState(null);
+  const [currentFlat, setCurrentFlat] = useState(null);
+  const [currentValue, setCurrentValue] = useState(null);
 
   useEffect(() => {
     if (buildingList.length > 0) {
       setCurrentBuilding(buildingList[0].id);
     }
   }, [buildingList]);
+
+  useEffect(() => {
+    if (flatList.length > 0) {
+      setCurrentFlat(flatList[0].id);
+      setCurrentValue(flatList[0].value);
+    }
+  }, [flatList]);
 
   const fetchFlatList = () => {
     dispatch(getFlatByBuilding(currentBuilding));
@@ -42,14 +52,17 @@ const ResidentFormAddContract = ({
       fetchFlatList();
     }
   }, [currentBuilding]);
+  
   const buildingListOptions = buildingList.map((item) => {
     return { value: item.id, label: item.name };
   });
 
   const flatListOptions = flatList.map((item) => {
-    return { value: item.id, label: item.roomNumber };
+    return { value: item.id, label: item.roomNumber};
   });
-
+  const token = customer.devices?.map((item) => {
+    return [item.token];
+  });
   const normFile = (e) => {
     if (Array.isArray(e)) {
       return e;
@@ -59,6 +72,10 @@ const ResidentFormAddContract = ({
 
   const onChange = (value) => {
     setCurrentBuilding(value);
+  };
+  const handleChange = (value) => {
+    setCurrentFlat(value)
+    setCurrentValue(flatList.find((item) => item.id === value).value)
   };
   return (
     <Modal
@@ -81,9 +98,8 @@ const ResidentFormAddContract = ({
                 startDate: fieldsValue["startDate"].format("YYYY-MM-DD"),
                 expiryDate: fieldsValue["expiryDate"].format("YYYY-MM-DD"),
               }),
-              deviceToken: 'e5P0xOyYRe6HuadvjABCQe:APA91bHql95fAq4V5LFYV8djxLdfA0cw1lX_fo6z1dNhCxMxNmDsztd2mDVPGgJxgV5qDXs0YMwRWdUdZ-zR2xfI_N-fwA5-bFlN49KrHru1UYvGO-D0X2mCKJbxWag59Ucc_SRmOQPP',
+              deviceTokens: JSON.stringify(token),
             };
-            console.log("values", values);
             dispatch(postContract(values)).then((res) => {
               if (res.payload.status === 201) {
                 form.resetFields();
@@ -102,11 +118,15 @@ const ResidentFormAddContract = ({
         fields={[
           {
             name: ["buildingId"],
-            value: buildingListOptions[0]?.value,
+            value: currentBuilding,
           },
           {
             name: ["flatId"],
-            value: flatListOptions[0]?.value,
+            value: currentFlat,
+          },
+          {
+            name: ["value"],
+            value: currentValue,
           },
         ]}
         name="create-contract-form"
@@ -159,13 +179,14 @@ const ResidentFormAddContract = ({
               },
             ]}
             disabled={flatListOptions.length === 0}
-          >
+            >
             <Select
               disabled={flatListOptions.length === 0}
               options={flatListOptions}
               style={{
                 width: 180,
               }}
+              onChange={handleChange}
             />
           </Form.Item>
         </Space>
@@ -222,6 +243,7 @@ const ResidentFormAddContract = ({
           label="File"
           valuePropName="fileList"
           getValueFromEvent={normFile}
+          rules={[{ required: true, message: "File is required." }]}
         >
           <Upload
             name="files"

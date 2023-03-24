@@ -7,7 +7,7 @@ import { logout } from "../../../store/user/userSlice";
 const api = axios.create({
   baseURL: process.env.REACT_APP_API,
   headers: {
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/json",
   },
 });
 
@@ -23,7 +23,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    toast.error(error.response.data.message)
     const { dispatch } = store;
     if (error?.response?.status === 403) {
       dispatch(logout())

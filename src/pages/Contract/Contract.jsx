@@ -7,7 +7,7 @@ import { FilePdfTwoTone } from "@ant-design/icons";
 
 import "./style.scss";
 
-import { getContract } from "../../store/contract/contractSlice";
+import { deleteContractById, getContract } from "../../store/contract/contractSlice";
 
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 
@@ -17,22 +17,61 @@ const { Text } = Typography;
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 const Contract = () => {
-  const onFinish = (values) => {
-    console.log("Success:", values);
-  };
-
   const dispatch = useDispatch();
   const { contracts, page, size, totalPage, loading } = useSelector(
     (state) => state.contract
   );
   const [currentPage, setCurrentPage] = useState(page);
   const [ellipsis, setEllipsis] = useState(true);
+  
+  const getContractList = () => {
+    dispatch(getContract({ page: currentPage, size }));
+  };
 
+  useEffect(() => {
+   
+    getContractList();
+  }, [currentPage, dispatch, size]);
+
+  const handleDeleteContract = (id) => {
+    dispatch(deleteContractById({ id: id })).then(() => {
+      getContractList();
+    })
+  };
   const columns = [
     {
       title: "#",
       key: "index",
       render: (value, item, index) => (page - 1) * 10 + index + 1,
+    },
+    {
+      title: "Building",
+      dataIndex: "buildingName",
+      key: "buildingName",
+      sorter: (a, b) => a.buildingName.localeCompare(b.buildingName),
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Room",
+      dataIndex: "roomNumber",
+      key: "roomNumber",
+      sorter: (a, b) => a.roomNumber - b.roomNumber,
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Resident",
+      dataIndex: "customerName",
+      key: "customerName",
+      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
+      render: (text) => <b>{text}</b>,
+    },
+    {
+      title: "Expiration Date",
+      dataIndex: "expiryDate",
+      key: "expiryDate",
+      sorter: (a, b) =>
+        moment(a.expiryDate).unix() - moment(b.expiryDate).unix(),
+      render: (text) => <b>{text}</b>,
     },
     {
       title: "Contract",
@@ -53,35 +92,6 @@ const Contract = () => {
           </a>
         </b>
       ),
-    },
-    {
-      title: "Resident",
-      dataIndex: "customerName",
-      key: "customerName",
-      sorter: (a, b) => a.customerName.localeCompare(b.customerName),
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Room",
-      dataIndex: "roomNumber",
-      key: "roomNumber",
-      sorter: (a, b) => a.roomNumber - b.roomNumber,
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Building",
-      dataIndex: "buildingName",
-      key: "buildingName",
-      sorter: (a, b) => a.buildingName.localeCompare(b.buildingName),
-      render: (text) => <b>{text}</b>,
-    },
-    {
-      title: "Expiration Date",
-      dataIndex: "expiryDate",
-      key: "expiryDate",
-      sorter: (a, b) =>
-        moment(a.expiryDate).unix() - moment(b.expiryDate).unix(),
-      render: (text) => <b>{text}</b>,
     },
     {
       title: "Status",
@@ -114,6 +124,7 @@ const Contract = () => {
         return (
           <CustomAction
             type="contract"
+            onClickDelete={() => handleDeleteContract(record.id)}
             // onClickEdit={() => onClickEdit(record)}
             // onClickDetail={() => onClickDetail(record)}
           />
@@ -122,12 +133,7 @@ const Contract = () => {
     },
   ];
 
-  useEffect(() => {
-    const getContractList = () => {
-      dispatch(getContract({ page: currentPage, size }));
-    };
-    getContractList();
-  }, [currentPage, dispatch, size]);
+  
 
   const onChange = (page) => {
     setCurrentPage(page);

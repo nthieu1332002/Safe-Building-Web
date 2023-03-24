@@ -54,7 +54,9 @@ const Flat = () => {
       key: "price",
       align: "center",
       sorter: (a, b) => a.price - b.price,
-      render: (text) => <b>{text} VND</b>,
+      render: (text) => (
+        <b>{new Intl.NumberFormat("en-Us").format(text)} VND</b>
+      ),
     },
     {
       title: "Status",
@@ -116,7 +118,15 @@ const Flat = () => {
     dispatch(getFlatType());
   };
   const fetchBuildingList = () => {
-    dispatch(getAllBuilding({ page: 1, size: 100, searchKey: '', sortBy: 'name', order: 'asc'}));
+    dispatch(
+      getAllBuilding({
+        page: 1,
+        size: 100,
+        searchKey: "",
+        sortBy: "name",
+        order: "asc",
+      })
+    );
   };
   const handleAddNew = () => {
     fetchFlatType();

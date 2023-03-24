@@ -29,18 +29,18 @@ const buildingSlice = createSlice({
                 state.loading = true;
             })
             .addCase(getBuilding.fulfilled, (state, action) => {
-                state.loading = false
                 state.buildings = action.payload.res.data.data
                 state.page = action.payload.res.data.pagination.page
                 state.totalPage = action.payload.res.data.pagination.totalPage
                 state.searchKey = action.payload.data.searchKey
                 state.sortBy = action.payload.data.sortBy
                 state.order = action.payload.data.order
+                state.loading = false
             })
             .addCase(getBuilding.rejected, (state, action) => {
-                state.loading = false
                 state.buildings = []
                 state.error = action.error.message
+                state.loading = false
             })
             .addCase(getAllBuilding.fulfilled, (state, action) => {
                 state.buildingList = action.payload.data.data

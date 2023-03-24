@@ -2,13 +2,12 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import contractAPI from "../../config/api/contract/contractAPI";
 
-const { getContractAPI, postContractAPI, getContractByIdAPI, editContractAPI } = contractAPI;
+const { getContractAPI, postContractAPI, deleteContractAPI, editContractAPI } = contractAPI;
 
 const contractSlice = createSlice({
     name: "contract",
     initialState: {
         contracts: [],
-        contractDetail: {},
         loading: false,
         error: '',
         page: 1,
@@ -43,9 +42,6 @@ const contractSlice = createSlice({
             .addCase(postContract.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
-            })
-            .addCase(getContractById.fulfilled, (state, action) => {
-                state.contractDetail = action.payload.data.data
             })
     }
 })
@@ -95,12 +91,14 @@ export const editContract = createAsyncThunk(
     }
 );
 
-export const getContractById = createAsyncThunk(
-    "contract/getContractById",
+export const deleteContractById = createAsyncThunk(
+    "contract/deleteContractById",
     async (data, { rejectWithValue }) => {
         try {
-            const res = await getContractByIdAPI(data);
-            return res;
+            const res = await deleteContractAPI(data);
+            if (res.status === 200) {
+                toast.success(res.data.message)
+            }
         } catch (err) {
             console.log(err)
             return rejectWithValue(err.response.data)

@@ -144,6 +144,11 @@ export const rentContractStatus = [
         id: 2,
         status: "EXPIRED",
         color: expiredColor,
+    },
+    {
+        id: 3,
+        status: "DELETED",
+        color: inactiveColor,
     }
 ];
 

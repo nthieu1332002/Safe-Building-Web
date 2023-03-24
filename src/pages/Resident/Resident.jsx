@@ -1,4 +1,4 @@
-import { Drawer, Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
@@ -16,7 +16,9 @@ import ResidentFormDetail from "../../components/Form/ResidentForm/ResidentFormD
 import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
 import CustomSelect from "../../components/CustomSelect/CustomSelect";
 import { AiFillFilter } from "react-icons/ai";
-import ResidentFormAddContract from "../../components/Form/ContractForm/ContractFormAdd";
+import { MdOutlineNotificationsActive } from "react-icons/md";
+import NotiFormAdd from "../../components/Form/NotiForm/NotiFormAdd";
+import { toast } from "react-toastify";
 
 const Resident = () => {
   const dispatch = useDispatch();
@@ -34,6 +36,11 @@ const Resident = () => {
   const [isModalAddOpen, setIsModalAddOpen] = useState(false);
   const [isModalEditOpen, setIsModalEditOpen] = useState(false);
   const [isModalDetailOpen, setIsModalDetailOpen] = useState(false);
+  const [isNotiOpen, setIsNotiOpen] = useState(false);
+  const [isMultiNotiOpen, setIsMultiNotiOpen] = useState(false);
+
+  const [fullname, setFullname] = useState(null);
+  const [token, setToken] = useState(null);
   const [currentPage, setCurrentPage] = useState(page);
 
   const [searchString, setSearchString] = useState(searchKey);
@@ -93,6 +100,7 @@ const Resident = () => {
             type="resident"
             onClickEdit={() => onClickEdit(record)}
             onClickDetail={() => onClickDetail(record)}
+            onClickNoti={() => onClickNoti(record)}
           />
         );
       },
@@ -114,9 +122,9 @@ const Resident = () => {
     getResidentList();
   }, [currentPage, dispatch, searchString, size, sortByOrder, sortByString]);
 
-  function onChange(page) {
+  const onChange = (page) => {
     setCurrentPage(page);
-  }
+  };
 
   const onSearch = (value) => {
     setSearchString(value);
@@ -133,6 +141,32 @@ const Resident = () => {
   const onClickDetail = (record) => {
     fetchResidentById(record.id);
     setIsModalDetailOpen(true);
+  };
+  const onDelete = () => {
+    fetchResidentById(residentDetail.id);
+    setIsModalDetailOpen(true);
+  };
+  const onClickNoti = (record) => {
+    setFullname(record.fullname);
+    setToken(record.device[0]?.token);
+    setIsNotiOpen(true);
+  };
+
+  const onClickMultiNoti = () => {
+    if (selectedRowKeys.length !== 0) {
+      setIsNotiOpen(true);
+    } else {
+
+      toast.warning("You must choose at least 1 resident to push notification!")
+    }
+  }
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  const onSelectChange = (newSelectedRowKeys) => {
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
   };
   return (
     <>
@@ -173,12 +207,21 @@ const Resident = () => {
                 options={sortOption}
               />
             </div>
-            <CustomButton onClick={() => setIsModalAddOpen(true)}>
-              Add new
-            </CustomButton>
+            <div className="resident-action__button-group">
+              <button className="custom-button" onClick={onClickMultiNoti}>
+                Push notification <MdOutlineNotificationsActive />
+              </button>
+              <CustomButton onClick={() => setIsModalAddOpen(true)}>
+                Add new
+              </CustomButton>
+            </div>
           </div>
           <Table
-            // rowKey="citizenId"
+            rowKey={(record) => record.id}
+            rowSelection={{
+              type: "checkbox",
+              ...rowSelection,
+            }}
             dataSource={residents}
             columns={columns}
             pagination={false}
@@ -212,6 +255,16 @@ const Resident = () => {
         onClose={() => setIsModalDetailOpen(false)}
         open={isModalDetailOpen}
         customer={residentDetail}
+        onDelete={onDelete}
+      />
+      <NotiFormAdd
+        dispatch={dispatch}
+        isModalOpen={isNotiOpen}
+        setIsModalOpen={setIsNotiOpen}
+        handleCancel={() => setIsNotiOpen(false)}
+        token={token}
+        fullname={fullname}
+        customerId={selectedRowKeys}
       />
     </>
   );
