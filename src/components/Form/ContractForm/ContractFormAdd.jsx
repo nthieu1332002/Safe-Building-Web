@@ -52,6 +52,7 @@ const ResidentFormAddContract = ({
       fetchFlatList();
     }
   }, [currentBuilding]);
+  
   const buildingListOptions = buildingList.map((item) => {
     return { value: item.id, label: item.name };
   });

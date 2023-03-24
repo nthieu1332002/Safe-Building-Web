@@ -1,4 +1,4 @@
-import { Drawer, Table, Tag } from "antd";
+import { Table, Tag } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
@@ -16,7 +16,6 @@ import ResidentFormDetail from "../../components/Form/ResidentForm/ResidentFormD
 import ResidentFormEdit from "../../components/Form/ResidentForm/ResidentFormEdit";
 import CustomSelect from "../../components/CustomSelect/CustomSelect";
 import { AiFillFilter } from "react-icons/ai";
-import ResidentFormAddContract from "../../components/Form/ContractForm/ContractFormAdd";
 
 const Resident = () => {
   const dispatch = useDispatch();
@@ -114,7 +113,7 @@ const Resident = () => {
     getResidentList();
   }, [currentPage, dispatch, searchString, size, sortByOrder, sortByString]);
 
-  function onChange(page) {
+  const onChange = (page) => {
     setCurrentPage(page);
   }
 
