@@ -1,6 +1,5 @@
 import React from "react";
 import { Modal, Table, Tag } from "antd";
-import { billStatus } from "../../../ultis/types";
 
 const BillFormDetail = ({ bill, isModalOpen, handleCancel }) => {
   const columns = [

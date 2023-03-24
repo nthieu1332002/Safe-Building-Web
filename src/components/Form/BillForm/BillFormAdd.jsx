@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, InputNumber, Modal, Select, Space } from "antd";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { getFlatByBuilding } from "../../../store/building/buildingSlice";
 import { createBill } from "../../../store/bill/billSlice";
 
 const BillFormAdd = ({
+  dispatch,
   loading,
   isModalOpen,
   handleCancel,
@@ -13,7 +14,6 @@ const BillFormAdd = ({
   handleSubmit,
 }) => {
   const [form] = Form.useForm();
-  const dispatch = useDispatch();
 
   const { buildingList, flatList } = useSelector((state) => state.building);
   const {services} = useSelector((state) => state.service)
@@ -70,7 +70,6 @@ const BillFormAdd = ({
           .validateFields()
           .then((fieldsValue) => {
             delete fieldsValue.buildingId
-            console.log(fieldsValue);
             dispatch(createBill(fieldsValue)).then((res) => {
               if (res.payload.status === 201) {
                 form.resetFields();

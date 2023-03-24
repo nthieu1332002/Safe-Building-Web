@@ -1,25 +1,39 @@
 import api from "./apiConfig";
 
 const billAPI = {
-    getBillAPI: ({page, size }) => {
-        const url = `/bills?page=${page}&size=${size}`;
-        return api.get(url);
-    },
-    createBillAPI: (data) => {
-        const url = `/bills`;
-        const body = {
-            ...data,
-        };
-        return api.post(url, body);
-    },
-    getBillByIdAPI: ({id}) => {
-        const url =`/bills/${id}`;
-        return api.get(url)
-    },
-    createMonthlyBillAPI: () => {
-        const url =`/bills/create-bills`;
-        return api.post(url)
-    },
-}
+  getBillAPI: ({ page, size }) => {
+    const url = `/bills?page=${page}&size=${size}`;
+    return api.get(url);
+  },
+  createBillAPI: (data) => {
+    const url = `/bills`;
+    const body = {
+      ...data,
+    };
+    return api.post(url, body);
+  },
+  getBillByIdAPI: ({ id }) => {
+    const url = `/bills/${id}`;
+    return api.get(url);
+  },
+  getFileExcelAPI: ({ buildingId }) => {
+    console.log("buildingId", buildingId);
+    const url = `/get-template-excel-file?buildingId=${buildingId}`;
+    return api.get(url, {
+      responseType: "blob",
+    });
+  },
+  createMonthlyBillAPI: (data) => {
+    const url = `/rent-contract/upload-excel-file`;
+    const body = {
+      ...data,
+    };
+    return api.post(url, body, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+};
 
-export default billAPI
+export default billAPI;

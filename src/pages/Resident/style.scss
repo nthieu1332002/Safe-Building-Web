@@ -15,7 +15,7 @@
     .resident-action {
       @include flex(space-between, null);
       padding: 1rem;
-      &__search-group {
+      &__search-group, &__button-group {
         display: flex;
         gap: 0.5rem;
       }
