@@ -14,6 +14,10 @@
     .contract-action {
       @include flex(space-between, null);
       padding: 1rem;
+      &__search-group {
+        display: flex;
+        gap: 0.5rem;
+      }
     }
     
   }

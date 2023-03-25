@@ -52,7 +52,7 @@ const Service = () => {
       align: "center",
       key: "icon",
       render: (text) =>
-        text && <Image width={50} src={`${firebaseEndpoint}${text}`} />,
+        text && <Image width={50} src={text} />,
     },
     {
       title: "Status",

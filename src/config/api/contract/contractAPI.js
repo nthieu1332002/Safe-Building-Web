@@ -3,8 +3,8 @@ import api from "./apiConfig";
 // sample: 
 
 const contractAPI = {
-    getContractAPI: ({ page, size }) => {
-        const url =`/rent-contracts?page=${page}&size=${size}`;
+    getContractAPI: ({ page, size, searchKey, sortBy, order  }) => {
+        const url =`/rent-contracts?page=${page}&size=${size}&searchKey=${searchKey}&sortBy=${sortBy}&order=${order}`;
         return api.get(url)
     },
     postContractAPI: (data) => {

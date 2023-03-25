@@ -4,39 +4,62 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomPagination from "../../components/CustomPagination/CustomPagination";
 import moment from "moment";
 import { FilePdfTwoTone } from "@ant-design/icons";
+import { AiFillFilter } from "react-icons/ai";
 
 import "./style.scss";
 
-import { deleteContractById, getContract } from "../../store/contract/contractSlice";
+import {
+  deleteContractById,
+  getContract,
+} from "../../store/contract/contractSlice";
 
 import CustomSearch from "../../components/CustomSearch/CustomSearch";
 
-import { rentContractStatus } from "../../ultis/types";
+import { rentContractStatus, sortOption } from "../../ultis/types";
 import CustomAction from "../../components/CustomAction/CustomAction";
+import CustomSelect from "../../components/CustomSelect/CustomSelect";
 const { Text } = Typography;
 
 const firebaseEndpoint = process.env.REACT_APP_FIREBASE_ENDPOINT;
 const Contract = () => {
   const dispatch = useDispatch();
-  const { contracts, page, size, totalPage, loading } = useSelector(
-    (state) => state.contract
-  );
+  const {
+    contracts,
+    page,
+    size,
+    totalPage,
+    loading,
+    searchKey,
+    sortBy,
+    order,
+  } = useSelector((state) => state.contract);
   const [currentPage, setCurrentPage] = useState(page);
   const [ellipsis, setEllipsis] = useState(true);
-  
+
+  const [searchString, setSearchString] = useState(searchKey);
+  const [sortByString, setSortByString] = useState(sortBy);
+  const [sortByOrder, setSortByOrder] = useState(order);
+
   const getContractList = () => {
-    dispatch(getContract({ page: currentPage, size }));
+    dispatch(
+      getContract({
+        page: currentPage,
+        size,
+        searchKey: searchString,
+        sortBy: sortByString,
+        order: sortByOrder,
+      })
+    );
   };
 
   useEffect(() => {
-   
     getContractList();
-  }, [currentPage, dispatch, size]);
+  }, [currentPage, dispatch, size, searchString, sortByOrder, sortByString]);
 
   const handleDeleteContract = (id) => {
     dispatch(deleteContractById({ id: id })).then(() => {
       getContractList();
-    })
+    });
   };
   const columns = [
     {
@@ -133,14 +156,12 @@ const Contract = () => {
     },
   ];
 
-  
-
   const onChange = (page) => {
     setCurrentPage(page);
   };
 
   const onSearch = (value) => {
-    console.log("value", value);
+    setSearchString(value);
   };
 
   const handleAddNew = () => {};
@@ -159,8 +180,6 @@ const Contract = () => {
     setIsModalOpen(false);
   };
 
-  const [form] = Form.useForm();
-  const reader = new FileReader();
   return (
     <div className="contract-container">
       <div className="page-title">
@@ -168,12 +187,41 @@ const Contract = () => {
       </div>
       <div className="contract-content">
         <div className="contract-action">
-          <CustomSearch
-            placeholder="Search contract.."
-            allowClear
-            onSearch={onSearch}
-            width="30%"
-          />
+          <div className="contract-action__search-group">
+            <CustomSearch
+              placeholder="Search contract.."
+              allowClear
+              onSearch={onSearch}
+            />
+            <CustomSelect
+              suffixIcon={<AiFillFilter size={15} />}
+              title="Sort by"
+              onChange={(value) => setSortByString(value)}
+              options={[
+                {
+                  value: "customerName",
+                  label: "Resident Name",
+                },
+                {
+                  value: "buildingName",
+                  label: "Building",
+                },
+                {
+                  value: "roomNumber",
+                  label: "Room",
+                },
+                {
+                  value: "status",
+                  label: "Status",
+                },
+              ]}
+            />
+            <CustomSelect
+              title="Default"
+              onChange={(value) => setSortByOrder(value)}
+              options={sortOption}
+            />
+          </div>
           {/* <CustomButton onClick={showModal}>Add new</CustomButton> */}
         </div>
         <Table
